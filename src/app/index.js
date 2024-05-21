@@ -1,10 +1,13 @@
+// tela principal do aplicativo 
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { Link } from 'expo-router';
 
-export default function App() {
+export default function Home() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text>Pagina Home</Text>
+      <Link href={"/grupo/instituicao"}> IR para login do usuario</Link>
       <StatusBar style="auto" />
     </View>
   );
