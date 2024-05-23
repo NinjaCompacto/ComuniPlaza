@@ -44,15 +44,9 @@ function createUser(JSONData){
 
 function setUsers(user: UsersData){
     var users = getUsers()
-    for(let olds of users){
-        if(user.email == olds.email){
-            return "Impossivel criar, usuário com este email ja cadastrado"
-        }
-    }
     users.push(user)
     let usersJSON = JSON.stringify(users)
     writeFileSync("src/UsersData/Users.json", usersJSON, {flag: "w"})
-    return "Usuario criado com sucesso"
 }
 
 function getUsers(){
@@ -65,15 +59,6 @@ function getUsers(){
         users.push(createUser(objeto))
     }
     return users
-}
-
-function validaUsers(email: string, senha: string){
-    for(let user of getUsers()){
-        if(user.email == email){
-            return [user.senha === senha, user]
-        }
-    }
-    return [false]
 }
 
 var usuario = new UserInst("Instituicao", "instituicao@gmail.com", "senha123", "123456789-10")

@@ -8,8 +8,6 @@ export default function Home() {
     <View style={styles.container}>
       <Text>Pagina Home</Text>
       <Link href={"/login"}> IR para login do usuario</Link>
-      <Link href={"/cadastroUsuario"}> Ir para cadastro do usuario</Link>
-      <Link href={"/cadastroInstituicao"}> Ir para cadastro da instituicao</Link>
       <StatusBar style="auto" />
     </View>
   );
