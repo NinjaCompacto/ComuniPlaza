@@ -28,6 +28,7 @@ export default function App() {
         <TextInput
           style={styles.input}
           placeholder="Email"
+          inputMode="email"
           autoCorrect={false}
           onChangeText={() => {}}
         />
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     width: "90%",
     marginBottom: 15,
-    color: "#222",
+    color: "#000",
     fontSize: 17,
     borderRadius: 10,
     padding: 10,

@@ -8,7 +8,7 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Appbar } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 import { Link } from "expo-router";
 
@@ -18,27 +18,29 @@ export default function App() {
       <View style={styles.titulo}>
         <TouchableOpacity style={styles.seta}>
           <Link href={"../login"}>
-            <AntDesign name="left" color="#0F2355" size={22} />
+            <AntDesign name="left" color="#0F235" size={22} />
           </Link>
         </TouchableOpacity>
 
         <Text style={styles.texto}>Cadastro </Text>
       </View>
 
-      <View>
-        <View style={styles.euSou}>
-          <Text style={styles.texto}>Eu sou:</Text>
-        </View>
+      <View style={styles.euSou}>
+        <Text style={styles.texto}>Eu sou:</Text>
+      </View>
 
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <Link href={"./instituicao"} asChild>
           <TouchableOpacity style={styles.btnInstituicao}>
             <Text style={styles.submitText}>Instituição </Text>
           </TouchableOpacity>
+        </Link>
 
+        <Link href={"./usuario"} asChild>
           <TouchableOpacity style={styles.btnPessoa}>
             <Text style={styles.submitText}>Pessoa</Text>
           </TouchableOpacity>
-        </View>
+        </Link>
       </View>
     </View>
   );
@@ -91,6 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 0,
     alignItems: "center",
+    //alignContent: "center",
     justifyContent: "center",
     //backgroundColor: "blue",
   },
@@ -99,6 +102,7 @@ const styles = StyleSheet.create({
     width: "90%",
     height: 45,
     alignItems: "center",
+    alignContent: "center",
     justifyContent: "center",
     borderRadius: 10,
     marginTop: 15,
@@ -106,6 +110,10 @@ const styles = StyleSheet.create({
   submitText: {
     color: "#FFF",
     fontSize: 18,
+    alignContent: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    //backgroundColor: "pink",
   },
   btnPessoa: {
     backgroundColor: "#0F2355",
