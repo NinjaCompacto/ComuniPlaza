@@ -12,7 +12,7 @@ import { Appbar } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 
-export default function App() {
+export default function identificacao() {
   return (
     <>
       {/* header com o título da página */}

@@ -11,7 +11,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 
-export default function App() {
+export default function login() {
   const [input, setInput] = useState("");
   const [hidePass, setHidePass] = useState(true);
 

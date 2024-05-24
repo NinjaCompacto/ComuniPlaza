@@ -143,7 +143,7 @@ export default function instituicao() {
           />
 
           <TextInput
-            placeholder="Data início das atividades"
+            placeholder="Data de início das atividades"
             placeholderTextColor="#0F2355"
             cursorColor={"#0F2355"}
             width="100%"
@@ -215,8 +215,8 @@ const styles = StyleSheet.create({
     width: "73%",
     height: 50,
     color: "#0F2355",
-    padding: 8,
-    fontSize: 17,
+    padding: 4,
+    fontSize: 15,
   },
 
   //olho da senha
@@ -257,6 +257,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "solid",
     margin: 5,
+    padding: 4,
+    fontSize: 15,
   },
 
   submitText: {

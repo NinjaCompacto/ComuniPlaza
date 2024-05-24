@@ -11,7 +11,7 @@ import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
 import { Appbar } from "react-native-paper";
 import { Link } from "expo-router";
 
-export default function cadastroUsuario() {
+export default function usuario() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [hidePass, setHidePass] = useState(true);
@@ -213,8 +213,8 @@ const styles = StyleSheet.create({
     width: "73%",
     height: 50,
     color: "#0F2355",
-    padding: 8,
-    fontSize: 17,
+    padding: 4,
+    fontSize: 15,
   },
 
   //olho da senha
@@ -252,6 +252,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "solid",
     margin: 5,
+    padding: 4,
+    fontSize: 15,
   },
 
   submitText: {
