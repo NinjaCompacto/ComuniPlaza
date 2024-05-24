@@ -43,8 +43,8 @@ export default function cadastroUsuario() {
           <TextInput
             placeholder="Nome da instituição"
             placeholderTextColor="#0F2355"
-            cursorColor={"#0F2355"}
             width="100%"
+            cursorColor={"#0F2355"}
             selectionHandleColor={"#0F2355"}
             selectionColor={"#BCBCBC"}
           ></TextInput>

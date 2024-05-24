@@ -31,6 +31,9 @@ export default function App() {
           inputMode="email"
           autoCorrect={false}
           onChangeText={() => {}}
+          cursorColor={"#0F2355"}
+          selectionHandleColor={"#0F2355"}
+          selectionColor={"#BCBCBC"}
         />
 
         <View style={styles.passArea}>
@@ -40,6 +43,9 @@ export default function App() {
             value={input}
             onChangeText={(texto) => setInput(texto)}
             secureTextEntry={hidePass} //aplica a mascara da senha
+            cursorColor={"#0F2355"}
+            selectionHandleColor={"#0F2355"}
+            selectionColor={"#BCBCBC"}
           />
           <TouchableOpacity
             style={styles.icon}
