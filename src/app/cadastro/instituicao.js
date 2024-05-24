@@ -7,12 +7,15 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import { MaterialIcons, AntDesign } from "@expo/vector-icons";
+import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
 import { Appbar } from "react-native-paper";
 import { Link } from "expo-router";
 
-export default function cadastroUsuario() {
+export default function instituicao() {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [hidePass, setHidePass] = useState(true);
+  const [hideConfirmPass, setHideConfirmPass] = useState(true);
 
   return (
     <>
@@ -69,7 +72,7 @@ export default function cadastroUsuario() {
           ></TextInput>
         </View>
 
-        <View style={styles.inputStyle}>
+        <View style={styles.passArea}>
           <MaterialIcons
             name="lock"
             size={24}
@@ -78,17 +81,29 @@ export default function cadastroUsuario() {
           />
 
           <TextInput
+            style={styles.pass}
             placeholder="Senha"
-            secureTextEntry={true}
+            value={password}
+            onChangeText={(texto) => setPassword(texto)}
+            secureTextEntry={hidePass} //aplica a mascara da senha
             placeholderTextColor="#0F2355"
             cursorColor={"#0F2355"}
-            width="100%"
             selectionHandleColor={"#0F2355"}
             selectionColor={"#BCBCBC"}
-          ></TextInput>
+          />
+          <TouchableOpacity
+            style={styles.icon}
+            onPress={() => setHidePass(!hidePass)} //quando clica muda o status de visualização
+          >
+            <Ionicons
+              name={hidePass ? "eye" : "eye-off"}
+              color="#0F2355"
+              size={25}
+            />
+          </TouchableOpacity>
         </View>
 
-        <View style={styles.inputStyle}>
+        <View style={styles.passArea}>
           <MaterialIcons
             name="lock"
             size={24}
@@ -97,14 +112,26 @@ export default function cadastroUsuario() {
           />
 
           <TextInput
-            placeholder="Repita a senha"
-            secureTextEntry={true}
+            style={styles.pass}
+            placeholder="Confirmar senha"
+            value={confirmPassword}
+            onChangeText={(texto) => setConfirmPassword(texto)}
+            secureTextEntry={hideConfirmPass} //aplica a mascara da senha
             placeholderTextColor="#0F2355"
             cursorColor={"#0F2355"}
-            width="100%"
             selectionHandleColor={"#0F2355"}
             selectionColor={"#BCBCBC"}
-          ></TextInput>
+          />
+          <TouchableOpacity
+            style={styles.icon}
+            onPress={() => setHideConfirmPass(!hideConfirmPass)} //quando clica muda o status de visualização
+          >
+            <Ionicons
+              name={hideConfirmPass ? "eye" : "eye-off"}
+              color="#0F2355"
+              size={25}
+            />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.inputStyle}>
@@ -169,10 +196,44 @@ const styles = StyleSheet.create({
     justifyContent: "left",
   },
 
-  inputContainer: {
-    flex: 1,
+  //area da senha
+  passArea: {
+    flexDirection: "row",
+    width: "90%",
+    height: 50,
+    alignItems: "center",
+    borderRadius: 10,
+    borderColor: "#0F2355",
+    borderWidth: 1,
+    borderStyle: "solid",
+    margin: 5,
+    //backgroundColor: "blue",
+  },
+
+  //texto da senha
+  pass: {
+    width: "73%",
+    height: 50,
+    color: "#0F2355",
+    padding: 8,
+    fontSize: 17,
+  },
+
+  //olho da senha
+  icon: {
+    width: "15%",
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
+    //backgroundColor: "red",
+  },
+
+  inputContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    alignItems: "center",
+
     //backgroundColor: "green",
   },
 

@@ -51,7 +51,11 @@ export default function App() {
             style={styles.icon}
             onPress={() => setHidePass(!hidePass)} //quando clica muda o status de visualização
           >
-            <Ionicons name="eye" color="#0F2355" size={25} />
+            <Ionicons
+              name={hidePass ? "eye" : "eye-off"}
+              color="#0F2355"
+              size={25}
+            />
           </TouchableOpacity>
         </View>
 

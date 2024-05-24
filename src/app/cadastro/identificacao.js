@@ -9,44 +9,53 @@ import {
   StyleSheet,
 } from "react-native";
 import { Appbar } from "react-native-paper";
-import { AntDesign } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 
 export default function App() {
   return (
-    <View>
-      <View style={styles.titulo}>
-        <TouchableOpacity style={styles.seta}>
+    <>
+      {/* header com o título da página */}
+      <Appbar.Header statusBarHeight={0} style={styles.header}>
+        <TouchableOpacity>
           <Link href={"../login"}>
-            <AntDesign name="left" color="#0F235" size={22} />
+            <MaterialIcons name="chevron-left" color="#FFF" size={35} />
           </Link>
         </TouchableOpacity>
+        <Appbar.Content title="Cadastro" color="#fff" />
+      </Appbar.Header>
 
-        <Text style={styles.texto}>Cadastro </Text>
+      <View>
+        <View style={styles.euSou}>
+          <Text style={styles.texto}>Eu sou:</Text>
+        </View>
+
+        <View style={styles.container}>
+          <Link href={"./instituicao"} asChild>
+            <TouchableOpacity style={styles.btnInstituicao}>
+              <Text style={styles.submitText}>Instituição </Text>
+            </TouchableOpacity>
+          </Link>
+
+          <Link href={"./usuario"} asChild>
+            <TouchableOpacity style={styles.btnPessoa}>
+              <Text style={styles.submitText}>Pessoa</Text>
+            </TouchableOpacity>
+          </Link>
+        </View>
       </View>
-
-      <View style={styles.euSou}>
-        <Text style={styles.texto}>Eu sou:</Text>
-      </View>
-
-      <View style={styles.container}>
-        <Link href={"./instituicao"} asChild>
-          <TouchableOpacity style={styles.btnInstituicao}>
-            <Text style={styles.submitText}>Instituição </Text>
-          </TouchableOpacity>
-        </Link>
-
-        <Link href={"./usuario"} asChild>
-          <TouchableOpacity style={styles.btnPessoa}>
-            <Text style={styles.submitText}>Pessoa</Text>
-          </TouchableOpacity>
-        </Link>
-      </View>
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  // header da tela
+  header: {
+    backgroundColor: "#0F2355",
+    // flexDirection: 'row',
+    justifyContent: "left",
+  },
+
   //seta de retorno a tela de login
   seta: {
     width: "40%",
