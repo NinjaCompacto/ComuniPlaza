@@ -26,13 +26,13 @@ export default function instituicao() {
             <MaterialIcons name="chevron-left" color="#FFF" size={35} />
           </Link>
         </TouchableOpacity>
-        <Appbar.Content title="Cadastro Instituição" color="#fff" />
+        <Appbar.Content title="Cadastro de Instituição" color="#fff" />
       </Appbar.Header>
 
       {/* inputs do cadastro */}
       <View style={styles.inputContainer}>
-        <View>
-          <Text style={styles.inputTitle}>Informe os seus dados</Text>
+        <View style={styles.inputTitleContainer}>
+          <Text style={styles.inputTitleText}>Informe os dados solicitados</Text>
         </View>
 
         <View style={styles.inputStyle}>
@@ -233,7 +233,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignItems: "center",
-
     //backgroundColor: "green",
   },
 
@@ -242,9 +241,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
 
-  inputTitle: {
+  inputTitleContainer: {
+    width: "90%"
+  },
+
+  inputTitleText: {
     color: "#0F2355",
-    fontSize: 20,
+    fontSize: 15,
+    fontWeight: "bold",
+    marginBottom: 8
   },
 
   inputStyle: {

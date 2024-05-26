@@ -8,7 +8,7 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 
 export default function login() {
@@ -25,18 +25,39 @@ export default function login() {
       </View>
 
       <View style={styles.container}>
+        <View style={styles.topLoginTextContainer}>
+          <Text style={styles.topLoginText}>Olá,</Text>
+          <Text style={styles.topLoginText}>Acesse sua conta</Text>
+        </View>
+
+       <View style={styles.input}>
+        <MaterialIcons
+            name="email"
+            size={24}
+            color="#0F2355"
+            style={styles.leftIconInput}
+          />
+
+
         <TextInput
-          style={styles.input}
-          placeholder="Email"
-          inputMode="email"
-          autoCorrect={false}
-          onChangeText={() => {}}
-          cursorColor={"#0F2355"}
-          selectionHandleColor={"#0F2355"}
-          selectionColor={"#BCBCBC"}
-        />
+            placeholder="Email"
+            inputMode="email"
+            autoCorrect={false}
+            onChangeText={() => {}}
+            cursorColor={"#0F2355"}
+            selectionHandleColor={"#0F2355"}
+            selectionColor={"#BCBCBC"}
+          />
+       </View>
 
         <View style={styles.passArea}>
+          <MaterialIcons
+            name="lock"
+            size={24}
+            color="#0F2355"
+            style={styles.leftIconInput}
+          />
+
           <TextInput
             style={styles.pass}
             placeholder="Senha"
@@ -48,13 +69,14 @@ export default function login() {
             selectionColor={"#BCBCBC"}
           />
           <TouchableOpacity
-            style={styles.icon}
+            
             onPress={() => setHidePass(!hidePass)} //quando clica muda o status de visualização
           >
             <Ionicons
+              style={styles.icon}
               name={hidePass ? "eye" : "eye-off"}
               color="#0F2355"
-              size={25}
+              size={24}
             />
           </TouchableOpacity>
         </View>
@@ -84,6 +106,7 @@ const styles = StyleSheet.create({
     borderColor: "#0F2355",
     borderWidth: 1,
     borderStyle: "solid",
+    padding: 10
     //backgroundColor: "blue",
   },
   //texto da senha
@@ -91,15 +114,12 @@ const styles = StyleSheet.create({
     width: "85%",
     height: 50,
     color: "#0F2355",
-    padding: 8,
-    fontSize: 17,
+    //padding: 8,
+    //fontSize: 17,
   },
   //olho da senha
   icon: {
-    width: "15%",
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
+    marginLeft: -15
   },
   background: {
     flex: 1,
@@ -125,6 +145,8 @@ const styles = StyleSheet.create({
     resizeMode: "stretch",
   },
   input: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: "#FFF",
     width: "90%",
     marginBottom: 15,
@@ -154,6 +176,21 @@ const styles = StyleSheet.create({
   },
   registerText: {
     color: "#0F2355",
+    fontWeight: 'bold'
     //color: "#0F2355"(claro) "080F20"(escuro),
   },
+
+  topLoginTextContainer: {
+    width: '90%',
+    marginBottom: 8
+  },
+
+  topLoginText: {
+    fontWeight: 'bold',
+    color: "#0F2355"
+  },
+
+  leftIconInput: {
+    marginRight: 5
+  }
 });

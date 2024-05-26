@@ -22,10 +22,11 @@ export default function identificacao() {
             <MaterialIcons name="chevron-left" color="#FFF" size={35} />
           </Link>
         </TouchableOpacity>
-        <Appbar.Content title="Cadastro" color="#fff" />
+
+        <Appbar.Content title="Cadastro" color="#FFF"/>
+
       </Appbar.Header>
 
-      <View>
         <View style={styles.euSou}>
           <Text style={styles.texto}>Eu sou:</Text>
         </View>
@@ -33,27 +34,26 @@ export default function identificacao() {
         <View style={styles.container}>
           <Link href={"./instituicao"} asChild>
             <TouchableOpacity style={styles.btnInstituicao}>
-              <Text style={styles.submitText}>Instituição </Text>
+              <Text style={styles.instSubmitText}>Instituição </Text>
             </TouchableOpacity>
           </Link>
 
           <Link href={"./usuario"} asChild>
             <TouchableOpacity style={styles.btnPessoa}>
-              <Text style={styles.submitText}>Pessoa</Text>
+              <Text style={styles.userSubmitText}>Pessoa</Text>
             </TouchableOpacity>
           </Link>
         </View>
-      </View>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  // header da tela
+    // header da tela
   header: {
     backgroundColor: "#0F2355",
     // flexDirection: 'row',
-    justifyContent: "left",
+    //justifyContent: "left",
   },
 
   //seta de retorno a tela de login
@@ -86,37 +86,47 @@ const styles = StyleSheet.create({
 
   //texto presente na página
   euSou: {
+    marginTop: 150,
+    marginBottom: 15,
     flex: 0,
-    //alignItems: "stretch",
-    height: "60%",
-    //width: "90%",
     borderLeftWidth: 22,
     borderLeftColor: "#FFF",
-    justifyContent: "space-around",
-    //backgroundColor: "red",
   },
   texto: {
     fontSize: 23,
+    color: "#0F2355",
+    fontWeight: 'bold'
   },
   //container dos botões
   container: {
     flex: 0,
-    alignItems: "center",
-    //alignContent: "center",
-    justifyContent: "center",
-    //backgroundColor: "blue",
+    // justifyContent: "center",
+    alignItems: "center"
   },
   btnInstituicao: {
-    backgroundColor: "#0F2355",
+    //backgroundColor: "#0F2355",
+    backgroundColor: "#FFF",
+    borderColor: "#0F2355",
+    color: "#0F2355",
     width: "90%",
     height: 45,
     alignItems: "center",
     alignContent: "center",
     justifyContent: "center",
     borderRadius: 10,
+    borderWidth: 2,
     marginTop: 15,
   },
-  submitText: {
+  instSubmitText: {
+    color: "#0F2355",
+    fontSize: 18,
+    alignContent: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    //backgroundColor: "pink",
+  },
+
+  userSubmitText: {
     color: "#FFF",
     fontSize: 18,
     alignContent: "center",
@@ -124,6 +134,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     //backgroundColor: "pink",
   },
+
   btnPessoa: {
     backgroundColor: "#0F2355",
     width: "90%",
