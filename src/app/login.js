@@ -9,11 +9,44 @@ import {
   StyleSheet,
 } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+
+// firebase imports
+import { auth } from "../configs/firebaseConfigs" 
+import { signInWithEmailAndPassword } from "firebase/auth"
 
 export default function login() {
-  const [input, setInput] = useState("");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
   const [hidePass, setHidePass] = useState(true);
+
+  const validacaoCampos = (email, senha) => {
+
+  }
+
+  const handleLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, senha);
+      const user = userCredential.user;
+      Alert.alert("Sucesso", "Login realizado com sucesso!");
+      router.navigate("/index");
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(errorMessage);
+
+      // Tratamento de erros pelo Firebase
+      if (errorCode === 'auth/wrong-password') {
+        Alert.alert("Erro", "Email ou Senha invalidos.");
+      } else if (errorCode === 'auth/user-not-found') {
+        Alert.alert("Erro", "Usuário não encontrado.");
+      } else if (errorCode === 'auth/invalid-email') {
+        Alert.alert("Erro", "Email ou Senha invalidos.");
+      } else {
+        Alert.alert("Erro", "Erro ao fazer login.");
+      }
+    }
+  };
 
   return (
     <KeyboardAvoidingView style={styles.background}>
@@ -30,7 +63,7 @@ export default function login() {
           <Text style={styles.topLoginText}>Acesse sua conta</Text>
         </View>
 
-        <View style={styles.input}>
+        <View style={styles.senha}>
           <MaterialIcons
             name="email"
             size={24}
@@ -42,10 +75,10 @@ export default function login() {
             placeholder="Email"
             inputMode="email"
             autoCorrect={false}
-            onChangeText={() => {}}
             cursorColor={"#0F2355"}
             selectionHandleColor={"#0F2355"}
             selectionColor={"#BCBCBC"}
+            onChangeText={(texto) => setEmail(texto)}
           />
         </View>
 
@@ -60,12 +93,12 @@ export default function login() {
           <TextInput
             style={styles.pass}
             placeholder="Senha"
-            value={input}
-            onChangeText={(texto) => setInput(texto)}
+            value={senha}
             secureTextEntry={hidePass} //aplica a mascara da senha
             cursorColor={"#0F2355"}
             selectionHandleColor={"#0F2355"}
             selectionColor={"#BCBCBC"}
+            onChangeText={(texto) => setSenha(texto)}
           />
           <TouchableOpacity
             onPress={() => setHidePass(!hidePass)} //quando clica muda o status de visualização
@@ -79,7 +112,7 @@ export default function login() {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.btnSubmit}>
+        <TouchableOpacity style={styles.btnSubmit} onPress={handleLogin}>
           <Text style={styles.submitText}>Acessar</Text>
         </TouchableOpacity>
 
@@ -142,7 +175,7 @@ const styles = StyleSheet.create({
     height: 230,
     resizeMode: "stretch",
   },
-  input: {
+  senha: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#FFF",

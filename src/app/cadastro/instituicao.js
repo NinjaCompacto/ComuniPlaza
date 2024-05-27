@@ -65,8 +65,9 @@ export default function instituicao() {
     return true
   }
 
-   // Função para verificar se o nome de usuário já está em uso
-   const isCNPJDisponivel = async (CNPJ) => {
+  // Função para verificar se o nome de usuário já está em uso
+  // retorno 1 (CNPJ invalido) , retorno false (CNPJ já em uso), retorno true (tudo certo !)
+  const isCNPJDisponivel = async (CNPJ) => {
 
     if ( isCNPJValid(CNPJ) ){
       try {
@@ -77,11 +78,11 @@ export default function instituicao() {
         const querySnapshot = await getDocs(q);
         return querySnapshot.empty; // Retorna true se não houver documentos correspondentes (nome de usuário disponível)
       } catch (error) {
-        console.error('Erro ao verificar nome de usuário: ', error);
+        console.error('Erro ao verificar CNPJ de usuário: ', error);
         return false;
       }
     }
-    else{return false}
+    else{return 1}
     
   };
   // Função de validação do nome de usuário
@@ -125,10 +126,14 @@ export default function instituicao() {
               }
               else{
                 const CNPJValido = await isCNPJValido(CNPJ);
-                if(!CNPJValido){
-                  Alert.alert("Erro", "O CNPJ da Instituição já está em uso.")
+                if(CNPJValido === 1){
+                  Alert.alert("Erro", "CNPJ invalido.")
                   return false;
-                }else{
+                }
+                else if (!CNPJValido ){
+                  Alert.alert("Erro", " O CNPJ já estar em uso.")
+                }
+                else{
                   return true;
                 }
               }
