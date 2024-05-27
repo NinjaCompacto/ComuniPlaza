@@ -127,14 +127,16 @@ export default function usuario() {
   }
 
   // Função para adicionar os detalhes do usuário no Firestore
-  const adicionarDetalhesUsuario = async (uid, nomeCompleto, nomeUsuario, dataNascimento) => {
+  const adicionarDetalhesUsuario = async (uid, email ,nomeCompleto, nomeUsuario, dataNascimento) => {
     try {
       // Adiciona um novo documento na coleção 'usuarios' com os detalhes do usuário
       const docRef = await addDoc(collection(db, 'usuarios'), {
         uid: uid,
+        email: email,
         nomeCompleto: nomeCompleto,
         nomeUsuario: nomeUsuario,
         dataNascimento: dataNascimento,
+        tipoUsuario: "Pessoa",
         // Você pode adicionar outros campos conforme necessário
       });
       console.log('Documento adicionado com ID: ', docRef.id);
@@ -160,9 +162,9 @@ export default function usuario() {
        .then((userCredential) => {
         // Signed up 
         const user = userCredential.user;
-        adicionarDetalhesUsuario(user.uid, nomeCompleto, nomeUsuario, dataNascimento);
+        adicionarDetalhesUsuario(user.uid, email ,nomeCompleto, nomeUsuario, dataNascimento);
         Alert.alert("Sucesso", "Sucesso ao cadastrar usuario");
-        router.replace("./../login"); // volta para tela de login
+        router.navigate("./../login"); // volta para tela de login
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -183,10 +185,6 @@ export default function usuario() {
 
       });
     }
-    
-    
-
-
   }
 
   return (
