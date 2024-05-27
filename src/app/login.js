@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Link, router } from "expo-router";
@@ -20,30 +21,47 @@ export default function login() {
   const [senha, setSenha] = useState("");
   const [hidePass, setHidePass] = useState(true);
 
-  const validacaoCampos = (email, senha) => {
+  // validação de email
+  const isEmailValid = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const validacaoCampos = async (email, senha) => {
+    if (email == "" || senha == "") {
+      Alert.alert("Erro", "Preencha os campos.");
+      return false;
+    }else{
+      if(!isEmailValid(email)){
+        Alert.alert("Erro", "Digite um email Valido.");
+        return false;
+      }else{
+        return true;
+      }
+    }
 
   }
 
   const handleLogin = async () => {
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, senha);
-      const user = userCredential.user;
-      Alert.alert("Sucesso", "Login realizado com sucesso!");
-      router.navigate("/index");
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error(errorMessage);
 
-      // Tratamento de erros pelo Firebase
-      if (errorCode === 'auth/wrong-password') {
-        Alert.alert("Erro", "Email ou Senha invalidos.");
-      } else if (errorCode === 'auth/user-not-found') {
-        Alert.alert("Erro", "Usuário não encontrado.");
-      } else if (errorCode === 'auth/invalid-email') {
-        Alert.alert("Erro", "Email ou Senha invalidos.");
-      } else {
-        Alert.alert("Erro", "Erro ao fazer login.");
+    validacaoinfos = await validacaoCampos(email, senha);
+
+    if (validacaoinfos){
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, senha);
+        const user = userCredential.user;
+        Alert.alert("Sucesso", "Login realizado com sucesso!");
+        router.navigate("./feed")
+      } catch (error) {
+        const errorCode = error.code;
+        // Tratamento de erros pelo Firebase
+        if (errorCode === 'auth/invalid-credential') {
+          Alert.alert("Erro", "Email ou Senha invalidos.");
+        } else if (errorCode === 'auth/user-not-found') {
+          Alert.alert("Erro", "Usuário não encontrado.");
+        }else {
+          Alert.alert("Erro", "Erro ao fazer login.");
+        }
       }
     }
   };
