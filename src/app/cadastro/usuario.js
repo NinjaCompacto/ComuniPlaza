@@ -6,19 +6,21 @@ import {
   StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Alert
+  Alert,
 } from "react-native";
 import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
 import { Appbar } from "react-native-paper";
 import { Link, router } from "expo-router";
 
 // firebase imports
-import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail} from 'firebase/auth'
-import {collection , addDoc, getDocs, where, query } from 'firebase/firestore';
-import { auth, db } from './../../configs/firebaseConfigs'
+import {
+  createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
+} from "firebase/auth";
+import { collection, addDoc, getDocs, where, query } from "firebase/firestore";
+import { auth, db } from "./../../configs/firebaseConfigs";
 
 export default function usuario() {
-
   //dados para cadastro
   const [nomeCompleto, setNomeCompleto] = useState("");
   const [nomeUsuario, setNomeUsuario] = useState("");
@@ -27,7 +29,7 @@ export default function usuario() {
   const [dataNascimento, setDataNascimento] = useState("");
   const [email, setEmail] = useState("");
 
-  //Visibilite da senha
+  //Visibilidade da senha
   const [hidePass, setHidePass] = useState(true);
   const [hideConfirmPass, setHideConfirmPass] = useState(true);
 
@@ -35,16 +37,16 @@ export default function usuario() {
   const isPasswordValid = (password) => {
     const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
     return re.test(password);
-  }
+  };
   // validação do nome completo
   const isNomeCompletoValid = (nomeCompleto) => {
     const re = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
     return re.test(nomeCompleto);
-  }
+  };
   // validação da confirmação de senha
   const isConfirmPassword = (confirmPassword) => {
     return password === confirmPassword;
-  }
+  };
   // validação de email
   const isEmailValid = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -54,68 +56,91 @@ export default function usuario() {
   const isDateValid = (date) => {
     const re = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d\d$/;
     if (!re.test(date)) return false;
-    const [day, month, year] = date.split('/').map(Number);
+    const [day, month, year] = date.split("/").map(Number);
     const dateObj = new Date(year, month - 1, day);
-    return dateObj.getFullYear() === year && dateObj.getMonth() === month - 1 && dateObj.getDate() === day;
+    return (
+      dateObj.getFullYear() === year &&
+      dateObj.getMonth() === month - 1 &&
+      dateObj.getDate() === day
+    );
   };
 
-   // Função para verificar se o nome de usuário já está em uso
-   const isNomeUsuarioDisponivel = async (nomeUsuario) => {
+  // Função para verificar se o nome de usuário já está em uso
+  const isNomeUsuarioDisponivel = async (nomeUsuario) => {
     try {
-      const q = query(collection(db, 'usuarios'), where('nomeUsuario', '==', nomeUsuario));
+      const q = query(
+        collection(db, "usuarios"),
+        where("nomeUsuario", "==", nomeUsuario)
+      );
       const querySnapshot = await getDocs(q);
       return querySnapshot.empty; // Retorna true se não houver documentos correspondentes (nome de usuário disponível)
     } catch (error) {
-      console.error('Erro ao verificar nome de usuário: ', error);
+      console.error("Erro ao verificar nome de usuário: ", error);
       return false;
     }
   };
   // Função de validação do nome de usuário
   const isNomeUsuarioValido = async (nomeUsuario) => {
     // Verifica se o nome de usuário está vazio
-    if (nomeUsuario.trim() === '') {
+    if (nomeUsuario.trim() === "") {
       return false;
     }
-    
+
     // Verifica se o nome de usuário já está em uso
     const disponivel = await isNomeUsuarioDisponivel(nomeUsuario);
     return disponivel;
   };
 
   // validação de infromações para cadastro
-  const validacaoInfos = async  (nomeCompleto, nomeUsuario, password,confirmPassword, dataNascimento,email) => {
-    if (nomeCompleto === "" || nomeUsuario === "" || password === "" || confirmPassword === "" || dataNascimento === "" ||
-     email === "") {
+  const validacaoInfos = async (
+    nomeCompleto,
+    nomeUsuario,
+    password,
+    confirmPassword,
+    dataNascimento,
+    email
+  ) => {
+    if (
+      nomeCompleto === "" ||
+      nomeUsuario === "" ||
+      password === "" ||
+      confirmPassword === "" ||
+      dataNascimento === "" ||
+      email === ""
+    ) {
       Alert.alert("Erro", "Preencha todos os campos!");
       return false;
-    }else {
-      if(!isNomeCompletoValid(nomeCompleto)){
-        Alert.alert("Erro", "O campo nome deve conter apenas letras.")
+    } else {
+      if (!isNomeCompletoValid(nomeCompleto)) {
+        Alert.alert("Erro", "O campo nome deve conter apenas letras.");
         return false;
-      }else{
-        if(!isPasswordValid(password)){
-          Alert.alert("Erro", "Sua senha deve ter no mínimo 6 caracteres, conter pelo menos um número e pelo menos um caractere especial.")
+      } else {
+        if (!isPasswordValid(password)) {
+          Alert.alert(
+            "Erro",
+            "Sua senha deve ter no mínimo 6 caracteres, conter pelo menos um número e pelo menos um caractere especial."
+          );
           return false;
-        }else{
-          if(!isConfirmPassword(confirmPassword)){
-            Alert.alert("Erro", "As senhas não coincidem.")
+        } else {
+          if (!isConfirmPassword(confirmPassword)) {
+            Alert.alert("Erro", "As senhas não coincidem.");
             return false;
-          }else{
-            if (!isDateValid(dataNascimento)){
-              Alert.alert("Erro", "Data inválida.")
+          } else {
+            if (!isDateValid(dataNascimento)) {
+              Alert.alert("Erro", "Data inválida.");
               return false;
-            }
-            else{
-              if(!isEmailValid(email)){
-                Alert.alert("Erro", "Email inválido.")
+            } else {
+              if (!isEmailValid(email)) {
+                Alert.alert("Erro", "Email inválido.");
                 return false;
-              }
-              else{
-                const nomeUsuarioValido = await isNomeUsuarioValido(nomeUsuario);
-                if(!nomeUsuarioValido){
-                  Alert.alert("Erro", "O nome de usuário já está em uso.")
+              } else {
+                const nomeUsuarioValido = await isNomeUsuarioValido(
+                  nomeUsuario
+                );
+                if (!nomeUsuarioValido) {
+                  Alert.alert("Erro", "O nome de usuário já está em uso.");
                   return false;
-                }else{
+                } else {
                   return true;
                 }
               }
@@ -124,13 +149,18 @@ export default function usuario() {
         }
       }
     }
-  }
+  };
 
   // Função para adicionar os detalhes do usuário no Firestore
-  const adicionarDetalhesUsuario = async (uid, email ,nomeCompleto, nomeUsuario, dataNascimento) => {
+  const adicionarDetalhesUsuario = async (
+    uid,
+    nomeCompleto,
+    nomeUsuario,
+    dataNascimento
+  ) => {
     try {
       // Adiciona um novo documento na coleção 'usuarios' com os detalhes do usuário
-      const docRef = await addDoc(collection(db, 'usuarios'), {
+      const docRef = await addDoc(collection(db, "usuarios"), {
         uid: uid,
         email: email,
         nomeCompleto: nomeCompleto,
@@ -139,15 +169,14 @@ export default function usuario() {
         tipoUsuario: "Pessoa",
         // Você pode adicionar outros campos conforme necessário
       });
-      console.log('Documento adicionado com ID: ', docRef.id);
+      console.log("Documento adicionado com ID: ", docRef.id);
     } catch (error) {
-      console.error('Erro ao adicionar documento: ', error);
+      console.error("Erro ao adicionar documento: ", error);
     }
   };
 
   //Cadastro de usuario
   const handleCadastro = async () => {
-    
     const isValid = await validacaoInfos(
       nomeCompleto,
       nomeUsuario,
@@ -162,7 +191,7 @@ export default function usuario() {
        .then((userCredential) => {
         // Signed up 
         const user = userCredential.user;
-        adicionarDetalhesUsuario(user.uid, email ,nomeCompleto, nomeUsuario, dataNascimento);
+        adicionarDetalhesUsuario(user.uid, nomeCompleto, nomeUsuario, dataNascimento);
         Alert.alert("Sucesso", "Sucesso ao cadastrar usuario");
         router.navigate("./../login"); // volta para tela de login
       })
@@ -185,8 +214,9 @@ export default function usuario() {
 
       });
     }
-  }
+  };
 
+  //FRONT
   return (
     <>
       {/* header com o título da página */}
@@ -240,7 +270,7 @@ export default function usuario() {
             width="100%"
             selectionHandleColor={"#0F2355"}
             selectionColor={"#BCBCBC"}
-            onChangeText= {(texto) => setNomeUsuario(texto)}
+            onChangeText={(texto) => setNomeUsuario(texto)}
           ></TextInput>
         </View>
 
@@ -344,11 +374,11 @@ export default function usuario() {
             onChangeText={(texto) => setEmail(texto)}
           ></TextInput>
         </View>
-          <TouchableOpacity style={styles.btnCadastro} onPress={handleCadastro}>
-            <View style={styles.btnSubmit}>
-              <Text style={styles.submitText}>Cadastrar</Text>
-            </View>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.btnCadastro} onPress={handleCadastro}>
+          <View style={styles.btnSubmit}>
+            <Text style={styles.submitText}>Cadastrar</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </>
   );
