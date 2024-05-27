@@ -30,16 +30,15 @@ export default function login() {
           <Text style={styles.topLoginText}>Acesse sua conta</Text>
         </View>
 
-       <View style={styles.input}>
-        <MaterialIcons
+        <View style={styles.input}>
+          <MaterialIcons
             name="email"
             size={24}
             color="#0F2355"
             style={styles.leftIconInput}
           />
 
-
-        <TextInput
+          <TextInput
             placeholder="Email"
             inputMode="email"
             autoCorrect={false}
@@ -48,7 +47,7 @@ export default function login() {
             selectionHandleColor={"#0F2355"}
             selectionColor={"#BCBCBC"}
           />
-       </View>
+        </View>
 
         <View style={styles.passArea}>
           <MaterialIcons
@@ -69,7 +68,6 @@ export default function login() {
             selectionColor={"#BCBCBC"}
           />
           <TouchableOpacity
-            
             onPress={() => setHidePass(!hidePass)} //quando clica muda o status de visualização
           >
             <Ionicons
@@ -106,7 +104,7 @@ const styles = StyleSheet.create({
     borderColor: "#0F2355",
     borderWidth: 1,
     borderStyle: "solid",
-    padding: 10
+    padding: 10,
     //backgroundColor: "blue",
   },
   //texto da senha
@@ -119,7 +117,7 @@ const styles = StyleSheet.create({
   },
   //olho da senha
   icon: {
-    marginLeft: -15
+    marginLeft: -15,
   },
   background: {
     flex: 1,
@@ -145,8 +143,8 @@ const styles = StyleSheet.create({
     resizeMode: "stretch",
   },
   input: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#FFF",
     width: "90%",
     marginBottom: 15,
@@ -176,21 +174,21 @@ const styles = StyleSheet.create({
   },
   registerText: {
     color: "#0F2355",
-    fontWeight: 'bold'
+    fontWeight: "bold",
     //color: "#0F2355"(claro) "080F20"(escuro),
   },
 
   topLoginTextContainer: {
-    width: '90%',
-    marginBottom: 8
+    width: "90%",
+    marginBottom: 8,
   },
 
   topLoginText: {
-    fontWeight: 'bold',
-    color: "#0F2355"
+    fontWeight: "bold",
+    color: "#0F2355",
   },
 
   leftIconInput: {
-    marginRight: 5
-  }
+    marginRight: 5,
+  },
 });
