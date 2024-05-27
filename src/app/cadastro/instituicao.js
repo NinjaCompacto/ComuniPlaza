@@ -40,6 +40,38 @@ export default function instituicao() {
     const re = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
     return re.test(nomeCompleto);
   }
+
+  // Função para verificar se o nome de usuário já está em uso
+  // retorno 1 (nome invalido) , retorno false (nome já em uso), retorno true (tudo certo !)
+  const isNomeCompletoDisponivel = async (nomeCompleto) => {
+    if ( isNomeCompletoValid(nomeCompleto) ){
+      try {
+        const q = query(collection(db, 'usuarios'), 
+        where('nomeCompleto', '==', nomeCompleto),
+        where('tipoUsuario', '==' , "Instituição"));
+
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.empty; // Retorna true se não houver documentos correspondentes (nome de usuário disponível)
+      } catch (error) {
+        console.error('Erro ao verificar nome de intituição: ', error);
+        return false;
+      }
+    }
+    else{return 1}
+    
+  };
+
+  // Função de validação do nome de usuário e a disponibilidade
+  const isNomeCompletoValido = async (nomeCompleto) => {
+    // Verifica se o nome de usuário está vazio
+    if (nomeCompleto.trim() === '') {
+      return false;
+    }
+    // Verifica se o nome de usuário já está em uso
+    const disponivel = await isNomeCompletoDisponivel(nomeCompleto);
+    return disponivel;
+  };
+
   // validação da confirmação de senha
   const isConfirmPassword = (confirmPassword) => {
     return password === confirmPassword;
@@ -65,7 +97,7 @@ export default function instituicao() {
     return true
   }
 
-  // Função para verificar se o nome de usuário já está em uso
+  // Função para verificar se o CNPJ de usuário já está em uso
   // retorno 1 (CNPJ invalido) , retorno false (CNPJ já em uso), retorno true (tudo certo !)
   const isCNPJDisponivel = async (CNPJ) => {
 
@@ -85,7 +117,7 @@ export default function instituicao() {
     else{return 1}
     
   };
-  // Função de validação do nome de usuário
+  // Função de validação do CNPJ de usuário
   const isCNPJValido = async (CNPJ) => {
     // Verifica se o nome de usuário está vazio
     if (CNPJ.trim() === '') {
@@ -103,9 +135,13 @@ export default function instituicao() {
       Alert.alert("Erro", "Preencha todos os campos!");
       return false;
     }else {
-      if(!isNomeCompletoValid(nomeCompleto)){
-        Alert.alert("Erro", "O campo nome deve conter apenas letras.")
+      const nomeValido = await isNomeCompletoValido(nomeCompleto);
+      if(nomeValido === 1){
+        Alert.alert("Erro", "Nome invalido.")
         return false;
+      }
+      else if (!nomeValido ){
+        Alert.alert("Erro", " O nome já estar em uso.")
       }else{
         if(!isPasswordValid(password)){
           Alert.alert("Erro", "Sua senha deve ter no mínimo 6 caracteres, conter pelo menos um número e pelo menos um caractere especial.")
@@ -132,6 +168,7 @@ export default function instituicao() {
                 }
                 else if (!CNPJValido ){
                   Alert.alert("Erro", " O CNPJ já estar em uso.")
+                  return false;
                 }
                 else{
                   return true;
