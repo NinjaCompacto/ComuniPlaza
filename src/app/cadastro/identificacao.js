@@ -52,36 +52,25 @@ const styles = StyleSheet.create({
     // header da tela
   header: {
     backgroundColor: "#0F2355",
-    // flexDirection: 'row',
-    //justifyContent: "left",
   },
 
   //seta de retorno a tela de login
   seta: {
     width: "40%",
     height: 50,
-    //alignContent: "left",
-    //alignItems: "left",
-    //justifyContent: "center",
     borderLeftWidth: 12,
     borderLeftColor: "#FFF",
     borderTopWidth: 12,
     borderTopColor: "#FFF",
-    //marginLeft: 10,
-    //backgroundColor: "green",
   },
 
   //Título da página
   titulo: {
-    //width: "90%",
     height: 50,
     flexDirection: "row",
     alignItems: "center",
     borderTopWidth: 10,
     borderTopColor: "#FFF",
-    //justifyContent: "left",
-    //alignContent: "center",
-    //backgroundColor: "yellow",
   },
 
   //texto presente na página
@@ -123,7 +112,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",
-    //backgroundColor: "pink",
   },
 
   userSubmitText: {
@@ -132,7 +120,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",
-    //backgroundColor: "pink",
   },
 
   btnPessoa: {
@@ -146,6 +133,5 @@ const styles = StyleSheet.create({
   },
   registerText: {
     color: "#0F2355",
-    //color: "#0F2355"(claro) "080F20"(escuro),
   },
 });

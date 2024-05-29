@@ -393,7 +393,6 @@ const styles = StyleSheet.create({
 
   header: {
     backgroundColor: "#0F2355",
-    // flexDirection: 'row',
     justifyContent: "left",
   },
 
@@ -408,7 +407,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "solid",
     margin: 5,
-    //backgroundColor: "blue",
   },
 
   //texto da senha
@@ -426,7 +424,6 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    //backgroundColor: "red",
   },
 
   inputContainer: {
@@ -466,7 +463,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",
-    //backgroundColor: "pink",
   },
 
   btnCadastro: {

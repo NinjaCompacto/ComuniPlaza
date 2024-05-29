@@ -156,15 +156,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "solid",
     padding: 10,
-    //backgroundColor: "blue",
   },
   //texto da senha
   pass: {
     width: "85%",
     height: 50,
     color: "#0F2355",
-    //padding: 8,
-    //fontSize: 17,
   },
   //olho da senha
   icon: {
@@ -178,7 +175,6 @@ const styles = StyleSheet.create({
   containerLogo: {
     flex: 1,
     justifyContent: "center",
-    //backgroundColor: "red",
   },
   container: {
     flex: 1,
@@ -186,7 +182,6 @@ const styles = StyleSheet.create({
     justifyContent: "top",
     width: "90%",
     height: 50,
-    //backgroundColor: "blue",
   },
   logo: {
     width: 230,
@@ -226,7 +221,6 @@ const styles = StyleSheet.create({
   registerText: {
     color: "#0F2355",
     fontWeight: "bold",
-    //color: "#0F2355"(claro) "080F20"(escuro),
   },
 
   topLoginTextContainer: {
