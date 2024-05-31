@@ -13,8 +13,8 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Link, router } from "expo-router";
 
 // firebase imports
-import { auth } from "../configs/firebaseConfigs" 
-import { signInWithEmailAndPassword } from "firebase/auth"
+import { auth } from "../configs/firebaseConfigs";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function login() {
   const [email, setEmail] = useState("");
@@ -31,35 +31,37 @@ export default function login() {
     if (email == "" || senha == "") {
       Alert.alert("Erro", "Preencha os campos.");
       return false;
-    }else{
-      if(!isEmailValid(email)){
+    } else {
+      if (!isEmailValid(email)) {
         Alert.alert("Erro", "Digite um email Valido.");
         return false;
-      }else{
+      } else {
         return true;
       }
     }
-
-  }
+  };
 
   const handleLogin = async () => {
-
     validacaoinfos = await validacaoCampos(email, senha);
 
-    if (validacaoinfos){
+    if (validacaoinfos) {
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, senha);
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          senha
+        );
         const user = userCredential.user;
         Alert.alert("Sucesso", "Login realizado com sucesso!");
-        router.navigate("./feed")
+        router.navigate("./feed");
       } catch (error) {
         const errorCode = error.code;
         // Tratamento de erros pelo Firebase
-        if (errorCode === 'auth/invalid-credential') {
+        if (errorCode === "auth/invalid-credential") {
           Alert.alert("Erro", "Email ou Senha invalidos.");
-        } else if (errorCode === 'auth/user-not-found') {
+        } else if (errorCode === "auth/user-not-found") {
           Alert.alert("Erro", "Usuário não encontrado.");
-        }else {
+        } else {
           Alert.alert("Erro", "Erro ao fazer login.");
         }
       }
@@ -92,6 +94,7 @@ export default function login() {
           <TextInput
             placeholder="Email"
             inputMode="email"
+            width="100%"
             autoCorrect={false}
             cursorColor={"#0F2355"}
             selectionHandleColor={"#0F2355"}
@@ -190,17 +193,17 @@ const styles = StyleSheet.create({
   },
   senha: {
     flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFF",
     width: "90%",
-    marginBottom: 15,
-    color: "#000",
-    fontSize: 17,
+    alignItems: "center",
     borderRadius: 10,
-    padding: 10,
     borderColor: "#0F2355",
     borderWidth: 1,
     borderStyle: "solid",
+    marginBottom: 15,
+    backgroundColor: "#FFF",
+    padding: 10,
+    fontSize: 17,
+    color: "#000",
   },
   btnSubmit: {
     backgroundColor: "#0F2355",
