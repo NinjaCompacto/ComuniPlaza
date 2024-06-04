@@ -11,19 +11,18 @@ import {
 } from "react-native";
 import { Link } from "expo-router";
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
-import DropDownPicker from 'react-native-dropdown-picker';
+import ImageSelector from './../../Helpers/ImageSelector'; // seletor de imagens
+import DropDownPickerAux from "./../../Helpers/DropDownPickerAux"; // lista suspensa
 
 export default function publicacao() {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    {label: 'Grupo 1', value: 1},
-    {label: 'Grupo 2', value: 2},
-    {label: 'Grupo 3', value: 3},
-    {label: 'Grupo 4', value: 4},
-    {label: 'Grupo 5', value: 5},
-    {label: 'Grupo 6', value: 6},
-  ]);
+
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageSelected = (uri) => {
+      setSelectedImage(uri);
+      console.log("URI:", uri)
+  };
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -32,12 +31,8 @@ export default function publicacao() {
         <Ionicons style={styles.backIcon} name="chevron-back-circle" size={45} color="#1E2E57"/>
       </View>
 
-      {/* Icone de add imagem */}
-      <View style={styles.imageContainer}>
-        <TouchableOpacity>
-          <MaterialIcons name="add-photo-alternate" size={225} color="#1E2E57"/>
-        </TouchableOpacity>
-      </View>
+      {/* Componente ImageSelector, para alterações: /helpers/ImageSelector */}
+      <ImageSelector onImageSelected={handleImageSelected}/>
 
       {/* inputs de dados do evento */}
       <View style={styles.inputContainer}>
@@ -80,27 +75,7 @@ export default function publicacao() {
 
         <View style={styles.inputStyle}>
           <Text style={styles.inputTitle}>Grupos beneficiados</Text>
-
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={items}
-            multiple={true}
-            maxHeight={200}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            mode="BADGE"
-            placeholder="Nenhum"
-            dropDownDirection="TOP"
-            style={styles.selectInputStyle}
-            listItemContainerStyle={{backgroundColor: "#1E2E57"}}
-            listItemLabelStyle={{color:"#FFF"}}
-            placeholderStyle={{color: '#FFF'}}
-            ArrowDownIconComponent={({style}) => <MaterialIcons name="keyboard-arrow-down" size={24} color="#FFF"/>}
-            ArrowUpIconComponent={({style}) => <MaterialIcons name="keyboard-arrow-up" size={24} color="#FFF" />}
-            TickIconComponent={({style}) => <MaterialIcons name="check" size={24} color="#FFF" />}
-          /> 
+          <DropDownPickerAux/>
         </View>
 
         <TouchableOpacity style={styles.submitBtn}>
