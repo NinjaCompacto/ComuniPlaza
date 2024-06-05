@@ -3,7 +3,7 @@ import { View, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const ImageSelector = () => {
+const ImageSelector = ({ onImageSelected }) => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const pickImage = async () => {
@@ -16,6 +16,7 @@ const ImageSelector = () => {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      onImageSelected(result.assets[0].uri);
     }
   };
 
@@ -28,7 +29,7 @@ const ImageSelector = () => {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
-    }
+      onImageSelected(result.assets[0].uri);    }
   };
 
   const chooseImage = () => {

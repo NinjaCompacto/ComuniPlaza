@@ -1,34 +1,82 @@
-// tela principal do aplicativo
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { 
   StyleSheet, 
   Text, 
   View, 
-  TextInput,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import { Link } from "expo-router";
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import ImageSelector from './../../Helpers/ImageSelector'; // seletor de imagens
 import DropDownPickerAux from "./../../Helpers/DropDownPickerAux"; // lista suspensa
+import EventoTextInputs, { validarInputs } from './../../Helpers/EventosTextInput'; // importando o componente de text inputs e a função de validação
 
 export default function publicacao() {
 
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedGrupos, setSelectedGrupos] = useState([]);
+  const [nomeEvento, setNomeEvento] = useState('');
+  const [descricaoEvento, setDescricaoEvento] = useState('');
+  const [inicioEvento, setInicioEvento] = useState('');
+  const [finalEvento, setFinalEvento] = useState('');
 
+  // recupera a imagem selecionada.
   const handleImageSelected = (uri) => {
-      setSelectedImage(uri);
-      console.log("URI:", uri)
+    setSelectedImage(uri);
+    console.log("URI da imagem selecionada:", uri);
+  }
+
+  // recupera a lista com os grupos selecionados (indexs).
+  const handleGrupoSelected = (value) => {
+    setSelectedGrupos(value);
+    console.log("Grupos selecionados:", value);
+  }
+
+  // faz a validação da imagem selecionada dos grupos selecionados
+  const validacaoOfAll = () => {
+    if (!validarInputs(nomeEvento, descricaoEvento, inicioEvento, finalEvento)) {
+      return false;
+    }
+    else{
+      //validação da escolha dos grupos
+      if (selectedGrupos != null){
+        if (selectedGrupos.length == 0){
+          Alert.alert("Erro", "Selecione os grupos"); 
+          return false;
+        }
+        else{
+          if(selectedImage == null){
+            Alert.alert("Erro", "Selecione uma imagem"); 
+            return false;
+          }
+          else{
+            return true;
+          }
+        }
+      }else{
+        Alert.alert("Erro", "Selecione os grupos"); 
+        return false;
+      }
+    }
   };
-  
+
+  const compartilharEvento = () => {
+    //validação de inputs
+    if(validacaoOfAll()){
+      console.log("Sucesso");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Icone de retorno no topo da tela */}
       <View>
-        <Ionicons style={styles.backIcon} name="chevron-back-circle" size={45} color="#1E2E57"/>
+        <Link href={"./../feed"}>
+          <Ionicons style={styles.backIcon} name="chevron-back-circle" size={45} color="#1E2E57"/>
+        </Link>
       </View>
 
       {/* Componente ImageSelector, para alterações: /helpers/ImageSelector */}
@@ -36,52 +84,21 @@ export default function publicacao() {
 
       {/* inputs de dados do evento */}
       <View style={styles.inputContainer}>
-
-        <View style={styles.inputStyle}>
-          <Text style={styles.inputTitle}>Nome do Evento</Text>
-          <TextInput
-            placeholder="Adicione o nome do evento"
-          />
-        </View>
-
-        <View style={styles.line}></View>
-
-        <View style={styles.inputStyle}>
-          <Text style={styles.inputTitle}>Descrição</Text>
-          <TextInput
-            placeholder="Adicione a descrição do evento"
-          />
-        </View>
-
-        <View style={styles.line}></View>
-
-        <View style={styles.inputStyle}>
-          <Text style={styles.inputTitle}>Inicio do Evento</Text>
-          <TextInput
-            placeholder="Adicione a data inicio do evento"
-          />
-        </View>
-
-        <View style={styles.line}></View>
-
-        <View style={styles.inputStyle}>
-          <Text style={styles.inputTitle}>Final do Evento</Text>
-          <TextInput
-            placeholder="Adicione a data final do evento"
-          />
-        </View>
-
-        <View style={styles.line}></View>
+        <EventoTextInputs
+          onNomeChange={setNomeEvento}
+          onDescricaoChange={setDescricaoEvento}
+          onInicioChange={setInicioEvento}
+          onFinalChange={setFinalEvento}
+        />
 
         <View style={styles.inputStyle}>
           <Text style={styles.inputTitle}>Grupos beneficiados</Text>
-          <DropDownPickerAux/>
+          <DropDownPickerAux onGrupoSelected={handleGrupoSelected}/>
         </View>
 
-        <TouchableOpacity style={styles.submitBtn}>
+        <TouchableOpacity style={styles.submitBtn} onPress={compartilharEvento}>
           <Text style={styles.submitBtnText}>Compartilhar</Text>
         </TouchableOpacity>
-
       </View>
     </SafeAreaView>
   );

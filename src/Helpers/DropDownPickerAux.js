@@ -1,6 +1,6 @@
 // esse arquivo é responsavel por listar os grupos
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { 
   StyleSheet
 } from "react-native";
@@ -8,7 +8,7 @@ import { MaterialIcons} from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 
-const DropDownPickerAux = () => {
+const DropDownPickerAux = ({onGrupoSelected}) => {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
@@ -19,6 +19,13 @@ const DropDownPickerAux = () => {
     {label: 'Grupo 5', value: 5},
     {label: 'Grupo 6', value: 6},
   ]);
+
+  useEffect( () => {
+      if(onGrupoSelected){
+        onGrupoSelected(value);
+      }
+    }
+  );
 
   return (
     <DropDownPicker
@@ -32,7 +39,7 @@ const DropDownPickerAux = () => {
     setItems={setItems}
     mode="BADGE"
     placeholder="Nenhum"
-    dropDownDirection="TOP"
+    dropDownDirection="DOWN"
     style={styles.selectInputStyle}
     listItemContainerStyle={{backgroundColor: "#1E2E57"}}
     listItemLabelStyle={{color:"#FFF"}}
