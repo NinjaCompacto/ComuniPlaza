@@ -3,7 +3,16 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { Link } from "expo-router";
 
+import { auth } from "./../configs/firebaseConfigs";
+import { signOut } from "firebase/auth";
+
 export default function index() {
+
+  // usado para deslogar usuario
+  //signOut(auth).then(() => {
+    //console.log("Deslogado com sucesso");
+  //});
+
   return (
     <View style={styles.container}>
       <Text>Pagina Home</Text>

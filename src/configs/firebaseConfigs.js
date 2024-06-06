@@ -1,6 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { initializeAuth, getReactNativePersistence, onAuthStateChanged } from "firebase/auth";
+import { Link, router } from "expo-router";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Optionally import the services that you want to use
 // import {...} from "firebase/auth";
@@ -20,7 +22,19 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app)
-const auth = getAuth(app);
+// Inicializa o Auth com persistência de estado
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage)
+});
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const uid = user.uid;
+    console.log(uid);
+  } else {
+    //caso o usuario não esteja logado, ele direciona para tela de login.
+    router.navigate("./../login"); 
+  }
+});
 
 
 export { db, auth };
