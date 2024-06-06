@@ -22,7 +22,7 @@ const DropDownPickerAux = ({onGrupoSelected}) => {
 
   useEffect( () => {
       if(onGrupoSelected){
-        onGrupoSelected(value);
+        onGrupoSelected(value, items);
       }
     }
   );

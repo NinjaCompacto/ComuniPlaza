@@ -8,16 +8,26 @@ import {
   TouchableOpacity,
   Alert
 } from "react-native";
-import { Link } from "expo-router";
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { Link, router } from "expo-router";
+import { Ionicons } from '@expo/vector-icons';
+
 import ImageSelector from './../../Helpers/ImageSelector'; // seletor de imagens
 import DropDownPickerAux from "./../../Helpers/DropDownPickerAux"; // lista suspensa
 import EventoTextInputs, { validarInputs } from './../../Helpers/EventosTextInput'; // importando o componente de text inputs e a função de validação
+import { uploadImage } from "../../Helpers/ImageUploader"; // função que faz o upload da imagem para o firestore
+import { auth, db } from "../../configs/firebaseConfigs";
+import { collection, addDoc } from "firebase/firestore";
+
 
 export default function publicacao() {
+  // firebase
+  const uid = auth.currentUser.uid// id do usuairo logado no firebase
 
+  // inputs, imagem e grupos
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedGrupos, setSelectedGrupos] = useState([]);
+  const [listaGrupos, setListaGrupos] = useState([]);
+  const [listaGruposSelecionados, setListaGruposSelecionados] = useState([]);
   const [nomeEvento, setNomeEvento] = useState('');
   const [descricaoEvento, setDescricaoEvento] = useState('');
   const [inicioEvento, setInicioEvento] = useState('');
@@ -30,9 +40,9 @@ export default function publicacao() {
   }
 
   // recupera a lista com os grupos selecionados (indexs).
-  const handleGrupoSelected = (value) => {
+  const handleGrupoSelected = (value, listaGrupos) => {
     setSelectedGrupos(value);
-    console.log("Grupos selecionados:", value);
+    setListaGrupos(listaGrupos);
   }
 
   // faz a validação da imagem selecionada dos grupos selecionados
@@ -63,10 +73,40 @@ export default function publicacao() {
     }
   };
 
-  const compartilharEvento = () => {
+  const formataGruposSelecionados = () => {
+
+    const gruposSelecionados = [];
+    for (let i = 0; i < selectedGrupos.length; i++) {
+      gruposSelecionados.push(listaGrupos[selectedGrupos[i]-1].label);
+    }
+    return gruposSelecionados;
+
+  };
+
+  
+  const compartilharEvento = async () => {
     //validação de inputs
     if(validacaoOfAll()){
       console.log("Sucesso");
+      try {
+        const imageUrl = await uploadImage(selectedImage, `eventos/${Date.now()}_${uid}_${nomeEvento}.jpg`);
+        console.log("Imagem carregada com sucesso:", imageUrl);
+        // Adiciona um novo documento na coleção 'eventos' com os detalhes do evento
+        const docRef = await addDoc(collection(db, "eventos"), {
+          idEvento: `${uid}_${Date.now()}`,
+          nomeEvento: nomeEvento,
+          descricaoEvento: descricaoEvento,
+          inicioEvento: inicioEvento,
+          finalEvento: finalEvento,
+          imageUrl: imageUrl,
+          grupos: formataGruposSelecionados()
+        });
+        console.log("Documento adicionado com ID: ", docRef.id);
+        Alert.alert("Evento Compartilhado com Sucesso");
+        router.back();
+      } catch (error) {
+        console.error("Erro ao fazer upload da imagem:", error);
+      }
     }
   };
 
