@@ -39,7 +39,7 @@ const DropDownPickerAux = ({onGrupoSelected}) => {
     setItems={setItems}
     mode="BADGE"
     placeholder="Nenhum"
-    dropDownDirection="DOWN"
+    dropDownDirection="TOP"
     style={styles.selectInputStyle}
     listItemContainerStyle={{backgroundColor: "#1E2E57"}}
     listItemLabelStyle={{color:"#FFF"}}

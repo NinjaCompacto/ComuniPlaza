@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, KeyboardAvoidingView } from 'react-native';
 
 const EventoTextInputs = ({ 
   onNomeChange, 
@@ -8,7 +8,7 @@ const EventoTextInputs = ({
   onFinalChange 
 }) => {
   return (
-    <View>
+    <>
       <View style={styles.inputStyle}>
         <Text style={styles.inputTitle}>Nome do Evento</Text>
         <TextInput
@@ -46,7 +46,9 @@ const EventoTextInputs = ({
           onChangeText={onFinalChange}
         />
       </View>
-    </View>
+
+      <View style={styles.line}></View>
+    </>
   );
 };
 
@@ -131,7 +133,7 @@ export const validarInputs = (nome, descricao, inicio, final) => {
 const styles = StyleSheet.create({
   inputStyle: {
     width: '80%',
-    marginBottom: 10,
+    marginBottom: 2,
   },
   inputTitle: {
     fontWeight: 'bold',

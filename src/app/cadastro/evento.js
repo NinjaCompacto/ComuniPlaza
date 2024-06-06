@@ -6,7 +6,8 @@ import {
   View, 
   SafeAreaView,
   TouchableOpacity,
-  Alert
+  Alert,
+  KeyboardAvoidingView
 } from "react-native";
 import { Link } from "expo-router";
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
@@ -84,6 +85,7 @@ export default function publicacao() {
 
       {/* inputs de dados do evento */}
       <View style={styles.inputContainer}>
+        
         <EventoTextInputs
           onNomeChange={setNomeEvento}
           onDescricaoChange={setDescricaoEvento}
@@ -146,7 +148,7 @@ const styles = StyleSheet.create({
     width: '70%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 50
+    marginTop: 25
   },
 
   submitBtnText: {
