@@ -1,9 +1,33 @@
 // tela principal do aplicativo
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+
+import { auth } from "./../configs/firebaseConfigs";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react";
 
 export default function index() {
+
+  // usado para deslogar usuario
+  //signOut(auth).then(() => {
+    //console.log("Deslogado com sucesso");
+  //});
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        console.log(uid);
+      } else {
+        //caso o usuario não esteja logado, ele direciona para tela de login.
+        router.navigate("./../login"); 
+      }
+    });
+  });
+
+  
+
   return (
     <View style={styles.container}>
       <Text>Pagina Home</Text>
