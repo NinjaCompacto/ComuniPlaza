@@ -114,9 +114,9 @@ export default function publicacao() {
   return (
     <SafeAreaView style={styles.container}>
       {/* Icone de retorno no topo da tela */}
-      <View>
+        <View style={styles.backIcon}>
         <Link href={"./../feed"}>
-          <Ionicons style={styles.backIcon} name="chevron-back-circle" size={45} color="#1E2E57"/>
+          <Ionicons name="chevron-back-circle" size={45} color="#1E2E57"/>
         </Link>
       </View>
 
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
 
   backIcon: {
     marginLeft: 10,
-    marginTop: 8
+    marginTop: 10
   },
 
   imageContainer: {
