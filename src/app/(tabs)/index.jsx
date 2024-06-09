@@ -3,15 +3,17 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { Link, router } from "expo-router";
 
-import { auth } from "./../configs/firebaseConfigs";
+import { auth } from "../../configs/firebaseConfigs";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 
-export default function index() {
+import { Posts } from "../../components/Posts";
+import { POSTS } from "../../utils/posts";
 
+export default function index() {
   // usado para deslogar usuario
   //signOut(auth).then(() => {
-    //console.log("Deslogado com sucesso");
+  //console.log("Deslogado com sucesso");
   //});
 
   useEffect(() => {
@@ -21,19 +23,15 @@ export default function index() {
         console.log(uid);
       } else {
         //caso o usuario não esteja logado, ele direciona para tela de login.
-        router.navigate("./../login"); 
+        router.navigate("./../login");
       }
     });
   });
 
-  
-
   return (
     <View style={styles.container}>
-      <Text>Pagina Home</Text>
-      <Link href={"/login"}> IR para login do usuario</Link>
-      <Link href={"/cadastro/evento"}> IR para cadastro evento</Link>
-      <Link href={"/cadastro/publicacao"}> IR para cadastro publicacao</Link>
+      <Posts posts={POSTS} />
+
       <StatusBar style="auto" />
     </View>
   );
@@ -42,8 +40,8 @@ export default function index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    padding: 12,
+    paddingTop: 20,
   },
 });

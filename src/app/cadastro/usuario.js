@@ -18,7 +18,7 @@ import {
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import { collection, addDoc, getDocs, where, query } from "firebase/firestore";
-import { auth, db } from "./../../configs/firebaseConfigs";
+import { auth, db } from "../../configs/firebaseConfigs";
 
 export default function usuario() {
   //dados para cadastro
@@ -186,33 +186,40 @@ export default function usuario() {
       email
     );
 
-    if (isValid){
-      createUserWithEmailAndPassword(auth , email, password)
-       .then((userCredential) => {
-        // Signed up 
-        const user = userCredential.user;
-        adicionarDetalhesUsuario(user.uid, nomeCompleto, nomeUsuario, dataNascimento);
-        Alert.alert("Sucesso", "Sucesso ao cadastrar usuario");
-        router.navigate("./../login"); // volta para tela de login
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
-        
-        // tratamento de erros pelo firebase
-        if (errorCode === 'auth/email-already-in-use') {
-          Alert.alert("Erro", "Este email já está cadastrado.");
-        } else if (errorCode === 'auth/invalid-email') {
-          Alert.alert("Erro", "Email inválido.");
-        } else if (errorCode === 'auth/weak-password') {
-          Alert.alert("Erro", "Sua senha deve ter no mínimo 6 caracteres, conter pelo menos um número e pelo menos um caractere especial.");
-        } else {
-          Alert.alert("Erro", "Erro ao cadastrar usuario.");
-        }
-        console.log(error);
+    if (isValid) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          adicionarDetalhesUsuario(
+            user.uid,
+            nomeCompleto,
+            nomeUsuario,
+            dataNascimento
+          );
+          Alert.alert("Sucesso", "Sucesso ao cadastrar usuario");
+          router.navigate("./../login"); // volta para tela de login
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage);
 
-      });
+          // tratamento de erros pelo firebase
+          if (errorCode === "auth/email-already-in-use") {
+            Alert.alert("Erro", "Este email já está cadastrado.");
+          } else if (errorCode === "auth/invalid-email") {
+            Alert.alert("Erro", "Email inválido.");
+          } else if (errorCode === "auth/weak-password") {
+            Alert.alert(
+              "Erro",
+              "Sua senha deve ter no mínimo 6 caracteres, conter pelo menos um número e pelo menos um caractere especial."
+            );
+          } else {
+            Alert.alert("Erro", "Erro ao cadastrar usuario.");
+          }
+          console.log(error);
+        });
     }
   };
 
@@ -232,9 +239,10 @@ export default function usuario() {
       {/* inputs do cadastro */}
       <View style={styles.inputContainer}>
         <View style={styles.inputTitleContainer}>
-          <Text style={styles.inputTitleText}>Informe os dados solicitados</Text>
+          <Text style={styles.inputTitleText}>
+            Informe os dados solicitados
+          </Text>
         </View>
-
 
         <View style={styles.inputStyle}>
           <MaterialIcons
@@ -433,14 +441,14 @@ const styles = StyleSheet.create({
   },
 
   inputTitleContainer: {
-    width: "90%"
+    width: "90%",
   },
 
   inputTitleText: {
     color: "#0F2355",
     fontSize: 15,
     fontWeight: "bold",
-    marginBottom: 8
+    marginBottom: 8,
   },
 
   inputStyle: {
@@ -480,5 +488,4 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
-  
 });

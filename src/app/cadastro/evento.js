@@ -1,96 +1,97 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
+import {
+  StyleSheet,
+  Text,
+  View,
   SafeAreaView,
   TouchableOpacity,
   Alert,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 import { Link, router } from "expo-router";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
-import ImageSelector from './../../Helpers/ImageSelector'; // seletor de imagens
-import DropDownPickerAux from "./../../Helpers/DropDownPickerAux"; // lista suspensa
-import EventoTextInputs, { validarInputs } from './../../Helpers/EventosTextInput'; // importando o componente de text inputs e a função de validação
+import ImageSelector from "../../Helpers/ImageSelector"; // seletor de imagens
+import DropDownPickerAux from "../../Helpers/DropDownPickerAux"; // lista suspensa
+import EventoTextInputs, {
+  validarInputs,
+} from "../../Helpers/EventosTextInput"; // importando o componente de text inputs e a função de validação
 import { uploadImage } from "../../Helpers/ImageUploader"; // função que faz o upload da imagem para o firestore
 import { auth, db } from "../../configs/firebaseConfigs";
 import { collection, addDoc } from "firebase/firestore";
+import TabLayout from "../(tabs)/_layout";
 
-
-export default function publicacao() {
+export default function evento() {
   // firebase
-  const uid = auth.currentUser.uid// id do usuairo logado no firebase
+  const uid = auth.currentUser.uid; // id do usuairo logado no firebase
 
   // inputs, imagem e grupos
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedGrupos, setSelectedGrupos] = useState([]);
   const [listaGrupos, setListaGrupos] = useState([]);
   const [listaGruposSelecionados, setListaGruposSelecionados] = useState([]);
-  const [nomeEvento, setNomeEvento] = useState('');
-  const [descricaoEvento, setDescricaoEvento] = useState('');
-  const [inicioEvento, setInicioEvento] = useState('');
-  const [finalEvento, setFinalEvento] = useState('');
+  const [nomeEvento, setNomeEvento] = useState("");
+  const [descricaoEvento, setDescricaoEvento] = useState("");
+  const [inicioEvento, setInicioEvento] = useState("");
+  const [finalEvento, setFinalEvento] = useState("");
 
   // recupera a imagem selecionada.
   const handleImageSelected = (uri) => {
     setSelectedImage(uri);
     console.log("URI da imagem selecionada:", uri);
-  }
+  };
 
   // recupera a lista com os grupos selecionados (indexs).
   const handleGrupoSelected = (value, listaGrupos) => {
     setSelectedGrupos(value);
     setListaGrupos(listaGrupos);
-  }
+  };
 
   // faz a validação da imagem selecionada dos grupos selecionados
   const validacaoOfAll = () => {
-    if (!validarInputs(nomeEvento, descricaoEvento, inicioEvento, finalEvento)) {
+    if (
+      !validarInputs(nomeEvento, descricaoEvento, inicioEvento, finalEvento)
+    ) {
       return false;
-    }
-    else{
+    } else {
       //validação da escolha dos grupos
-      if (selectedGrupos != null){
-        if (selectedGrupos.length == 0){
-          Alert.alert("Erro", "Selecione os grupos"); 
+      if (selectedGrupos != null) {
+        if (selectedGrupos.length == 0) {
+          Alert.alert("Erro", "Selecione os grupos");
           return false;
-        }
-        else{
-          if(selectedImage == null){
-            Alert.alert("Erro", "Selecione uma imagem"); 
+        } else {
+          if (selectedImage == null) {
+            Alert.alert("Erro", "Selecione uma imagem");
             return false;
-          }
-          else{
+          } else {
             return true;
           }
         }
-      }else{
-        Alert.alert("Erro", "Selecione os grupos"); 
+      } else {
+        Alert.alert("Erro", "Selecione os grupos");
         return false;
       }
     }
   };
 
   const formataGruposSelecionados = () => {
-
     const gruposSelecionados = [];
     for (let i = 0; i < selectedGrupos.length; i++) {
-      gruposSelecionados.push(listaGrupos[selectedGrupos[i]-1].label);
+      gruposSelecionados.push(listaGrupos[selectedGrupos[i] - 1].label);
     }
     return gruposSelecionados;
-
   };
 
-  
   const compartilharEvento = async () => {
     //validação de inputs
-    if(validacaoOfAll()){
+    if (validacaoOfAll()) {
       console.log("Sucesso");
       try {
-        const imageUrl = await uploadImage(selectedImage, `eventos/${Date.now()}_${uid}_${nomeEvento}.jpg`);
+        const imageUrl = await uploadImage(
+          selectedImage,
+          `eventos/${Date.now()}_${uid}_${nomeEvento}.jpg`
+        );
         console.log("Imagem carregada com sucesso:", imageUrl);
         // Adiciona um novo documento na coleção 'eventos' com os detalhes do evento
         const docRef = await addDoc(collection(db, "eventos"), {
@@ -100,7 +101,7 @@ export default function publicacao() {
           inicioEvento: inicioEvento,
           finalEvento: finalEvento,
           imageUrl: imageUrl,
-          grupos: formataGruposSelecionados()
+          grupos: formataGruposSelecionados(),
         });
         console.log("Documento adicionado com ID: ", docRef.id);
         Alert.alert("Evento Compartilhado com Sucesso");
@@ -111,21 +112,28 @@ export default function publicacao() {
     }
   };
 
+  //navegação para o feed
+  const feedNavigate = () => {
+    router.back();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Icone de retorno no topo da tela */}
-        <View style={styles.backIcon}>
-        <Link href={"./../feed"}>
-          <Ionicons name="chevron-back-circle" size={45} color="#1E2E57"/>
-        </Link>
+      <View style={styles.backIcon}>
+        <Ionicons
+          name="chevron-back-circle"
+          size={45}
+          color="#1E2E57"
+          onPress={feedNavigate}
+        />
       </View>
 
       {/* Componente ImageSelector, para alterações: /helpers/ImageSelector */}
-      <ImageSelector onImageSelected={handleImageSelected}/>
+      <ImageSelector onImageSelected={handleImageSelected} />
 
       {/* inputs de dados do evento */}
       <View style={styles.inputContainer}>
-        
         <EventoTextInputs
           onNomeChange={setNomeEvento}
           onDescricaoChange={setDescricaoEvento}
@@ -135,7 +143,7 @@ export default function publicacao() {
 
         <View style={styles.inputStyle}>
           <Text style={styles.inputTitle}>Grupos beneficiados</Text>
-          <DropDownPickerAux onGrupoSelected={handleGrupoSelected}/>
+          <DropDownPickerAux onGrupoSelected={handleGrupoSelected} />
         </View>
 
         <TouchableOpacity style={styles.submitBtn} onPress={compartilharEvento}>
@@ -150,51 +158,52 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#E2E8F7",
     height: "100%",
+    paddingTop: 20,
   },
 
   backIcon: {
     marginLeft: 10,
-    marginTop: 10
+    marginTop: 10,
   },
 
   imageContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   inputContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   inputStyle: {
-    width: '80%',
+    width: "80%",
   },
 
   inputTitle: {
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
 
   line: {
     height: 1,
     width: "90%",
-    backgroundColor: '#7591D9'
+    backgroundColor: "#7591D9",
   },
 
   submitBtn: {
     backgroundColor: "#1E2E57",
     borderRadius: 25,
     padding: 10,
-    width: '70%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 25
+    width: "70%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 25,
   },
 
   submitBtnText: {
     color: "#FFF",
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
 
   selectInputStyle: {
