@@ -35,6 +35,14 @@ export default function evento() {
   const [descricaoEvento, setDescricaoEvento] = useState("");
   const [inicioEvento, setInicioEvento] = useState("");
   const [finalEvento, setFinalEvento] = useState("");
+  const grupos = [
+    {label: 'Grupo 1', value: 1},
+    {label: 'Grupo 2', value: 2},
+    {label: 'Grupo 3', value: 3},
+    {label: 'Grupo 4', value: 4},
+    {label: 'Grupo 5', value: 5},
+    {label: 'Grupo 6', value: 6},
+  ]
 
   // recupera a imagem selecionada.
   const handleImageSelected = (uri) => {
@@ -143,7 +151,7 @@ export default function evento() {
 
         <View style={styles.inputStyle}>
           <Text style={styles.inputTitle}>Grupos beneficiados</Text>
-          <DropDownPickerAux onGrupoSelected={handleGrupoSelected} />
+          <DropDownPickerAux onGrupoSelected={handleGrupoSelected} valuesList={grupos}/>
         </View>
 
         <TouchableOpacity style={styles.submitBtn} onPress={compartilharEvento}>
@@ -158,12 +166,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#E2E8F7",
     height: "100%",
-    paddingTop: 20,
   },
 
   backIcon: {
     marginLeft: 10,
-    marginTop: 10,
+    marginTop: 35,
   },
 
   imageContainer: {

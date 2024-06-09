@@ -8,17 +8,10 @@ import { MaterialIcons} from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 
-const DropDownPickerAux = ({onGrupoSelected}) => {
+const DropDownPickerAux = ({onGrupoSelected, valuesList}) => {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
-    const [items, setItems] = useState([
-    {label: 'Grupo 1', value: 1},
-    {label: 'Grupo 2', value: 2},
-    {label: 'Grupo 3', value: 3},
-    {label: 'Grupo 4', value: 4},
-    {label: 'Grupo 5', value: 5},
-    {label: 'Grupo 6', value: 6},
-  ]);
+    const [items, setItems] = useState(valuesList);
 
   useEffect( () => {
       if(onGrupoSelected){
@@ -57,6 +50,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     color: "#FFF",
     marginTop: 5,
+    marginBottom: 7,
     minHeight: 25,
   },
 });
