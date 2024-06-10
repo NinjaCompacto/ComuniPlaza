@@ -7,9 +7,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Alert,
-  KeyboardAvoidingView,
 } from "react-native";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 import ImageSelector from "../../Helpers/ImageSelector"; // seletor de imagens
@@ -28,26 +27,13 @@ export default function evento() {
 
   // inputs, imagem e grupos
   const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedGrupos, setSelectedGrupos] = useState([]);
-  const [listaGrupos, setListaGrupos] = useState([]);
-  const [listaGruposSelecionados, setListaGruposSelecionados] = useState([]);
   const [nomeEvento, setNomeEvento] = useState("");
   const [descricaoEvento, setDescricaoEvento] = useState("");
   const [inicioEvento, setInicioEvento] = useState("");
   const [finalEvento, setFinalEvento] = useState("");
-  const grupos = [
-    {label: 'Grupo 1', value: 1},
-    {label: 'Grupo 2', value: 2},
-    {label: 'Grupo 3', value: 3},
-    {label: 'Grupo 4', value: 4},
-    {label: 'Grupo 5', value: 5},
-    {label: 'Grupo 6', value: 6},
-  ]
-
   // recupera a imagem selecionada.
   const handleImageSelected = (uri) => {
     setSelectedImage(uri);
-    console.log("URI da imagem selecionada:", uri);
   };
 
   // recupera a lista com os grupos selecionados (indexs).
@@ -64,32 +50,15 @@ export default function evento() {
       return false;
     } else {
       //validação da escolha dos grupos
-      if (selectedGrupos != null) {
-        if (selectedGrupos.length == 0) {
-          Alert.alert("Erro", "Selecione os grupos");
-          return false;
-        } else {
-          if (selectedImage == null) {
-            Alert.alert("Erro", "Selecione uma imagem");
-            return false;
-          } else {
-            return true;
-          }
-        }
-      } else {
-        Alert.alert("Erro", "Selecione os grupos");
+      if (selectedImage == null) {
+        Alert.alert("Erro", "Selecione uma imagem");
         return false;
+      }else {
+          return true;
+        }
       }
-    }
   };
 
-  const formataGruposSelecionados = () => {
-    const gruposSelecionados = [];
-    for (let i = 0; i < selectedGrupos.length; i++) {
-      gruposSelecionados.push(listaGrupos[selectedGrupos[i] - 1].label);
-    }
-    return gruposSelecionados;
-  };
 
   const compartilharEvento = async () => {
     //validação de inputs
@@ -104,12 +73,12 @@ export default function evento() {
         // Adiciona um novo documento na coleção 'eventos' com os detalhes do evento
         const docRef = await addDoc(collection(db, "eventos"), {
           idEvento: `${uid}_${Date.now()}`,
+          idDono: uid,
           nomeEvento: nomeEvento,
           descricaoEvento: descricaoEvento,
           inicioEvento: inicioEvento,
           finalEvento: finalEvento,
           imageUrl: imageUrl,
-          grupos: formataGruposSelecionados(),
         });
         console.log("Documento adicionado com ID: ", docRef.id);
         Alert.alert("Evento Compartilhado com Sucesso");
@@ -148,12 +117,6 @@ export default function evento() {
           onInicioChange={setInicioEvento}
           onFinalChange={setFinalEvento}
         />
-
-        <View style={styles.inputStyle}>
-          <Text style={styles.inputTitle}>Grupos beneficiados</Text>
-          <DropDownPickerAux onGrupoSelected={handleGrupoSelected} valuesList={grupos}/>
-        </View>
-
         <TouchableOpacity style={styles.submitBtn} onPress={compartilharEvento}>
           <Text style={styles.submitBtnText}>Compartilhar</Text>
         </TouchableOpacity>
