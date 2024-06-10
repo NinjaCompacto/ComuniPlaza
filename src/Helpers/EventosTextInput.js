@@ -1,11 +1,18 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, KeyboardAvoidingView } from 'react-native';
+import React from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Alert,
+  KeyboardAvoidingView,
+} from "react-native";
 
-const EventoTextInputs = ({ 
-  onNomeChange, 
-  onDescricaoChange, 
-  onInicioChange, 
-  onFinalChange 
+const EventoTextInputs = ({
+  onNomeChange,
+  onDescricaoChange,
+  onInicioChange,
+  onFinalChange,
 }) => {
   return (
     <>
@@ -13,6 +20,9 @@ const EventoTextInputs = ({
         <Text style={styles.inputTitle}>Nome do Evento</Text>
         <TextInput
           placeholder="Adicione o nome do evento"
+          cursorColor={"#0F2355"}
+          selectionHandleColor={"#0F2355"}
+          selectionColor={"#BCBCBC"}
           onChangeText={onNomeChange}
         />
       </View>
@@ -23,6 +33,9 @@ const EventoTextInputs = ({
         <Text style={styles.inputTitle}>Descrição</Text>
         <TextInput
           placeholder="Adicione a descrição do evento"
+          cursorColor={"#0F2355"}
+          selectionHandleColor={"#0F2355"}
+          selectionColor={"#BCBCBC"}
           onChangeText={onDescricaoChange}
         />
       </View>
@@ -33,6 +46,9 @@ const EventoTextInputs = ({
         <Text style={styles.inputTitle}>Inicio do Evento</Text>
         <TextInput
           placeholder="Adicione a data inicio do evento"
+          cursorColor={"#0F2355"}
+          selectionHandleColor={"#0F2355"}
+          selectionColor={"#BCBCBC"}
           onChangeText={onInicioChange}
         />
       </View>
@@ -43,6 +59,9 @@ const EventoTextInputs = ({
         <Text style={styles.inputTitle}>Final do Evento</Text>
         <TextInput
           placeholder="Adicione a data final do evento"
+          cursorColor={"#0F2355"}
+          selectionHandleColor={"#0F2355"}
+          selectionColor={"#BCBCBC"}
           onChangeText={onFinalChange}
         />
       </View>
@@ -54,8 +73,8 @@ const EventoTextInputs = ({
 
 // validação do nome completo
 const isNomeEventoValid = (nomeCompleto) => {
-    const re = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
-    return re.test(nomeCompleto);
+  const re = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
+  return re.test(nomeCompleto);
 };
 // validação da data de inicio.
 const isDataInicioValid = (dataInicio) => {
@@ -85,7 +104,20 @@ const isDataInicioValid = (dataInicio) => {
 
   // Verificação dos dias no mês
   const diaInt = parseInt(dia, 10);
-  const diasNoMes = [31, (anoInt % 4 === 0 && anoInt % 100 !== 0) || (anoInt % 400 === 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const diasNoMes = [
+    31,
+    (anoInt % 4 === 0 && anoInt % 100 !== 0) || anoInt % 400 === 0 ? 29 : 28,
+    31,
+    30,
+    31,
+    30,
+    31,
+    31,
+    30,
+    31,
+    30,
+    31,
+  ];
 
   if (diaInt < 1 || diaInt > diasNoMes[mesInt - 1]) {
     Alert.alert("Erro", "Dia inválido para o mês.");
@@ -95,12 +127,15 @@ const isDataInicioValid = (dataInicio) => {
   // Comparação da data do evento com a data atual
   const dataEvento = new Date(`${ano}-${mes}-${dia}`);
   const dataAtual = new Date();
-  
+
   // Comparar apenas a data, sem a hora
   dataAtual.setHours(0, 0, 0, 0);
 
   if (dataEvento < dataAtual) {
-    Alert.alert("Erro", "A data de início é inválida! Não pode ser anterior à data atual.");
+    Alert.alert(
+      "Erro",
+      "A data de início é inválida! Não pode ser anterior à data atual."
+    );
     return false; // Data do evento anterior à data atual
   }
 
@@ -134,7 +169,22 @@ const isDataFimValid = (dataFim, dataInicio) => {
   }
 
   const diaFimInt = parseInt(diaFim, 10);
-  const diasNoMesFim = [31, (anoFimInt % 4 === 0 && anoFimInt % 100 !== 0) || (anoFimInt % 400 === 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const diasNoMesFim = [
+    31,
+    (anoFimInt % 4 === 0 && anoFimInt % 100 !== 0) || anoFimInt % 400 === 0
+      ? 29
+      : 28,
+    31,
+    30,
+    31,
+    30,
+    31,
+    31,
+    30,
+    31,
+    30,
+    31,
+  ];
 
   if (diaFimInt < 1 || diaFimInt > diasNoMesFim[mesFimInt - 1]) {
     Alert.alert("Erro", "Dia inválido para o mês.");
@@ -144,52 +194,50 @@ const isDataFimValid = (dataFim, dataInicio) => {
   const dataEventoFim = new Date(`${anoFim}-${mesFim}-${diaFim}`);
 
   if (dataEventoFim < dataEventoInicio) {
-    Alert.alert("Erro", "Data de término inválida! Não pode ser anterior à data de início.");
+    Alert.alert(
+      "Erro",
+      "Data de término inválida! Não pode ser anterior à data de início."
+    );
     return false; // Data de término anterior à data de início
   }
 
   return true; // Data válida
 };
 
-
 export const validarInputs = (nome, descricao, inicio, final) => {
-    if (nome == "" || descricao == "" || inicio == "" || final == "") {
-        Alert.alert("Erro", "Preencha todos os campos!");
+  if (nome == "" || descricao == "" || inicio == "" || final == "") {
+    Alert.alert("Erro", "Preencha todos os campos!");
+    return false;
+  } else {
+    if (!isNomeEventoValid(nome)) {
+      Alert.alert("Erro", "O nome deve conter apenas letras!");
+      return false;
+    } else {
+      if (!isDataInicioValid(inicio)) {
         return false;
+      } else {
+        if (!isDataFimValid(final, inicio)) {
+          return false;
+        } else {
+          return true;
+        }
+      }
     }
-    else{
-        if(!isNomeEventoValid(nome)){
-            Alert.alert("Erro", "O nome deve conter apenas letras!");
-            return false;
-        }
-        else{
-            if(!isDataInicioValid(inicio)){
-                return false;
-            }
-            else{
-                if(!isDataFimValid(final,inicio)){
-                    return false;
-                }
-                else{
-                    return true;
-                }
-            }
-        }
   }
 };
 
 const styles = StyleSheet.create({
   inputStyle: {
-    width: '80%',
+    width: "80%",
     marginBottom: 2,
   },
   inputTitle: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   line: {
-    height:1,
+    height: 1,
     width: "90%",
-    backgroundColor: '#7591D9',
+    backgroundColor: "#7591D9",
     marginBottom: 10,
   },
 });

@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     color: "#FFFFFF",
     alignContent: "center",
     alignItems: "center",
-    marginLeft: 12,
+    marginLeft: 15,
     fontWeight: "bold",
   },
   eventoText: {

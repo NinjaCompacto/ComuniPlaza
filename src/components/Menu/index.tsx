@@ -29,31 +29,31 @@ export const Menu = forwardRef<BottomSheet, MenuProps>(({ onClose }, ref) => {
         </View>
 
         <View style={styles.options}>
-          <TouchableOpacity>
-            <Link href={"../cadastro/publicacao"}>
-              <View style={styles.publicaButtom}>
+          <View>
+            <Link href={"../cadastro/publicacao"} asChild>
+              <TouchableOpacity style={styles.publicaButtom}>
                 <MaterialCommunityIcons
                   name="newspaper-plus"
                   color={"#0F2355"}
                   size={45}
                 />
-              </View>
+              </TouchableOpacity>
             </Link>
             <Text style={styles.publicaText}>Publicar</Text>
-          </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity>
-            <Link href={"../cadastro/evento"}>
-              <View style={styles.publicaButtom}>
+          <View>
+            <Link href={"../cadastro/evento"} asChild>
+              <TouchableOpacity style={styles.publicaButtom}>
                 <MaterialCommunityIcons
                   name="sign-direction-plus"
                   color={"#0F2355"}
                   size={45}
                 />
-              </View>
+              </TouchableOpacity>
             </Link>
             <Text style={styles.eventoText}>Criar Evento</Text>
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
     </BottomSheet>

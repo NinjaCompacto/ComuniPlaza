@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+
 // elementos graficos
 import ImageSelector from "../../Helpers/ImageSelector";
 import DropDownPickerAux from "../../Helpers/DropDownPickerAux";
@@ -13,40 +22,48 @@ import { collection, getDocs, addDoc } from "firebase/firestore"; // recuperaç�
 
 export default function Publicacao() {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [descricaoPublicacao, setDescricaoPublicacao] = useState('');
+  const [descricaoPublicacao, setDescricaoPublicacao] = useState("");
   const [eventos, setEventos] = useState([]);
   const uid = auth.currentUser?.uid; // Verifica se currentUser é nulo antes de acessar uid
 
   useEffect(() => {
     const fetchEventos = async () => {
-        try {
-            const user = auth.currentUser;
-            if (user) {
-                const uid = user.uid;
-                const index = 0;
-                const querySnapshotPromise = getDocs(collection(db, "eventos"));
-                
-                querySnapshotPromise.then((querySnapshot) => {
-                    const eventosData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-                    const filteredEventos = eventosData
-                        .filter((evento) => evento.idDono === uid)
-                        .map((evento) => ({ label: evento.nomeEvento, value: evento.idEvento }));
-                    setEventos(filteredEventos);
-                }).catch((error) => {
-                    console.error("Erro ao recuperar eventos: ", error);
-                    Alert.alert("Erro", "Não foi possível recuperar os eventos.");
-                });
-            } else {
-                Alert.alert("Erro", "Usuário não autenticado.");
-            }
-        } catch (error) {
-            console.error("Erro ao recuperar eventos: ", error);
-            Alert.alert("Erro", "Não foi possível recuperar os eventos.");
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const uid = user.uid;
+          const index = 0;
+          const querySnapshotPromise = getDocs(collection(db, "eventos"));
+
+          querySnapshotPromise
+            .then((querySnapshot) => {
+              const eventosData = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }));
+              const filteredEventos = eventosData
+                .filter((evento) => evento.idDono === uid)
+                .map((evento) => ({
+                  label: evento.nomeEvento,
+                  value: evento.idEvento,
+                }));
+              setEventos(filteredEventos);
+            })
+            .catch((error) => {
+              console.error("Erro ao recuperar eventos: ", error);
+              Alert.alert("Erro", "Não foi possível recuperar os eventos.");
+            });
+        } else {
+          Alert.alert("Erro", "Usuário não autenticado.");
         }
+      } catch (error) {
+        console.error("Erro ao recuperar eventos: ", error);
+        Alert.alert("Erro", "Não foi possível recuperar os eventos.");
+      }
     };
 
     fetchEventos();
-}, []);
+  }, []);
 
   // botão de voltar para o feed
   const feedNavigate = () => {
@@ -72,7 +89,7 @@ export default function Publicacao() {
       Alert.alert("Erro", "Escolha uma Imagem.");
       return false;
     } else {
-      if (descricaoPublicacao == '') { 
+      if (descricaoPublicacao == "") {
         Alert.alert("Erro", "Preencha a descrição da publicação.");
         return false;
       } else {
@@ -82,7 +99,8 @@ export default function Publicacao() {
         } else {
           if (eventos.length == 0) {
             Alert.alert("Erro", "Selecione um evento.");
-            return false;a
+            return false;
+            a;
           } else {
             return true;
           }
@@ -90,7 +108,6 @@ export default function Publicacao() {
       }
     }
   };
-
 
   const compartilharPublicacao = async () => {
     if (validacaoCampos()) {
@@ -116,10 +133,9 @@ export default function Publicacao() {
         console.error("Erro ao fazer upload da imagem:", error);
       }
     }
-  }; 
+  };
   return (
-    <KeyboardAvoidingView style={styles.container}>
-
+    <KeyboardAvoidingView>
       <View style={styles.backIcon}>
         <Ionicons
           name="chevron-back-circle"
@@ -130,13 +146,15 @@ export default function Publicacao() {
       </View>
 
       <ImageSelector onImageSelected={handleImageSelected} />
-      
 
       <View style={styles.inputContainer}>
         <View style={styles.inputStyle}>
           <Text style={styles.inputTitle}>Descrição</Text>
           <TextInput
             placeholder="Adicione uma descrição a sua publicação"
+            cursorColor={"#0F2355"}
+            selectionHandleColor={"#0F2355"}
+            selectionColor={"#BCBCBC"}
             onChangeText={onDescricaoChange}
           />
         </View>
@@ -145,17 +163,21 @@ export default function Publicacao() {
 
         <View style={styles.inputStyle}>
           <Text style={styles.inputTitle}>Eventos</Text>
-          <DropDownPickerAux valuesList={eventos} onGrupoSelected={handleEventosSelected}/>
+          <DropDownPickerAux
+            valuesList={eventos}
+            onGrupoSelected={handleEventosSelected}
+          />
         </View>
 
         <View style={styles.line}></View>
 
-        <TouchableOpacity style={styles.submitBtn} onPress={compartilharPublicacao}>
+        <TouchableOpacity
+          style={styles.submitBtn}
+          onPress={compartilharPublicacao}
+        >
           <Text style={styles.submitBtnText}>Compartilhar</Text>
         </TouchableOpacity>
-
       </View>
-
     </KeyboardAvoidingView>
   );
 }
@@ -163,12 +185,14 @@ export default function Publicacao() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#E2E8F7",
-    height: '100%'
+    height: "100%",
+    paddingTop: 1,
+    marginTop: 20,
   },
 
   backIcon: {
     marginLeft: 10,
-    marginTop: 35,
+    marginTop: 20,
   },
 
   inputContainer: {
@@ -177,18 +201,18 @@ const styles = StyleSheet.create({
   },
 
   inputStyle: {
-    width: '80%',
+    width: "80%",
     marginBottom: 2,
   },
 
   inputTitle: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   line: {
-    height:1,
+    height: 1,
     width: "90%",
-    backgroundColor: '#7591D9',
+    backgroundColor: "#7591D9",
     marginBottom: 10,
   },
 

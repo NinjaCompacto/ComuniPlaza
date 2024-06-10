@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import ImageSelector from "../../Helpers/ImageSelector"; // seletor de imagens
 import DropDownPickerAux from "../../Helpers/DropDownPickerAux"; // lista suspensa
@@ -53,12 +54,11 @@ export default function evento() {
       if (selectedImage == null) {
         Alert.alert("Erro", "Selecione uma imagem");
         return false;
-      }else {
-          return true;
-        }
+      } else {
+        return true;
       }
+    }
   };
-
 
   const compartilharEvento = async () => {
     //validação de inputs
@@ -95,7 +95,11 @@ export default function evento() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <KeyboardAwareScrollView
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      scrollEnabled={true}
+      style={styles.container}
+    >
       {/* Icone de retorno no topo da tela */}
       <View style={styles.backIcon}>
         <Ionicons
@@ -121,7 +125,7 @@ export default function evento() {
           <Text style={styles.submitBtnText}>Compartilhar</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -129,11 +133,12 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#E2E8F7",
     height: "100%",
+    paddingTop: 1,
+    marginTop: 20,
   },
-
   backIcon: {
     marginLeft: 10,
-    marginTop: 35,
+    marginTop: 2,
   },
 
   imageContainer: {
