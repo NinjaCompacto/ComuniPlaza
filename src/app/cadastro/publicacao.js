@@ -12,12 +12,12 @@ import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 // elementos graficos
-import ImageSelector from "../../../../Helpers/ImageSelector";
-import DropDownPickerAux from "../../../../Helpers/DropDownPickerAux";
+import ImageSelector from "../../Helpers/ImageSelector";
+import DropDownPickerAux from "../../Helpers/DropDownPickerAux";
 
 //Firebase
-import { uploadImage } from "../../../../Helpers/ImageUploader"; // função que faz o upload da imagem para o firestore
-import { auth, db } from "../../../../configs/firebaseConfigs";
+import { uploadImage } from "../../Helpers/ImageUploader"; // função que faz o upload da imagem para o firestore
+import { auth, db } from "../../configs/firebaseConfigs";
 import { collection, getDocs, addDoc } from "firebase/firestore"; // recuperação de eventos do firabase
 
 export default function Publicacao() {
@@ -184,7 +184,7 @@ export default function Publicacao() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#E2E8F7",
+    backgroundColor: "#FFFFFF",
     height: "100%",
     paddingTop: 1,
     marginTop: 20,

@@ -20,7 +20,6 @@ import EventoTextInputs, {
 import { uploadImage } from "../../Helpers/ImageUploader"; // função que faz o upload da imagem para o firestore
 import { auth, db } from "../../configs/firebaseConfigs";
 import { collection, addDoc } from "firebase/firestore";
-import TabLayout from "../(tabs)/_layout";
 
 export default function evento() {
   // firebase
@@ -131,7 +130,7 @@ export default function evento() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#E2E8F7",
+    backgroundColor: "#FFFFFF",
     height: "100%",
     paddingTop: 1,
     marginTop: 20,

@@ -3,12 +3,12 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { Link, router } from "expo-router";
 
-import { auth } from "../../../../configs/firebaseConfigs";
+import { auth } from "../../configs/firebaseConfigs";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 
 import { Posts } from "../../components/Posts";
-import { POSTS } from "../../../../utils/posts";
+import { POSTS } from "../../utils/posts";
 
 export default function index() {
   // usado para deslogar usuario

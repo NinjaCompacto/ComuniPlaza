@@ -18,7 +18,7 @@ import {
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import { collection, addDoc, getDocs, where, query } from "firebase/firestore";
-import { auth, db } from "../../../../configs/firebaseConfigs";
+import { auth, db } from "../../configs/firebaseConfigs";
 
 export default function instituicao() {
   //dados para cadastro

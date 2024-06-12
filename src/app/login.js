@@ -13,7 +13,7 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Link, router } from "expo-router";
 
 // firebase imports
-import { auth } from "../../../configs/firebaseConfigs";
+import { auth } from "../configs/firebaseConfigs";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function login() {
@@ -53,7 +53,7 @@ export default function login() {
         );
         const user = userCredential.user;
         Alert.alert("Sucesso", "Login realizado com sucesso!");
-        router.navigate("./feed");
+        router.back();
       } catch (error) {
         const errorCode = error.code;
         // Tratamento de erros pelo Firebase
