@@ -13,7 +13,7 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Link, router } from "expo-router";
 
 // firebase imports
-import { auth } from "../configs/firebaseConfigs";
+import { auth } from "../../../configs/firebaseConfigs";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function login() {
