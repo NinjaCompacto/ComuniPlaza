@@ -12,6 +12,7 @@ type Props = {
 export function Post({ post }: Props) {
   //define o tamanho que a imagem vai ser exibida
   const [aspectRatio, setAspectRatio] = useState(1);
+  
   useEffect(() => {
     if (post.image) {
       Image.getSize(post.image, (width, height) => {

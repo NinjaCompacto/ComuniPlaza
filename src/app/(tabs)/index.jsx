@@ -8,7 +8,7 @@ import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 
 import { Posts } from "../../components/Posts";
-import { POSTS } from "../../utils/posts";
+import { POSTS, getPosts } from "../../utils/posts";
 
 export default function index() {
   // usado para deslogar usuario
@@ -27,6 +27,8 @@ export default function index() {
       }
     });
   });
+
+  getPosts();  
 
   return (
     <View style={styles.container}>
