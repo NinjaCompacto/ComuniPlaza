@@ -130,14 +130,12 @@ export default function evento() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#E2E8F7",
     height: "100%",
-    paddingTop: 1,
-    marginTop: 20,
   },
   backIcon: {
     marginLeft: 10,
-    marginTop: 2,
+    marginTop: 32,
   },
 
   imageContainer: {

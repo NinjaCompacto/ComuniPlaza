@@ -135,7 +135,7 @@ export default function Publicacao() {
     }
   };
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView style={styles.container}>
       <View style={styles.backIcon}>
         <Ionicons
           name="chevron-back-circle"
@@ -184,15 +184,13 @@ export default function Publicacao() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#E2E8F7",
     height: "100%",
-    paddingTop: 1,
-    marginTop: 20,
   },
 
   backIcon: {
     marginLeft: 10,
-    marginTop: 20,
+    marginTop: 32,
   },
 
   inputContainer: {
