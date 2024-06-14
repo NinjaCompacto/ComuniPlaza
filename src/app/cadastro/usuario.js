@@ -5,10 +5,10 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Alert,
 } from "react-native";
 import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Appbar } from "react-native-paper";
 import { Link, router } from "expo-router";
 
@@ -223,18 +223,27 @@ export default function usuario() {
     }
   };
 
+  const feedNavigate = () => {
+    router.back();
+  };
+
   //FRONT
   return (
-    <>
+    <KeyboardAwareScrollView
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      scrollEnabled={true}
+    >
       {/* header com o título da página */}
-      <Appbar.Header statusBarHeight={0} style={styles.header}>
-        <TouchableOpacity>
-          <Link href={"./identificacao"}>
-            <MaterialIcons name="chevron-left" color="#FFF" size={35} />
-          </Link>
-        </TouchableOpacity>
-        <Appbar.Content title="Cadastro de Pessoa" color="#fff" />
-      </Appbar.Header>
+      <View style={styles.header}>
+        <MaterialIcons
+          name="chevron-left"
+          size={45}
+          color="#0F2355"
+          style={styles.backIcon}
+          onPress={feedNavigate}
+        />
+        <Text style={styles.headerText}>Cadastro de Pessoa</Text>
+      </View>
 
       {/* inputs do cadastro */}
       <View style={styles.inputContainer}>
@@ -382,13 +391,13 @@ export default function usuario() {
             onChangeText={(texto) => setEmail(texto)}
           ></TextInput>
         </View>
-        <TouchableOpacity style={styles.btnCadastro} onPress={handleCadastro}>
-          <View style={styles.btnSubmit}>
-            <Text style={styles.submitText}>Cadastrar</Text>
+        <TouchableOpacity onPress={handleCadastro}>
+          <View style={styles.submitBtn}>
+            <Text style={styles.submitBtnText}>Cadastrar</Text>
           </View>
         </TouchableOpacity>
       </View>
-    </>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -400,11 +409,22 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    backgroundColor: "#0F2355",
-    justifyContent: "left",
-    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 35,   
   },
 
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: "#0F2355",
+  },
+
+  backIcon: {
+    left: 6,
+    position: 'absolute',
+  },
   //area da senha
   passArea: {
     flexDirection: "row",
@@ -436,8 +456,7 @@ const styles = StyleSheet.create({
   },
 
   inputContainer: {
-    flex: 1,
-    justifyContent: "center",
+    marginTop: 100,
     alignItems: "center",
   },
 
@@ -466,23 +485,22 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 
-  submitText: {
-    color: "#FFF",
-    fontSize: 18,
-    alignContent: "center",
+  submitBtn: {
+    backgroundColor: "#0F2355",
+    borderRadius: 25,
+    padding: 10,
+    paddingLeft: 35,
+    paddingRight: 35,
+    width: "70%",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 35,
   },
 
-  btnCadastro: {
-    backgroundColor: "#0F2355",
-    width: "50%",
-    height: 45,
-    alignContent: "center",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 10,
-    marginTop: 15,
+  submitBtnText: {
+    color: "#FFF",
+    fontSize: 20,
+    fontWeight: "bold",
   },
 
   iconStyle: {

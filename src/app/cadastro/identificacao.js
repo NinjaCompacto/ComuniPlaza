@@ -10,21 +10,26 @@ import {
 } from "react-native";
 import { Appbar } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
 export default function identificacao() {
+  const feedNavigate = () => {
+    router.back();
+  };
+
   return (
     <>
       {/* header com o título da página */}
-      <Appbar.Header statusBarHeight={0} style={styles.header}>
-        <TouchableOpacity>
-          <Link href={"../login"}>
-            <MaterialIcons name="chevron-left" color="#FFF" size={35} />
-          </Link>
-        </TouchableOpacity>
-
-        <Appbar.Content title="Cadastro" color="#FFF" />
-      </Appbar.Header>
+      <View style={styles.header}>
+        <MaterialIcons
+          name="chevron-left"
+          size={45}
+          color="#0F2355"
+          style={styles.backIcon}
+          onPress={feedNavigate}
+        />
+        <Text style={styles.headerText}>Cadastro</Text>
+      </View>
 
       <View style={styles.euSou}>
         <Text style={styles.texto}>Eu sou:</Text>
@@ -33,13 +38,13 @@ export default function identificacao() {
       <View style={styles.container}>
         <Link href={"./instituicao"} asChild>
           <TouchableOpacity style={styles.btnInstituicao}>
-            <Text style={styles.instSubmitText}>Instituição </Text>
+            <Text style={styles.submitText}>Instituição </Text>
           </TouchableOpacity>
         </Link>
 
         <Link href={"./usuario"} asChild>
           <TouchableOpacity style={styles.btnPessoa}>
-            <Text style={styles.userSubmitText}>Pessoa</Text>
+            <Text style={styles.submitText}>Pessoa</Text>
           </TouchableOpacity>
         </Link>
       </View>
@@ -50,18 +55,21 @@ export default function identificacao() {
 const styles = StyleSheet.create({
   // header da tela
   header: {
-    backgroundColor: "#0F2355",
-    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 35,   
   },
 
-  //seta de retorno a tela de login
-  seta: {
-    width: "40%",
-    height: 50,
-    borderLeftWidth: 12,
-    borderLeftColor: "#FFF",
-    borderTopWidth: 12,
-    borderTopColor: "#FFF",
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: "#0F2355",
+  },
+
+  backIcon: {
+    left: 6,
+    position: 'absolute',
   },
 
   //Título da página
@@ -93,32 +101,23 @@ const styles = StyleSheet.create({
   },
   btnInstituicao: {
     //backgroundColor: "#0F2355",
-    backgroundColor: "#FFF",
-    borderColor: "#0F2355",
+    backgroundColor: "#7591D9",
     color: "#0F2355",
     width: "90%",
     height: 45,
     alignItems: "center",
     alignContent: "center",
     justifyContent: "center",
-    borderRadius: 10,
-    borderWidth: 2,
+    borderRadius: 20,
     marginTop: 15,
   },
-  instSubmitText: {
-    color: "#0F2355",
-    fontSize: 18,
-    alignContent: "center",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  userSubmitText: {
+  submitText: {
     color: "#FFF",
     fontSize: 18,
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",
+    fontWeight: 'bold'
   },
 
   btnPessoa: {
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
     height: 45,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 10,
+    borderRadius: 20,
     marginTop: 15,
   },
   registerText: {

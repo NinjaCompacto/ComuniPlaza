@@ -54,7 +54,7 @@ export default function profile() {
         />
 
         <View style={styles.profileContent}>
-          <Ionicons name="person-circle" size={150} color="#7591D9" />
+          <Ionicons name="person-circle" size={150} color="#7591D9"/>
 
           <Text style={styles.userName}>Nome do Usuário</Text>
 
