@@ -1,12 +1,25 @@
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useState, useEffect } from "react";
 
 import { styles } from "./styles";
 
-import { PostsProps } from "./posts";
+import { PostProps } from "../Post/post";
 import { Post } from "../Post";
+import { getPosts } from "../../../utils/posts";
 
-export function Posts({ posts }: PostsProps) {
+export function Posts() {
+  const [posts, setPosts] = useState<PostProps[]>([]);
+
+  useEffect(() => {
+    async function fetchPosts() {
+      const fetchedPosts = await getPosts();
+      setPosts(fetchedPosts);
+    }
+
+    fetchPosts();
+  }, []);
+
   //disposições do feed - define qual lado o componente vai renderizar
   function postsByColumn(column: "right" | "left") {
     //resto da divisão -> definir se é impar ou par

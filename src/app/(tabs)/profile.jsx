@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
+
 import { router } from "expo-router";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
@@ -15,13 +16,17 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { auth } from "../../configs/firebaseConfigs";
 import { signOut } from "firebase/auth";
 
-import { Posts } from "../../components/Feed/Posts";
-import { POSTS, getPosts } from "../../utils/posts";
+import { SELFPOSTS } from "../../utils/self_posts";
+import { SelfPosts } from "../../components/SelfFeed/SelfPosts";
 
+//pagina de publicações do usuário
 const PublicacoesPage = () => {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Posts posts={POSTS} />
+    //recupera posts -> precisa implementar a recuperação somente dos posts do usuário
+    <View style={styles.container}>
+      <SelfPosts selfPosts={SELFPOSTS} />
+
+      <StatusBar style="auto" />
     </View>
   );
 };

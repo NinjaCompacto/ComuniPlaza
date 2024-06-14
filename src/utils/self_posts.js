@@ -61,22 +61,4 @@ export const SELFPOSTS = [
     image:
       "https://images.pexels.com/photos/19581191/pexels-photo-19581191/free-photo-of-natureza-passaro-ave-passarinho.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
-  {
-    id: "5",
-    title: "Favela",
-    image:
-      "https://images.pexels.com/photos/20526795/pexels-photo-20526795/free-photo-of-mar-preto-e-branco-p-b-predios.jpeg?auto=compress&cs=tinysrgb&w=600",
-  },
-  {
-    id: "6",
-    title: "Nina",
-    image:
-      "https://images.pexels.com/photos/69932/tabby-cat-close-up-portrait-69932.jpeg?auto=compress&cs=tinysrgb&w=600",
-  },
-  {
-    id: "7",
-    title: "Orla da Ponta Negra",
-    image:
-      "https://images.pexels.com/photos/462162/pexels-photo-462162.jpeg?auto=compress&cs=tinysrgb&w=600",
-  },
 ];

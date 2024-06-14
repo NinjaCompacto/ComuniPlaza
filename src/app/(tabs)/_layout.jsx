@@ -4,9 +4,7 @@ import { View } from "react-native";
 
 import { MaterialIcons } from "@expo/vector-icons";
 
-import BottomSheet from "@gorhom/bottom-sheet";
 import { Menu } from "../../components/Menu";
-import evento from "../cadastro/evento";
 
 export default function TabLayout() {
   const bottomSheetRef = useRef(null);
