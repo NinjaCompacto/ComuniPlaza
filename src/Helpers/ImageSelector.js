@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { MaterialIcons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import { View, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const ImageSelector = ({ onImageSelected }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -29,7 +29,8 @@ const ImageSelector = ({ onImageSelected }) => {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
-      onImageSelected(result.assets[0].uri);    }
+      onImageSelected(result.assets[0].uri);
+    }
   };
 
   const chooseImage = () => {
@@ -60,7 +61,11 @@ const ImageSelector = ({ onImageSelected }) => {
         <Image source={{ uri: selectedImage }} style={styles.image} />
       ) : (
         <TouchableOpacity onPress={chooseImage}>
-          <MaterialIcons name="add-photo-alternate" size={225} color="#1E2E57" />
+          <MaterialIcons
+            name="add-photo-alternate"
+            size={225}
+            color="#0F2355"
+          />
         </TouchableOpacity>
       )}
     </View>
@@ -69,8 +74,8 @@ const ImageSelector = ({ onImageSelected }) => {
 
 const styles = StyleSheet.create({
   imageContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
     width: 225,

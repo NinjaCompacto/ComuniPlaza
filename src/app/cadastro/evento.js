@@ -9,11 +9,10 @@ import {
   Alert,
 } from "react-native";
 import { router } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import ImageSelector from "../../Helpers/ImageSelector"; // seletor de imagens
-import DropDownPickerAux from "../../Helpers/DropDownPickerAux"; // lista suspensa
 import EventoTextInputs, {
   validarInputs,
 } from "../../Helpers/EventosTextInput"; // importando o componente de text inputs e a função de validação
@@ -101,10 +100,10 @@ export default function evento() {
     >
       {/* Icone de retorno no topo da tela */}
       <View style={styles.backIcon}>
-        <Ionicons
-          name="chevron-back-circle"
+        <MaterialIcons
+          name="chevron-left"
           size={45}
-          color="#1E2E57"
+          color="#0F2355"
           onPress={feedNavigate}
         />
       </View>
@@ -130,12 +129,12 @@ export default function evento() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#E2E8F7",
+    backgroundColor: "#FFFFFF",
     height: "100%",
   },
   backIcon: {
-    marginLeft: 10,
-    marginTop: 32,
+    marginLeft: 6,
+    marginTop: 25,
   },
 
   imageContainer: {
@@ -163,7 +162,7 @@ const styles = StyleSheet.create({
   },
 
   submitBtn: {
-    backgroundColor: "#1E2E57",
+    backgroundColor: "#0F2355",
     borderRadius: 25,
     padding: 10,
     width: "70%",
@@ -179,7 +178,7 @@ const styles = StyleSheet.create({
   },
 
   selectInputStyle: {
-    backgroundColor: "#1E2E57",
+    backgroundColor: "#0F2355",
     borderRadius: 20,
     color: "#FFF",
     marginTop: 5,

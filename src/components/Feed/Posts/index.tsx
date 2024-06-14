@@ -7,7 +7,6 @@ import { PostsProps } from "./posts";
 import { Post } from "../Post";
 
 export function Posts({ posts }: PostsProps) {
-
   //disposições do feed - define qual lado o componente vai renderizar
   function postsByColumn(column: "right" | "left") {
     //resto da divisão -> definir se é impar ou par

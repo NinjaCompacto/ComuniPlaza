@@ -402,6 +402,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: "#0F2355",
     justifyContent: "left",
+    marginTop: 10,
   },
 
   //area da senha

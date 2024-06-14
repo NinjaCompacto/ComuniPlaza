@@ -23,35 +23,35 @@ export default function identificacao() {
           </Link>
         </TouchableOpacity>
 
-        <Appbar.Content title="Cadastro" color="#FFF"/>
-
+        <Appbar.Content title="Cadastro" color="#FFF" />
       </Appbar.Header>
 
-        <View style={styles.euSou}>
-          <Text style={styles.texto}>Eu sou:</Text>
-        </View>
+      <View style={styles.euSou}>
+        <Text style={styles.texto}>Eu sou:</Text>
+      </View>
 
-        <View style={styles.container}>
-          <Link href={"./instituicao"} asChild>
-            <TouchableOpacity style={styles.btnInstituicao}>
-              <Text style={styles.instSubmitText}>Instituição </Text>
-            </TouchableOpacity>
-          </Link>
+      <View style={styles.container}>
+        <Link href={"./instituicao"} asChild>
+          <TouchableOpacity style={styles.btnInstituicao}>
+            <Text style={styles.instSubmitText}>Instituição </Text>
+          </TouchableOpacity>
+        </Link>
 
-          <Link href={"./usuario"} asChild>
-            <TouchableOpacity style={styles.btnPessoa}>
-              <Text style={styles.userSubmitText}>Pessoa</Text>
-            </TouchableOpacity>
-          </Link>
-        </View>
+        <Link href={"./usuario"} asChild>
+          <TouchableOpacity style={styles.btnPessoa}>
+            <Text style={styles.userSubmitText}>Pessoa</Text>
+          </TouchableOpacity>
+        </Link>
+      </View>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-    // header da tela
+  // header da tela
   header: {
     backgroundColor: "#0F2355",
+    marginTop: 10,
   },
 
   //seta de retorno a tela de login
@@ -84,13 +84,12 @@ const styles = StyleSheet.create({
   texto: {
     fontSize: 23,
     color: "#0F2355",
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   //container dos botões
   container: {
     flex: 0,
-    // justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   btnInstituicao: {
     //backgroundColor: "#0F2355",

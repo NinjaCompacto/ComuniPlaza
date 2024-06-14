@@ -1,126 +1,128 @@
 // tela principal do aplicativo
 import { StatusBar } from "expo-status-bar";
-import { 
-  StyleSheet, 
-  Text, 
+import {
+  StyleSheet,
+  Text,
   View,
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import { Link } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 import { auth } from "../../configs/firebaseConfigs";
 import { signOut } from "firebase/auth";
 
-const Teste1 = () => {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>publicações</Text>
-    </View>
-  )
-}
+import { Posts } from "../../components/Feed/Posts";
+import { POSTS, getPosts } from "../../utils/posts";
 
-const Teste2 = () => {
+const PublicacoesPage = () => {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Posts posts={POSTS} />
+    </View>
+  );
+};
+
+const EventosPage = () => {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Eventos</Text>
     </View>
-  )
-}
+  );
+};
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function profile() {
+  //navegação para o feed
+  const feedNavigate = () => {
+    router.back();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-
       <View>
-        <Ionicons
-            name="chevron-back-circle"
-            size={45}
-            color="#1E2E57"
-            style={styles.backIcon}
-            // onPress={feedNavigate}
-          />
+        <MaterialIcons
+          name="chevron-left"
+          size={45}
+          color="#0F2355"
+          style={styles.backIcon}
+          onPress={feedNavigate}
+        />
 
-          <View style={styles.profileContent}>
-            <Ionicons 
-              name="person-circle" 
-              size={150} 
-              color="#7591D9"
-            />
+        <View style={styles.profileContent}>
+          <Ionicons name="person-circle" size={150} color="#7591D9" />
 
-            <Text style={styles.userName}>Nome do Usuário</Text>
+          <Text style={styles.userName}>Nome do Usuário</Text>
 
-            <View style={styles.profileInfo}>
-              <Text style={styles.profileInfoText}>x seguidores - </Text>
-              <Text style={styles.profileInfoText}>y eventos</Text>
+          <View style={styles.profileInfo}>
+            <Text style={styles.profileInfoText}>x seguidores - </Text>
+            <Text style={styles.profileInfoText}>y eventos</Text>
+          </View>
+
+          <TouchableOpacity>
+            <View style={styles.submitBtn}>
+              <Text style={styles.submitBtnText}>Editar Perfil</Text>
             </View>
-
-            <TouchableOpacity>
-              <View style={styles.submitBtn}>
-                <Text style={styles.submitBtnText}>Editar Perfil</Text>
-              </View>
-            </TouchableOpacity>       
-          </View>      
+          </TouchableOpacity>
+        </View>
       </View>
 
       <Tab.Navigator
         screenOptions={{
           tabBarStyle: styles.tabNavigator,
           tabBarLabelStyle: styles.tabBarLabel,
-          tabBarIndicatorStyle: {backgroundColor: '#1E2E57'}
+          tabBarIndicatorStyle: { backgroundColor: "#0F2355" },
         }}
       >
-        <Tab.Screen name='Publicações' component={Teste1}/>
-        <Tab.Screen name='Eventos' component={Teste2}/>
+        <Tab.Screen name="Publicações" component={PublicacoesPage} />
+        <Tab.Screen name="Eventos" component={EventosPage} />
       </Tab.Navigator>
-
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
-    backgroundColor: '#FFF'
+    height: "100%",
+    backgroundColor: "#FFF",
   },
 
   backIcon: {
-    marginLeft: 10,
-    marginTop: 32,
-    position: 'absolute',
+    marginLeft: 6,
+    marginTop: 25,
+    position: "absolute",
     zIndex: 1,
   },
 
   profileContent: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 25,
-    backgroundColor: '#FFF'
+    backgroundColor: "#FFF",
   },
 
   userName: {
-    color: '#1E2E57',
-    fontWeight: 'bold',
-    fontSize: 23
+    color: "#0F2355",
+    fontWeight: "bold",
+    fontSize: 23,
   },
 
   profileInfo: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
 
   profileInfoText: {
-    color: '#1E2E57',
-    fontWeight: 'bold',
-    fontSize: 13
+    color: "#0F2355",
+    fontWeight: "bold",
+    fontSize: 13,
   },
 
   submitBtn: {
-    backgroundColor: "#1E2E57",
+    backgroundColor: "#0F2355",
     borderRadius: 25,
     padding: 10,
     paddingLeft: 25,
@@ -139,13 +141,13 @@ const styles = StyleSheet.create({
 
   tabNavigator: {
     marginTop: 15,
-    elevation: 0, 
-    shadowOpacity: 0
+    elevation: 0,
+    shadowOpacity: 0,
   },
 
   tabBarLabel: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#1E2E57'
+    fontWeight: "bold",
+    color: "#0F2355",
   },
 });

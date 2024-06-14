@@ -9,7 +9,7 @@ import {
   Alert,
 } from "react-native";
 import { router } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 // elementos graficos
 import ImageSelector from "../../Helpers/ImageSelector";
@@ -137,10 +137,10 @@ export default function Publicacao() {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.backIcon}>
-        <Ionicons
-          name="chevron-back-circle"
+        <MaterialIcons
+          name="chevron-left"
           size={45}
-          color="#1E2E57"
+          color="#0F2355"
           onPress={feedNavigate}
         />
       </View>
@@ -184,13 +184,13 @@ export default function Publicacao() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#E2E8F7",
+    backgroundColor: "#FFFFFF",
     height: "100%",
   },
 
   backIcon: {
-    marginLeft: 10,
-    marginTop: 32,
+    marginLeft: 6,
+    marginTop: 25,
   },
 
   inputContainer: {

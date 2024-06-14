@@ -7,7 +7,7 @@ import { auth } from "../../configs/firebaseConfigs";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 
-import { Posts } from "../../components/Posts";
+import { Posts } from "../../components/Feed/Posts";
 import { POSTS, getPosts } from "../../utils/posts";
 
 export default function index() {
@@ -28,7 +28,7 @@ export default function index() {
     });
   });
 
-  getPosts();  
+  getPosts();
 
   return (
     <View style={styles.container}>
