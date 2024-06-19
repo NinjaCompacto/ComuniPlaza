@@ -23,10 +23,22 @@ export function Posts() {
     return <Post key={item.id} post={item} />;
   }, []);
 
+  // Adicionando um elemento vazio se o número de posts for ímpar
+  const formattedPosts =
+    posts.length % 2 === 1
+      ? [...posts, { id: "-1", title: "", image: "" }]
+      : posts;
+
   return (
     <FlatList
-      data={posts}
-      renderItem={renderItem}
+      data={formattedPosts}
+      renderItem={({ item }) =>
+        item.id !== "-1" ? (
+          <Post key={item.id} post={item} />
+        ) : (
+          <View style={styles.emptyPost} />
+        )
+      }
       keyExtractor={(item) => item.id.toString()}
       numColumns={2}
       columnWrapperStyle={styles.column}
