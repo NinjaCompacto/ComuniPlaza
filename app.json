@@ -19,18 +19,32 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.jvnsouza2003.ComuniPlaza"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router",
-      ["expo-image-picker",
-      {
-        "photosPermission": "O aplicativo precisa de permissão para acessar suas fotos.",
-        "cameraPermission": "O aplicativo precisa de permissão para acessar sua câmera."
-      }]
-    ]
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O aplicativo precisa de permissão para acessar suas fotos.",
+          "cameraPermission": "O aplicativo precisa de permissão para acessar sua câmera."
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "797464e3-de5f-4677-b1f8-e33b52f4a028"
+      }
+    }
   }
 }
