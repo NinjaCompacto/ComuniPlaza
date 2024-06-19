@@ -10,8 +10,8 @@ const ImageSelector = ({ onImageSelected }) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1], // Proporção de corte
-      quality: 1,
+      aspect: null, // Proporção de corte
+      quality: 0.5,
     });
 
     if (!result.canceled) {
