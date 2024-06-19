@@ -1,14 +1,15 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "row",
+  list: {
+    paddingHorizontal: 10,
   },
   column: {
-    flex: 1,
+    justifyContent: "space-between",
   },
-  list: {
-    paddingTop: 13,
+  emptyPost: {
+    flex: 1,
+    margin: 5,
+    backgroundColor: "transparent",
   },
 });
