@@ -5,10 +5,10 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 // firebase imports
@@ -456,21 +456,21 @@ export default function instituicao() {
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 35,   
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 35,
   },
 
   headerText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 20,
     color: "#0F2355",
   },
 
   backIcon: {
     left: 6,
-    position: 'absolute',
+    position: "absolute",
   },
 
   //area da senha

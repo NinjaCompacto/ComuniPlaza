@@ -1,14 +1,5 @@
-import React, { useState } from "react";
-import {
-  View,
-  KeyboardAvoidingView,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from "react-native";
-import { Appbar } from "react-native-paper";
+import React from "react";
+import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Link, router } from "expo-router";
 
@@ -55,21 +46,21 @@ export default function identificacao() {
 const styles = StyleSheet.create({
   // header da tela
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 35,   
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 35,
   },
 
   headerText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 20,
     color: "#0F2355",
   },
 
   backIcon: {
     left: 6,
-    position: 'absolute',
+    position: "absolute",
   },
 
   //Título da página
@@ -117,7 +108,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
 
   btnPessoa: {

@@ -2,6 +2,7 @@ import { db, storage } from "../configs/firebaseConfigs";
 import { collection, doc, getDocs } from "firebase/firestore";
 
 export async function getPosts() {
+  // Recupera os documentos das coleções "eventos" e "publicacoes"
   const eventosSnapshot = await getDocs(collection(db, "eventos"));
   const publicacoesSnapshot = await getDocs(collection(db, "publicacoes"));
 
