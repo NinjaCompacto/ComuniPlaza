@@ -14,10 +14,7 @@ export default function search() {
 
   return (
     <View style={styles.container}>
-      <Text>Pagina Pesquisa</Text>
-      <Link href={"/login"}> IR para login do usuario</Link>
-      <Link href={"/cadastro/evento"}> IR para cadastro evento</Link>
-      <Link href={"/cadastro/publicacao"}> IR para cadastro publicacao</Link>
+      <Link href={"../profile2"}> EXIBIR PERFIL DE LINA</Link>
       <StatusBar style="auto" />
     </View>
   );

@@ -13,20 +13,20 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-import { auth } from "../../configs/firebaseConfigs";
+import { auth } from "../configs/firebaseConfigs"
 import { signOut } from "firebase/auth";
 
-import { SELFPOSTS, getSelfPosts } from "../../utils/self_posts";
-import { SelfPosts } from "../../components/SelfFeed/SelfPosts";
+import {  getAnotherPosts } from "../utils/another_posts";
+import { AnotherPosts } from "../components/AnotherFeed/AnotherPosts";
 
-import { getUser } from "../../utils/self_perfil";
+import { getUser } from "../utils/another_perfil";
 
 //pagina de publicações do usuário
 const PublicacoesPage = () => {
   return (
     //recupera posts -> precisa implementar a recuperação somente dos posts do usuário
     <View style={styles.container}>
-      <SelfPosts/>
+      <AnotherPosts uid={"FRYmEDnQNrd3S54NX2NqAn0hjyC3"}/>
 
       <StatusBar style="auto" />
     </View>
@@ -43,7 +43,7 @@ const EventosPage = () => {
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function profile() {
+export default function profile2() {
   //navegação para o feed
   const feedNavigate = () => {
     router.back();
@@ -53,7 +53,7 @@ export default function profile() {
 
   useEffect(() => {
     async function fetchUser(){
-      const fetchedUser = await getUser();
+      const fetchedUser = await getUser("FRYmEDnQNrd3S54NX2NqAn0hjyC3");
       setUserName(fetchedUser[0].nome)
     }
     fetchUser()
@@ -62,6 +62,14 @@ export default function profile() {
   return (
     <SafeAreaView style={styles.container}>
       <View>
+        <MaterialIcons
+          name="chevron-left"
+          size={45}
+          color="#0F2355"
+          style={styles.backIcon}
+          onPress={feedNavigate}
+        />
+
         <View style={styles.profileContent}>
           <Ionicons name="person-circle" size={150} color="#7591D9"/>
 
@@ -71,12 +79,6 @@ export default function profile() {
             <Text style={styles.profileInfoText}>x seguidores - </Text>
             <Text style={styles.profileInfoText}>y eventos</Text>
           </View>
-
-          <TouchableOpacity>
-            <View style={styles.submitBtn}>
-              <Text style={styles.submitBtnText}>Editar Perfil</Text>
-            </View>
-          </TouchableOpacity>
         </View>
       </View>
 

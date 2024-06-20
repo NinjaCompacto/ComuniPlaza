@@ -3,32 +3,32 @@ import { ScrollView } from "react-native-gesture-handler";
 
 import { styles } from "./styles";
 
-import { SelfPostsProps } from "../SelfPosts/selfPosts";
-import { SelfPost } from "../SelfPost";
+import { AnotherPostProps } from "./anotherPosts";
+import { AnotherPost } from "../AnotherPost";
 import { useEffect, useState } from "react";
-import { getSelfPosts } from "../../../utils/self_posts";
+import { getAnotherPosts } from "../../../utils/another_posts";
 
 // export function SelfPosts({ selfPosts }: SelfPostsProps) {
-export function SelfPosts() {
+export function AnotherPosts({uid}) {
 
-  const [selfPosts, setSelfPosts] = useState<SelfPostsProps[]>([])
+  const [anotherPosts, setAnotherPosts] = useState<AnotherPostProps[]>([])
 
   useEffect(() => {
-    async function fetchSelfPosts(){
-      const fetchedPosts = await getSelfPosts();
-      setSelfPosts(fetchedPosts)
+    async function fetchAnotherPosts(){
+      const fetchedPosts = await getAnotherPosts(uid);
+      setAnotherPosts(fetchedPosts)
     }
 
-    fetchSelfPosts();
+    fetchAnotherPosts();
   }, []);
 
   //disposições do feed - define qual lado o componente vai renderizar
   function postsByColumn(column: "right" | "left") {
     //resto da divisão -> definir se é impar ou par
     const rest = column === "left" ? 0 : 1;
-    return selfPosts
+    return anotherPosts
       .filter((_, index) => index % 2 === rest)
-      .map((post) => <SelfPost key={post.id} selfPost={post} />);
+      .map((post) => <AnotherPost key={post.id} AnotherPost={post} />);
   }
 
   return (
