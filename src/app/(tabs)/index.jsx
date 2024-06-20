@@ -10,8 +10,8 @@ import { useEffect } from "react";
 import { Posts } from "../../components/Feed/Posts";
 import { POSTS, getPosts } from "../../utils/posts";
 
-var userID
-var userData
+var userID;
+var userData;
 
 export default function index() {
   // usado para deslogar usuario
@@ -22,9 +22,9 @@ export default function index() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        userData = user
+        userData = user;
         const uid = user.uid;
-        userID = uid
+        userID = uid;
         // console.log(uid);
       } else {
         //caso o usuario não esteja logado, ele direciona para tela de login.
@@ -42,7 +42,7 @@ export default function index() {
   );
 }
 
-export{userID, userData};
+export { userID, userData };
 
 const styles = StyleSheet.create({
   container: {
