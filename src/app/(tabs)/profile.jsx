@@ -26,7 +26,7 @@ const PublicacoesPage = () => {
   return (
     //recupera posts -> precisa implementar a recuperação somente dos posts do usuário
     <View style={styles.container}>
-      <SelfPosts/>
+      <SelfPosts />
 
       <StatusBar style="auto" />
     </View>
@@ -41,6 +41,13 @@ const EventosPage = () => {
   );
 };
 
+// Função de logOut
+const LogOut = () => {
+  signOut(auth).then(() => {
+    console.log("Deslogado com sucesso");
+  });
+};
+
 const Tab = createMaterialTopTabNavigator();
 
 export default function profile() {
@@ -52,18 +59,25 @@ export default function profile() {
   const [username, setUserName] = useState("");
 
   useEffect(() => {
-    async function fetchUser(){
+    async function fetchUser() {
       const fetchedUser = await getUser();
-      setUserName(fetchedUser[0].nome)
+      setUserName(fetchedUser[0].nome);
     }
-    fetchUser()
+    fetchUser();
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <View>
+        <MaterialIcons
+          name="logout"
+          size={32}
+          color="#0F2355"
+          style={styles.backIcon}
+          onPress={LogOut}
+        />
         <View style={styles.profileContent}>
-          <Ionicons name="person-circle" size={150} color="#7591D9"/>
+          <Ionicons name="person-circle" size={150} color="#7591D9" />
 
           <Text style={styles.userName}>{username}</Text>
 
@@ -101,10 +115,11 @@ const styles = StyleSheet.create({
   },
 
   backIcon: {
-    marginLeft: 6,
-    marginTop: 25,
+    marginRight: 12,
+    marginTop: 33,
     position: "absolute",
     zIndex: 1,
+    right: 0,
   },
 
   profileContent: {

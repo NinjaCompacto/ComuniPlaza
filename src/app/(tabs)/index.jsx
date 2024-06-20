@@ -14,11 +14,6 @@ var userID;
 var userData;
 
 export default function index() {
-  // usado para deslogar usuario
-  //signOut(auth).then(() => {
-  //console.log("Deslogado com sucesso");
-  //});
-
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {

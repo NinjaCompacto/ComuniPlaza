@@ -13,10 +13,10 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-import { auth } from "../configs/firebaseConfigs"
+import { auth } from "../configs/firebaseConfigs";
 import { signOut } from "firebase/auth";
 
-import {  getAnotherPosts } from "../utils/another_posts";
+import { getAnotherPosts } from "../utils/another_posts";
 import { AnotherPosts } from "../components/AnotherFeed/AnotherPosts";
 
 import { getUser } from "../utils/another_perfil";
@@ -26,7 +26,7 @@ const PublicacoesPage = () => {
   return (
     //recupera posts -> precisa implementar a recuperação somente dos posts do usuário
     <View style={styles.container}>
-      <AnotherPosts uid={"FRYmEDnQNrd3S54NX2NqAn0hjyC3"}/>
+      <AnotherPosts uid={"FRYmEDnQNrd3S54NX2NqAn0hjyC3"} />
 
       <StatusBar style="auto" />
     </View>
@@ -52,11 +52,11 @@ export default function profile2() {
   const [username, setUserName] = useState("");
 
   useEffect(() => {
-    async function fetchUser(){
+    async function fetchUser() {
       const fetchedUser = await getUser("FRYmEDnQNrd3S54NX2NqAn0hjyC3");
-      setUserName(fetchedUser[0].nome)
+      setUserName(fetchedUser[0].nome);
     }
-    fetchUser()
+    fetchUser();
   }, []);
 
   return (
@@ -71,7 +71,7 @@ export default function profile2() {
         />
 
         <View style={styles.profileContent}>
-          <Ionicons name="person-circle" size={150} color="#7591D9"/>
+          <Ionicons name="person-circle" size={150} color="#7591D9" />
 
           <Text style={styles.userName}>{username}</Text>
 
@@ -79,6 +79,12 @@ export default function profile2() {
             <Text style={styles.profileInfoText}>x seguidores - </Text>
             <Text style={styles.profileInfoText}>y eventos</Text>
           </View>
+
+          <TouchableOpacity>
+            <View style={styles.submitBtn}>
+              <Text style={styles.submitBtnText}>Seguir</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
 
