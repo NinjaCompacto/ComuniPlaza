@@ -1,6 +1,5 @@
-import { View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { useState, useEffect } from "react";
+import { View, FlatList, ListRenderItemInfo } from "react-native";
+import { useState, useEffect, useCallback } from "react";
 
 import { styles } from "./styles";
 
@@ -20,25 +19,31 @@ export function Posts() {
     fetchPosts();
   }, []);
 
-  //disposições do feed - define qual lado o componente vai renderizar
-  function postsByColumn(column: "right" | "left") {
-    //resto da divisão -> definir se é impar ou par
-    const rest = column === "left" ? 0 : 1;
-    return posts
-      .filter((_, index) => index % 2 === rest)
-      .map((post) => <Post key={post.id} post={post} />);
-  }
+  const renderItem = useCallback(({ item }: ListRenderItemInfo<PostProps>) => {
+    return <Post key={item.id} post={item} />;
+  }, []);
+
+  // Adicionando um elemento vazio se o número de posts for ímpar
+  const formattedPosts =
+    posts.length % 2 === 1
+      ? [...posts, { id: "-1", title: "", image: "" }]
+      : posts;
 
   return (
-    //DEFININDO AS COLUNAS DO FEED: *scrollView ativa a rolagem da tela
-    <ScrollView
-      showsVerticalScrollIndicator={false}
+    <FlatList
+      data={formattedPosts}
+      renderItem={({ item }) =>
+        item.id !== "-1" ? (
+          <Post key={item.id} post={item} />
+        ) : (
+          <View style={styles.emptyPost} />
+        )
+      }
+      keyExtractor={(item) => item.id.toString()}
+      numColumns={2}
+      columnWrapperStyle={styles.column}
       contentContainerStyle={styles.list}
-    >
-      <View style={styles.container}>
-        <View style={styles.column}>{postsByColumn("left")}</View>
-        <View style={styles.column}>{postsByColumn("right")}</View>
-      </View>
-    </ScrollView>
+      showsVerticalScrollIndicator={false}
+    />
   );
 }

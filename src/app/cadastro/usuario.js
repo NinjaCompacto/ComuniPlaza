@@ -9,8 +9,7 @@ import {
 } from "react-native";
 import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Appbar } from "react-native-paper";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 
 // firebase imports
 import {
@@ -409,21 +408,21 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 35,   
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 35,
   },
 
   headerText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 20,
     color: "#0F2355",
   },
 
   backIcon: {
     left: 6,
-    position: 'absolute',
+    position: "absolute",
   },
   //area da senha
   passArea: {

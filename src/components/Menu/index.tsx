@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
