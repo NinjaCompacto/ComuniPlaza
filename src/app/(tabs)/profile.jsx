@@ -10,21 +10,23 @@ import {
 
 import { router } from "expo-router";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 import { auth } from "../../configs/firebaseConfigs";
 import { signOut } from "firebase/auth";
 
-import { SELFPOSTS } from "../../utils/self_posts";
+import { SELFPOSTS, getSelfPosts } from "../../utils/self_posts";
 import { SelfPosts } from "../../components/SelfFeed/SelfPosts";
+
+import { getUser } from "../../utils/self_perfil";
 
 //pagina de publicações do usuário
 const PublicacoesPage = () => {
   return (
     //recupera posts -> precisa implementar a recuperação somente dos posts do usuário
     <View style={styles.container}>
-      <SelfPosts selfPosts={SELFPOSTS} />
+      <SelfPosts selfPosts={getSelfPosts()} />
 
       <StatusBar style="auto" />
     </View>
@@ -47,6 +49,16 @@ export default function profile() {
     router.back();
   };
 
+  const [username, setUserName] = useState("");
+
+  useEffect(() => {
+    async function fetchUser(){
+      const fetchedUser = await getUser();
+      setUserName(fetchedUser[0].nome)
+    }
+    fetchUser()
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -61,7 +73,7 @@ export default function profile() {
         <View style={styles.profileContent}>
           <Ionicons name="person-circle" size={150} color="#7591D9"/>
 
-          <Text style={styles.userName}>Nome do Usuário</Text>
+          <Text style={styles.userName}>{username}</Text>
 
           <View style={styles.profileInfo}>
             <Text style={styles.profileInfoText}>x seguidores - </Text>

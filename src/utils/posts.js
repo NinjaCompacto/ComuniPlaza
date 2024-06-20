@@ -8,7 +8,7 @@ export async function getPosts() {
   // Mapeia os documentos para o formato desejado
   const eventosRecuperados = eventosSnapshot.docs.map((doc) => {
     const data = doc.data();
-    console.log("Evento Data:", data); // Log para depuração
+    // console.log("Evento Data:", data); // Log para depuração
     return {
       id: doc.id, // ID único do documento
       title: data.nomeEvento, // Nome do evento
@@ -17,7 +17,7 @@ export async function getPosts() {
   });
   const publicacoesRecuperadas = publicacoesSnapshot.docs.map((doc) => {
     const data = doc.data();
-    console.log("Publicacao Data:", data); // Log para depuração
+    // console.log("Publicacao Data:", data); // Log para depuração
     return {
       id: doc.id, // ID único do documento
       title: data.descricaoPublicacao, // Descrição da publicação
