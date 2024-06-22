@@ -11,7 +11,7 @@ const ImageSelector = ({ onImageSelected }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: null, // Proporção de corte
-      quality: 0.5,
+      quality: 0.8,
     });
 
     if (!result.canceled) {
@@ -23,8 +23,8 @@ const ImageSelector = ({ onImageSelected }) => {
   const takePhoto = async () => {
     let result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      aspect: [1, 1], // Proporção de corte
-      quality: 1,
+      aspect: null, // Proporção de corte
+      quality: 0.8,
     });
 
     if (!result.canceled) {

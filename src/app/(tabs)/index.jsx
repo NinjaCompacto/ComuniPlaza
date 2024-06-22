@@ -30,7 +30,7 @@ export default function index() {
 
   return (
     <View style={styles.container}>
-      <Posts posts={POSTS} />
+      <Posts />
 
       <StatusBar style="auto" />
     </View>
