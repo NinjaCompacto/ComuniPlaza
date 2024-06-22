@@ -1,5 +1,4 @@
 // tela principal do aplicativo
-import { StatusBar } from "expo-status-bar";
 import { 
   StyleSheet, 
   Text, 
@@ -24,7 +23,7 @@ const QueryResult = ({item, remove}) => {
       {item.type === 'E' && <Image source={{ uri: item.image }} style={{height: 50, width: 50, borderRadius: 50, marginRight: 10}}/>}
       
       <Text style={{fontSize: 15}}>{item.title}</Text>
-
+ 
       <Ionicons 
         name="close-sharp" 
         size={20} color="black" 
@@ -77,7 +76,7 @@ export default function search() {
         />
       </View>
       
-      {flag && <ActivityIndicator size="large" color="#00f" style={{marginTop: 25, marginBottom: 15}}/>}
+      {flag && <ActivityIndicator size="large" color="#7591D9" style={{marginTop: 25, marginBottom: 25}}/>}
       
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <FlatList
@@ -86,7 +85,7 @@ export default function search() {
           renderItem={({item}) => <QueryResult item={item} remove={removeFromList}/>}
         />
       </TouchableWithoutFeedback>
-
+      
     </SafeAreaView>
   );
 }
