@@ -5,7 +5,6 @@ import {
   View,
   SafeAreaView,
   TextInput,
-  TouchableOpacity,
   FlatList,
   Image,
   ActivityIndicator
@@ -18,11 +17,15 @@ import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 const QueryResult = ({item, remove}) => {
 
   return (
-    <TouchableOpacity style={styles.queryContainer}>
+    <View style={styles.queryContainer}>
       {item.type === 'I' && <Ionicons name="person-circle" size={60} color="#7591D9" style={{marginRight: 5}}/>}
       {item.type === 'E' && <Image source={{ uri: item.image }} style={{height: 50, width: 50, borderRadius: 50, marginRight: 10}}/>}
       
-      <Text style={{fontSize: 15}}>{item.title}</Text>
+      <View>
+        <Text style={{fontSize: 15}}>{item.title}</Text>
+        {item.type === 'I' && <Text style={{color: "#0F2355", fontSize: 12, fontWeight: 'bold'}}>Instituição</Text>}
+        {item.type === 'E' && <Text style={{color: "#0F2355", fontSize: 12, fontWeight: 'bold'}}>Evento</Text>}
+      </View>
  
       <Ionicons 
         name="close-sharp" 
@@ -30,7 +33,7 @@ const QueryResult = ({item, remove}) => {
         style={{position: 'absolute', right: 10, padding: 10}}
         onPress={() => remove(item.id)}
       />
-    </TouchableOpacity>
+    </View>
   )
 }
 
