@@ -9,7 +9,7 @@ import {
   Image,
   ActivityIndicator
 } from "react-native";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { getIntituicoes, getEventos } from "../../utils/search";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
@@ -73,7 +73,7 @@ export default function search() {
         <TextInput
           placeholder="Pesquisar"
           style={styles.searchInput}
-          onChangeText={(query) => setQuery(query.toLowerCase())}
+          onChangeText={(query) => setQuery(query.trim().toLowerCase())}
           onKeyPress={() => {
             clearTimeout(timeout.current)
             setIsLoading(true)
