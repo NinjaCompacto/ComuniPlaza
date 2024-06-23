@@ -9,7 +9,7 @@ import {
   Image,
   ActivityIndicator
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getIntituicoes, getEventos } from "../../utils/search";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
@@ -40,29 +40,28 @@ const QueryResult = ({item, remove}) => {
 export default function search() {
   const [queryResult, setQueryResult] = useState([]);
   const [query, setQuery] = useState('')
-  const [flag, setFlag] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const timeout = useRef(null)
 
-  useEffect(() => {
-    if(query == '' && queryResult.length) setQueryResult([])
-  }, [queryResult])
-    
   function removeFromList(id){
     const filtered = queryResult.filter((doc) => doc.id !== id)
     setQueryResult(filtered)
   }
 
   async function searchAll(query){   
+    console.log(query)
+    
     if(query !== ''){
-      setFlag(true)
       const eventos = await getEventos(query)
       const instituicoes = await getIntituicoes(query)
 
-      setFlag(false)
       setQueryResult([...eventos, ...instituicoes])   
     }
     else if(query === ''){
       setQueryResult([])
     }
+
+    setIsLoading(false)
   }
 
   return (
@@ -75,11 +74,15 @@ export default function search() {
           placeholder="Pesquisar"
           style={styles.searchInput}
           onChangeText={(query) => setQuery(query.toLowerCase())}
-          onKeyPress={() => searchAll(query)}
+          onKeyPress={() => {
+            clearTimeout(timeout.current)
+            setIsLoading(true)
+            timeout.current = setTimeout(() => searchAll(query), 1000)
+          }}
         />
       </View>
       
-      {flag && <ActivityIndicator size="large" color="#7591D9" style={{marginTop: 25, marginBottom: 25}}/>}
+      {isLoading && <ActivityIndicator size="large" color="#7591D9" style={{marginTop: 25, marginBottom: 25}}/>}
       
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <FlatList
