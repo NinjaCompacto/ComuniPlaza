@@ -16,8 +16,9 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { auth } from "../../configs/firebaseConfigs";
 import { signOut } from "firebase/auth";
 
-import { SELFPOSTS, getSelfPosts } from "../../utils/self_posts";
-import { SelfPosts } from "../../components/SelfFeed/SelfPosts";
+// import { SELFPOSTS, getSelfPosts } from "../../utils/self_posts";
+import { SelfPosts} from "../../components/SelfFeed/SelfPosts";
+import { SelfEvents } from "../../components/SelfFeed/SelfEvents";
 
 import { getUser } from "../../utils/self_perfil";
 
@@ -35,8 +36,12 @@ const PublicacoesPage = () => {
 
 const EventosPage = () => {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Eventos</Text>
+    // <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View style={styles.container}>
+      {/* <Text>Eventos</Text> */}
+      <SelfEvents/>
+
+      <StatusBar style="auto"/>
     </View>
   );
 };
