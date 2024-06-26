@@ -175,8 +175,9 @@ const styles = StyleSheet.create({
   },
 
   tabBarLabel: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: "bold",
     color: "#0F2355",
+    textTransform: 'none'
   },
 });
