@@ -11,7 +11,7 @@ export async function getUser(){
         // console.log(userData.uid);
         return {
             id: data.uid,
-            nome: data.nomeUsuario
+            nome: data.tipoUsuario == "Pessoa" ? data.nomeUsuario : data.nomeCompleto
         };
     }
 );
