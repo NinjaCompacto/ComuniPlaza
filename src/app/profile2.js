@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { router } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -21,13 +21,12 @@ import { AnotherPosts } from "../components/AnotherFeed/AnotherPosts";
 
 import { getUser } from "../utils/another_perfil";
 
-//pagina de publicações do usuário
-const PublicacoesPage = () => {
+// pagina de publicações do usuário
+const PublicacoesPage = ({ route }) => {
+  const { uid } = route.params;
   return (
-    //recupera posts -> precisa implementar a recuperação somente dos posts do usuário
     <View style={styles.container}>
-      <AnotherPosts uid={"FRYmEDnQNrd3S54NX2NqAn0hjyC3"} />
-
+      <AnotherPosts uid={uid} />
       <StatusBar style="auto" />
     </View>
   );
@@ -50,11 +49,17 @@ export default function profile2() {
   };
 
   const [username, setUserName] = useState("");
+  const [uid, setUid] = useState("");
+  const { item } = useGlobalSearchParams();
+  const userRecuperado = JSON.parse(item);
+
+  console.log(userRecuperado);
 
   useEffect(() => {
     async function fetchUser() {
-      const fetchedUser = await getUser("FRYmEDnQNrd3S54NX2NqAn0hjyC3");
-      setUserName(fetchedUser[0].nome);
+      const fetchedUser = await getUser(userRecuperado.id);
+      setUserName(fetchedUser.nome);
+      setUid(fetchedUser.uid);
     }
     fetchUser();
   }, []);
@@ -95,7 +100,7 @@ export default function profile2() {
           tabBarIndicatorStyle: { backgroundColor: "#0F2355" },
         }}
       >
-        <Tab.Screen name="Publicações" component={PublicacoesPage} />
+        <Tab.Screen name="Publicações" component={PublicacoesPage} initialParams={{uid}} />
         <Tab.Screen name="Eventos" component={EventosPage} />
       </Tab.Navigator>
     </SafeAreaView>
