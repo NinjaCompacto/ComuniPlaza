@@ -15,13 +15,6 @@ export default function messages() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.imageContainer}>
-        <MaterialIcons
-          name="chevron-left"
-          size={45}
-          color="#0F2355"
-          //style={styles.backIcon}
-        />
-
         {/* <Image 
           source={{ uri: evento.imageUrl }}
           style={styles.image}
