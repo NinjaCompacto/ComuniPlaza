@@ -1,5 +1,6 @@
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 
@@ -9,14 +10,13 @@ import { useEffect, useState } from "react";
 import { getAnotherPosts } from "../../../utils/another_posts";
 
 // export function SelfPosts({ selfPosts }: SelfPostsProps) {
-export function AnotherPosts({uid}) {
-
-  const [anotherPosts, setAnotherPosts] = useState<AnotherPostProps[]>([])
+export function AnotherPosts({ uid }) {
+  const [anotherPosts, setAnotherPosts] = useState<AnotherPostProps[]>([]);
 
   useEffect(() => {
-    async function fetchAnotherPosts(){
+    async function fetchAnotherPosts() {
       const fetchedPosts = await getAnotherPosts(uid);
-      setAnotherPosts(fetchedPosts)
+      setAnotherPosts(fetchedPosts);
     }
 
     fetchAnotherPosts();
@@ -37,10 +37,23 @@ export function AnotherPosts({uid}) {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.list}
     >
-      <View style={styles.container}>
-        <View style={styles.column}>{postsByColumn("left")}</View>
-        <View style={styles.column}>{postsByColumn("right")}</View>
-      </View>
+      {anotherPosts.length === 0 ? (
+        <View style={styles.noEventsContainer}>
+          <MaterialCommunityIcons
+            name="folder-image"
+            size={110}
+            color={"#a9a9a9"}
+          />
+          <Text style={styles.noEventsText}>
+            Ainda não há nenhuma publicação
+          </Text>
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.column}>{postsByColumn("left")}</View>
+          <View style={styles.column}>{postsByColumn("right")}</View>
+        </View>
+      )}
     </ScrollView>
   );
 }

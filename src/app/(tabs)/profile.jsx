@@ -17,7 +17,7 @@ import { auth } from "../../configs/firebaseConfigs";
 import { signOut } from "firebase/auth";
 
 // import { SELFPOSTS, getSelfPosts } from "../../utils/self_posts";
-import { SelfPosts} from "../../components/SelfFeed/SelfPosts";
+import { SelfPosts } from "../../components/SelfFeed/SelfPosts";
 import { SelfEvents } from "../../components/SelfFeed/SelfEvents";
 
 import { getUser } from "../../utils/self_perfil";
@@ -39,9 +39,9 @@ const EventosPage = () => {
     // <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     <View style={styles.container}>
       {/* <Text>Eventos</Text> */}
-      <SelfEvents/>
+      <SelfEvents />
 
-      <StatusBar style="auto"/>
+      <StatusBar style="auto" />
     </View>
   );
 };
@@ -178,6 +178,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
     color: "#0F2355",
-    textTransform: 'none'
+    textTransform: "none",
   },
 });

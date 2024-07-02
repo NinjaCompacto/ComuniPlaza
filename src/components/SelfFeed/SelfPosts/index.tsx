@@ -1,5 +1,6 @@
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 
@@ -10,13 +11,12 @@ import { getSelfPosts } from "../../../utils/self_posts";
 
 // export function SelfPosts({ selfPosts }: SelfPostsProps) {
 export function SelfPosts() {
-
-  const [selfPosts, setSelfPosts] = useState<SelfPostsProps[]>([])
+  const [selfPosts, setSelfPosts] = useState<SelfPostsProps[]>([]);
 
   useEffect(() => {
-    async function fetchSelfPosts(){
+    async function fetchSelfPosts() {
       const fetchedPosts = await getSelfPosts();
-      setSelfPosts(fetchedPosts)
+      setSelfPosts(fetchedPosts);
     }
 
     fetchSelfPosts();
@@ -37,10 +37,23 @@ export function SelfPosts() {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.list}
     >
-      <View style={styles.container}>
-        <View style={styles.column}>{postsByColumn("left")}</View>
-        <View style={styles.column}>{postsByColumn("right")}</View>
-      </View>
+      {selfPosts.length === 0 ? (
+        <View style={styles.noEventsContainer}>
+          <MaterialCommunityIcons
+            name="folder-image"
+            size={110}
+            color={"#a9a9a9"}
+          />
+          <Text style={styles.noEventsText}>
+            Suas publicações aparecerão aqui
+          </Text>
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.column}>{postsByColumn("left")}</View>
+          <View style={styles.column}>{postsByColumn("right")}</View>
+        </View>
+      )}
     </ScrollView>
   );
 }

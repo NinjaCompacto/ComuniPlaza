@@ -100,7 +100,11 @@ export default function profile2() {
           tabBarIndicatorStyle: { backgroundColor: "#0F2355" },
         }}
       >
-        <Tab.Screen name="Publicações" component={PublicacoesPage} initialParams={{uid}} />
+        <Tab.Screen
+          name="Publicações"
+          component={PublicacoesPage}
+          initialParams={{ uid }}
+        />
         <Tab.Screen name="Eventos" component={EventosPage} />
       </Tab.Navigator>
     </SafeAreaView>
