@@ -1,5 +1,5 @@
 import { db } from "../configs/firebaseConfigs";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 
 export async function getEvento(idEvento){
     const eventosSnap = await getDocs(collection(db, "eventos"));
@@ -8,12 +8,26 @@ export async function getEvento(idEvento){
     return evento.data()
 }
 
-export async function getDonoEvento(idDono){
+export async function getUser(idUser){
     const usersSnap = await getDocs(collection(db, "usuarios"));
 
-    const user = usersSnap.docs.filter((doc) => doc.data().uid === idDono)[0]
+    const user = usersSnap.docs.filter((doc) => doc.data().uid === idUser)[0]
+    
+    return {doc_id: user.id, ...user.data()}
+}
 
-    return {
-        name: user.data().nomeCompleto
-    }
+export async function createEventList(idUser){
+    const userRef = doc(db, "usuarios", idUser);
+
+    await updateDoc(userRef, {
+        eventosApoiados: []
+    })
+}
+
+export async function modifieEventList(idUser, list){
+    const userRef = doc(db, "usuarios", idUser);
+
+    await updateDoc(userRef, {
+        eventosApoiados: list
+    })
 }

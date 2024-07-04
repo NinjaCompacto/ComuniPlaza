@@ -4,11 +4,13 @@ import {
     View,
     TouchableOpacity,
     Image,
-    SafeAreaView
+    SafeAreaView,
+    Alert
   } from "react-native";
   import { Ionicons, MaterialIcons } from "@expo/vector-icons";
   import { useEffect, useState } from "react";
-  import { getEvento, getDonoEvento } from "../utils/gets";
+  import { getEvento, getUser, createEventList, modifieEventList } from "../utils/gets";
+  import { userID } from "./(tabs)";
   
   const EventStatus = ({isFinished}) => { 
     let color = "#03AA00"
@@ -22,7 +24,7 @@ import {
     }
   
     return (
-      <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 28}}>
+      <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 28, marginBottom: 10}}>
         <MaterialIcons name={icon} size={24} color={color}/>
         <Text style={{color: color, marginLeft: 5, fontWeight: 'bold'}}>{text}</Text>
       </View>
@@ -32,51 +34,80 @@ import {
   const PartcipateButton = ({isParticipating, onPress}) => {
     let text = "Participar"
     let backgroundColor = "#03AA00"
+    let width = "80%"
   
     if(isParticipating){
       text = "Participando"
       backgroundColor = "#0F2355"
+      width = "40%"
     }
   
     return (
       <TouchableOpacity 
-        style={[styles.submitBtn, {marginRight: 28, backgroundColor: backgroundColor}]}
+        style={[styles.submitBtn, {backgroundColor: backgroundColor, width: width}]}
         onPress={onPress}
       >
         <Text style={styles.submitBtnText}>{text}</Text>
       </TouchableOpacity>
     )
   }
+
+async function checkEvents(user, idEvento){
+  if(!("eventosApoiados" in user)){
+    await createEventList(user.doc_id)
+    return false
+  }
+
+  return user.eventosApoiados.includes(idEvento)
+}
+
+async function addEventInList(user, idEvento){
+  const eventsList = user.eventosApoiados
+  eventsList.push(idEvento)
+
+  await modifieEventList(user.doc_id, eventsList)
+}
   
+
+async function removeEventInList(user, idEvento){
+  const eventsList = user.eventosApoiados
+
+  await modifieEventList(user.doc_id, eventsList.filter((id) => id !== idEvento))
+}
+
   export default function messages() {
     const [isParticipating, setIsParticipating] = useState(false)
     const [eventIsFinish, setEventIsFinish] = useState(false)
     const [evento, setEvento] = useState({})
     const [instituicao, setInstuicao] = useState({})
-    
-    const idEvento = "FRYmEDnQNrd3S54NX2NqAn0hjyC3_1719074827007"
+    const [user, setUser] = useState({})
+  
+    const idEvento = "5lYkdSrtGmYUOvr33161enTytDj1_1720053963893"
     //const idEvento = "UH6R1mtMjDRlJ6fRVPwk0e6XUAm1_1718900467685"
   
     useEffect(() => {
-      async function fetchData(idEvento){
+      async function fetchDataEvent(idEvento){
         const fetchedEvento = await getEvento(idEvento)
-        setEvento(fetchedEvento)
-        
+        const fetchedInst = await getUser(fetchedEvento.idDono)
+        const fetchedUser = await getUser(userID)
+        const participate = await checkEvents(fetchedUser, idEvento)
+
         const [day, month, year] = fetchedEvento.finalEvento.split('/')
         const endDate = new Date(year, month-1, day)
-        
+
+        setEvento(fetchedEvento)
+        setInstuicao(fetchedInst)
         setEventIsFinish(new Date() > endDate)
-      
-        const fetchedUser = await getDonoEvento(fetchedEvento.idDono)
-        setInstuicao(fetchedUser)
+        setIsParticipating(participate)
+        setUser(fetchedUser)
       } 
   
-      fetchData(idEvento)
+      fetchDataEvent(idEvento)
     }, [])
   
     return (
       <SafeAreaView style={styles.container}>
-  
+
         <View style={styles.imageContainer}>
           <Image 
             source={{ uri: evento.imageUrl }}
@@ -93,23 +124,41 @@ import {
   
           <View style={styles.eventCreatorContainer}>
             <Ionicons name="person-circle" size={40} color="#7591D9"/>
-            <Text style={styles.creatorName}>{instituicao.name}</Text>
+            <Text style={styles.creatorName}>{instituicao.nomeCompleto}</Text>
           </View>
   
-          {/* {console.log(evento.finalEvento)} */}
           <EventStatus isFinished={eventIsFinish}/>
   
-          <View style={styles.buttonsContainer}>
+          {!eventIsFinish && <View style={styles.buttonsContainer}>
             <PartcipateButton 
               isParticipating={isParticipating} 
-              onPress={() => setIsParticipating(!isParticipating)}
+              onPress={async () => {
+                if(!await checkEvents(user, idEvento)){
+                  await addEventInList(user, idEvento)
+                  setIsParticipating(true)
+                  setUser(await getUser(userID))
+                }
+                else{
+                  Alert.alert('Sair do evento', 'Não deseja mais participar do evento?', [
+                    {
+                      text: 'Tirar apoio',
+                      onPress: async () => {
+                        await removeEventInList(user, idEvento)
+                        setIsParticipating(false)
+                        setUser(await getUser(userID))
+                      }
+                    },
+                    {text: 'Continuar apoiando'}
+                  ])
+                }
+              }}
             />
   
-            <TouchableOpacity style={[styles.submitBtn, {flexDirection: 'row', alignItems: 'center'}]}>
-              <Ionicons name="chatbox-sharp" size={18} color="#FFF" style={{marginRight: 5}}/>
+            {isParticipating && <TouchableOpacity style={[styles.submitBtn, {flexDirection: 'row', alignItems: 'center', marginLeft: 25}]}>
+              <Ionicons name="chatbox-sharp" size={18} color="#FFF"/>
               <Text style={styles.submitBtnText}>Chat</Text>
-            </TouchableOpacity>
-          </View>
+            </TouchableOpacity>}
+          </View>}
   
         </View>
   
@@ -187,7 +236,8 @@ import {
   
     buttonsContainer: {
       flexDirection: 'row',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      alignItems: 'center'
     },
   
     submitBtn: {
