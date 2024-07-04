@@ -20,7 +20,6 @@ const QueryResult = ({item, remove}) => {
   const router =  useRouter();
 
   const path = item.type === "I" ? '../profile2' : '../evento'
-  console.log(JSON.stringify(item))
  
   return (
     <TouchableOpacity onPress={() => router.push({ pathname: path, params: { item: JSON.stringify(item) } })}>
