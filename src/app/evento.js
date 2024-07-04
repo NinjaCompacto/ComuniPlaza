@@ -11,6 +11,7 @@ import {
   import { useEffect, useState } from "react";
   import { getEvento, getUser, createEventList, modifieEventList } from "../utils/gets";
   import { userID } from "./(tabs)";
+  import { useGlobalSearchParams } from "expo-router"
   
   const EventStatus = ({isFinished}) => { 
     let color = "#03AA00"
@@ -82,8 +83,10 @@ async function removeEventInList(user, idEvento){
     const [instituicao, setInstuicao] = useState({})
     const [user, setUser] = useState({})
   
-    const idEvento = "5lYkdSrtGmYUOvr33161enTytDj1_1720053963893"
+    //const idEvento = "5lYkdSrtGmYUOvr33161enTytDj1_1720053963893"
     //const idEvento = "UH6R1mtMjDRlJ6fRVPwk0e6XUAm1_1718900467685"
+    const { item } = useGlobalSearchParams()
+    const idEvento = JSON.parse(item).idEvento
   
     useEffect(() => {
       async function fetchDataEvent(idEvento){

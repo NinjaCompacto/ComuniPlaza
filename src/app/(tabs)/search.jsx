@@ -19,8 +19,11 @@ import {  useRouter } from "expo-router";
 const QueryResult = ({item, remove}) => {
   const router =  useRouter();
 
+  const path = item.type === "I" ? '../profile2' : '../evento'
+  console.log(JSON.stringify(item))
+ 
   return (
-    <TouchableOpacity onPress={() => router.push({ pathname: '../profile2', params: { item: JSON.stringify(item) } })}>
+    <TouchableOpacity onPress={() => router.push({ pathname: path, params: { item: JSON.stringify(item) } })}>
       <View style={styles.queryContainer}>
         {item.type === 'I' && <Ionicons name="person-circle" size={60} color="#7591D9" style={{marginRight: 5}} />}
         {item.type === 'E' && <Image source={{ uri: item.image }} style={{height: 50, width: 50, borderRadius: 50, marginRight: 10}} />}

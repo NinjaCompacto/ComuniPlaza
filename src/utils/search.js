@@ -61,6 +61,7 @@ export async function getEventos(name) {
 
     return {
       id: doc.id, // ID único do documento
+      idEvento: data.idEvento,
       title: data.nomeEvento, // Nome do evento
       image: data.imageUrl, // URL da imagem do evento
       type: "E",
