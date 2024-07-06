@@ -9,7 +9,7 @@ import {
   } from "react-native";
   import { Ionicons, MaterialIcons } from "@expo/vector-icons";
   import { useEffect, useState } from "react";
-  import { getEvento, getUser, createEventList, modifieEventList } from "../utils/gets";
+  import { getEvento, getUser, setUserAttribute } from "../utils/gets";
   import { userID } from "./(tabs)";
   import { useGlobalSearchParams } from "expo-router"
   
@@ -55,30 +55,17 @@ import {
 
 async function checkEvents(user, idEvento){
   if(!("eventosApoiados" in user)){
-    await createEventList(user.doc_id)
+    await setUserAttribute(user.doc_id, 'eventosApoiados', [])
     return false
   }
 
   return user.eventosApoiados.includes(idEvento)
 }
 
-async function addEventInList(user, idEvento){
-  const eventsList = user.eventosApoiados
-  eventsList.push(idEvento)
-
-  await modifieEventList(user.doc_id, eventsList)
-}
-  
-
-async function removeEventInList(user, idEvento){
-  const eventsList = user.eventosApoiados
-
-  await modifieEventList(user.doc_id, eventsList.filter((id) => id !== idEvento))
-}
-
-  export default function messages() {
+  export default function evento() {
     const [isParticipating, setIsParticipating] = useState(false)
     const [eventIsFinish, setEventIsFinish] = useState(false)
+    const [render, setRender] = useState(false)
     const [evento, setEvento] = useState({})
     const [instituicao, setInstuicao] = useState({})
     const [user, setUser] = useState({})
@@ -103,6 +90,7 @@ async function removeEventInList(user, idEvento){
         setEventIsFinish(new Date() > endDate)
         setIsParticipating(participate)
         setUser(fetchedUser)
+        setRender(true)
       } 
   
       fetchDataEvent(idEvento)
@@ -132,23 +120,28 @@ async function removeEventInList(user, idEvento){
   
           <EventStatus isFinished={eventIsFinish}/>
   
-          {!eventIsFinish && <View style={styles.buttonsContainer}>
+          {render && !eventIsFinish && <View style={styles.buttonsContainer}>
             <PartcipateButton 
               isParticipating={isParticipating} 
               onPress={async () => {
-                if(!await checkEvents(user, idEvento)){
-                  await addEventInList(user, idEvento)
+                const participateInEvent = await checkEvents(user, idEvento)
+                let eventosApoiados = user.eventosApoiados
+
+                if(!participateInEvent){
+                  eventosApoiados.push(idEvento)
+                  await setUserAttribute(user.doc_id, 'eventosApoiados', eventosApoiados)
+                  user.eventosApoiados = eventosApoiados
                   setIsParticipating(true)
-                  setUser(await getUser(userID))
                 }
                 else{
                   Alert.alert('Sair do evento', 'Não deseja mais participar do evento?', [
                     {
                       text: 'Tirar apoio',
                       onPress: async () => {
-                        await removeEventInList(user, idEvento)
+                        eventosApoiados = eventosApoiados.filter((id) => id !== idEvento)
+                        await setUserAttribute(user.doc_id, 'eventosApoiados', eventosApoiados)  
+                        user.eventosApoiados = eventosApoiados              
                         setIsParticipating(false)
-                        setUser(await getUser(userID))
                       }
                     },
                     {text: 'Continuar apoiando'}

@@ -16,18 +16,20 @@ export async function getUser(idUser){
     return {doc_id: user.id, ...user.data()}
 }
 
-export async function createEventList(idUser){
-    const userRef = doc(db, "usuarios", idUser);
+export async function getPublicacao(idPubli){
+    console.log(idPubli)
+    const publiSnap = await getDocs(collection(db, "publicacoes"));
 
-    await updateDoc(userRef, {
-        eventosApoiados: []
-    })
+    const publi = publiSnap.docs.filter((doc) => doc.data().idPublicacao === idPubli)[0]
+
+    return publi.data()
 }
 
-export async function modifieEventList(idUser, list){
+export async function setUserAttribute(idUser, attribute, value){
     const userRef = doc(db, "usuarios", idUser);
+    const obj = {}
 
-    await updateDoc(userRef, {
-        eventosApoiados: list
-    })
+    obj[attribute] = value
+
+    await updateDoc(userRef, obj)
 }

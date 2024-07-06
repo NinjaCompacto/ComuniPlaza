@@ -6,50 +6,109 @@ import {
   Image,
   SafeAreaView
 } from "react-native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
+import { getPublicacao, getUser, getEvento, setUserAttribute } from "../utils/gets";
+import { useRouter } from "expo-router";
+import { userID } from "./(tabs)";
 
-export default function messages() {
+async function checkLikes(user, idPubli){
+  if(!("curtidas" in user)){
+    await setUserAttribute(user.doc_id, "curtidas", [])
+    return false
+  }
+
+  return user.curtidas.includes(idPubli)
+}
+
+export default function publicacao() {
   const [color, setColor] = useState('#d3d3d3')
+  const [publicacao, setPublicacao] = useState({})
+  const [donoPubli, setDonoPubli] = useState({})
+  const [evento, setEvento] = useState({})
+  const [user, setUser] = useState({})
+  const [render, setRender] = useState(false)
+ 
+  const router =  useRouter()
+
+  const idPublicacao = "FRYmEDnQNrd3S54NX2NqAn0hjyC3_1719258301580"
+
+  useEffect(() => {
+    async function fetchData(){
+      const fetchedPubli = await getPublicacao(idPublicacao)
+      const fetchedDonoPubli = await getUser(fetchedPubli.idDono)
+      const fetchedEvent = await getEvento(fetchedPubli.eventos[0])
+      const fetchedUser = await getUser(userID)
+      const liked = await checkLikes(fetchedUser, idPublicacao)
+
+      if(liked){
+        setColor('#E10505')
+      }
+
+      setPublicacao(fetchedPubli)
+      setDonoPubli(fetchedDonoPubli)
+      setEvento(fetchedEvent)
+      setUser(fetchedUser)
+      setRender(true)
+    }
+
+    fetchData()
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.imageContainer}>
-        {/* <Image 
-          source={{ uri: evento.imageUrl }}
+        <Image 
+          source={{ uri: publicacao.imageUrl }}
           style={styles.image}
           alt="imagem do evento"
-        /> */}
+        />
       </View>
 
       <View style={styles.publiCreatorContainer}>
         <Ionicons name="person-circle" size={40} color="#7591D9"/>
-        <Text style={styles.creatorName}>Instituto ABC</Text>
+        <Text style={styles.creatorName}>{donoPubli.nomeCompleto}</Text>
       </View>
 
       <View style={styles.publiCommentContainer}>
         <Text style={styles.publiComment}>
-          Amor em cada tigela, carinho em cada pelo. 
-          Junte-se a nós para doar alimentos e banhos 
-          a cães de rua necessitados. 🐾❤️ #AjudeUmPeludo
+          {publicacao.descricaoPublicacao}
         </Text>
 
-        <View style={styles.buttonsContainer}>
+        {render && <View style={styles.buttonsContainer}>
           <Ionicons 
             name="heart-circle" 
             size={60} 
             color={color} 
             style={{marginRight: 25, marginTop: 10}}
-            onPress={() => {
-              if(color === '#d3d3d3') setColor('#E10505')
-              else setColor('#d3d3d3')
+            onPress={ async () => {
+              const likedPubli = await checkLikes(user, idPublicacao)
+              let likedList = user.curtidas
+
+              if(!likedPubli){
+                likedList.push(idPublicacao)
+                await setUserAttribute(user.doc_id, "curtidas", likedList)
+                setColor('#E10505')
+              }
+              else{
+                likedList = likedList.filter((id) => id !== idPublicacao)
+                await setUserAttribute(user.doc_id, "curtidas", likedList)
+                setColor('#d3d3d3')
+              }
+
+              user.curtidas = likedList
             }}
           />
 
           <TouchableOpacity style={styles.submitBtn}>
-            <Text style={styles.submitBtnText}>Sobre o evento</Text>
+            <Text 
+              style={styles.submitBtnText}
+              onPress={() => router.push({ pathname: 'evento', params: { item: JSON.stringify(evento) } })}
+            >
+              Sobre o evento
+            </Text>
           </TouchableOpacity>
-        </View>
+        </View>}
 
       </View>
 
@@ -64,9 +123,14 @@ const styles = StyleSheet.create({
   },
 
   imageContainer: {
-    backgroundColor: '#d3d3d3',
     height: "40%",
     marginTop: 30
+  },
+
+  image: {
+    height: '100%',
+    width: '100%',
+    resizeMode: 'contain'
   },
 
   publiCreatorContainer: {
