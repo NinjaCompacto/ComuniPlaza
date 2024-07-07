@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { getPublicacao, getUser, getEvento, setUserAttribute } from "../utils/gets";
 import { useRouter } from "expo-router";
 import { userID } from "./(tabs)";
+import { useGlobalSearchParams } from "expo-router"
 
 async function checkLikes(user, idPubli){
   if(!("curtidas" in user)){
@@ -31,7 +32,9 @@ export default function publicacao() {
  
   const router =  useRouter()
 
-  const idPublicacao = "FRYmEDnQNrd3S54NX2NqAn0hjyC3_1719258301580"
+  //const idPublicacao = "FRYmEDnQNrd3S54NX2NqAn0hjyC3_1719258301580"
+  const { item } = useGlobalSearchParams()
+  const idPublicacao = JSON.parse(item).idPublicacao
 
   useEffect(() => {
     async function fetchData(){

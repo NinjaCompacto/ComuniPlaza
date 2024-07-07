@@ -14,7 +14,7 @@ import { useState, useRef } from "react";
 import { getIntituicoes, getEventos } from "../../utils/search";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
-import {  useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 
 const QueryResult = ({item, remove}) => {
   const router =  useRouter();

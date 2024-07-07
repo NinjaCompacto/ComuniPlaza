@@ -1,6 +1,7 @@
-import { Image, Text, View } from "react-native";
+import { Image, Text, View, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "expo-router";
 
 import { PostProps } from "./post";
 import { styles } from "./styles";
@@ -12,6 +13,9 @@ type Props = {
 const PostComponent = ({ post }: Props) => {
   const [aspectRatio, setAspectRatio] = useState(1);
   const [imageError, setImageError] = useState(false);
+  const router = useRouter()
+
+  const path = post.type === 'E' ? '../evento' : '../publicacao';
 
   useEffect(() => {
     if (post.image) {
@@ -30,7 +34,9 @@ const PostComponent = ({ post }: Props) => {
   }, [post.image]);
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity 
+      style={styles.container} 
+      onPress={() => router.push({ pathname: path, params: { item: JSON.stringify(post.data)}})}>
       {imageError ? (
         <Text>Failed to load image</Text>
       ) : (
@@ -43,7 +49,7 @@ const PostComponent = ({ post }: Props) => {
         <Text style={styles.title}>{post.title}</Text>
         <MaterialIcons name="keyboard-control" size={16} color={"#0F2355"} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

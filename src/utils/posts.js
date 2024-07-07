@@ -14,6 +14,8 @@ export async function getPosts() {
       id: doc.id, // ID único do documento
       title: data.nomeEvento, // Nome do evento
       image: data.imageUrl, // URL da imagem do evento
+      type: 'E',
+      data: data
     };
   });
   const publicacoesRecuperadas = publicacoesSnapshot.docs.map((doc) => {
@@ -23,6 +25,8 @@ export async function getPosts() {
       id: doc.id, // ID único do documento
       title: data.descricaoPublicacao, // Descrição da publicação
       image: data.imageUrl, // URL da imagem da publicação
+      type: 'I',
+      data: data
     };
   });
 

@@ -13,7 +13,7 @@ export default function messages() {
  
   return (
     <SafeAreaView style={styles.container}>
-      <Link href='../publicacao'>Tela de publicação</Link>
+      <Text>Mensagens</Text>
     </SafeAreaView>
   );
 }
