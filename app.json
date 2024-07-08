@@ -4,7 +4,7 @@
     "slug": "ComuniPlaza",
     "version": "1.1.0",
     "orientation": "portrait",
-    "icon": "./assets/logo_azul.png",
+    "icon": "./assets/logo_icon.png",
     "userInterfaceStyle": "light",
     "scheme": "ComuniPlaza",
     "splash": {
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo_a.png",
+        "foregroundImage": "./assets/logo_icon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": ["android.permission.RECORD_AUDIO"],
