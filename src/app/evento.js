@@ -5,7 +5,8 @@ import {
     TouchableOpacity,
     Image,
     SafeAreaView,
-    Alert
+    Alert,
+    ScrollView
   } from "react-native";
   import { Ionicons, MaterialIcons } from "@expo/vector-icons";
   import { useEffect, useState } from "react";
@@ -110,7 +111,7 @@ async function checkEvents(user, idEvento){
         <View style={styles.eventInfoContainer}>
           
           <View style={{alignItems: 'center'}}>
-            <Text style={styles.eventTitle}>{evento.nomeEvento}</Text>
+              <Text style={styles.eventTitle}>{evento.nomeEvento}</Text>
           </View>
   
           <View style={styles.eventCreatorContainer}>
@@ -150,7 +151,8 @@ async function checkEvents(user, idEvento){
               }}
             />
   
-            {isParticipating && <TouchableOpacity style={[styles.submitBtn, {flexDirection: 'row', alignItems: 'center', marginLeft: 25}]}>
+            {isParticipating && 
+            <TouchableOpacity style={[styles.submitBtn, {flexDirection: 'row', alignItems: 'center', marginLeft: 25}]}>
               <Ionicons name="chatbox-sharp" size={18} color="#FFF"/>
               <Text style={styles.submitBtnText}>Chat</Text>
             </TouchableOpacity>}
@@ -165,8 +167,9 @@ async function checkEvents(user, idEvento){
             <MaterialIcons name="text-snippet" size={22} color="#0F2355" />
             <Text style={styles.aboutTitle}>Descrição</Text>
           </View>
-  
+          
           <Text style={styles.aboutInfoText}>{evento.descricaoEvento}</Text>
+
           <View style={{width: '100%', alignItems: 'center'}}><View style={styles.line}/></View>
           
           <View style={styles.aboutInfoContainer}>
