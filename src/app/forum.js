@@ -55,6 +55,7 @@ export default function forum() {
                     placeholder="Digite uma mensagem"
                     style={styles.textInput}
                     maxLength={50}
+                    onPress={() => {styles.commentSection.backgroundColor = "red"}}
                 />
                 <TouchableOpacity>
                     <MaterialCommunityIcons name="send-circle" size={50} color="#0F2355"/>
