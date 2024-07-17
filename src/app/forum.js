@@ -10,13 +10,30 @@ import {
 } from "react-native";
 
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { router } from "expo-router";
 
-const CommentView = ({text}) => {
+import { useGlobalSearchParams, router } from "expo-router";
+import { useEffect, useState } from "react";
+import { getForumByEventID, setForumAttribute } from "../utils/forum";
+import { getUser } from "../utils/gets";
+import { userID } from "./(tabs)";
+
+const CommentView = ({text, idUser}) => {
+    const [name, setName] = useState("???")
+
+    useEffect(() => {
+        async function fetchData(){
+            const user = await getUser(idUser)
+            setName(user.nomeCompleto)
+        }
+
+        fetchData()
+    }, [])
+
     return (
-        <View style={{flexDirection: "row", marginBottom: 15}}>
+        <View style={styles.commentContainer}>
             <Ionicons name="person-circle" size={50} color="#7591D9"/>
             <View style={styles.commentSection}>
+                <Text style={styles.commentTitle}>{name}</Text>
                 <Text style={{marginLeft: 5, marginTop: 2}}>{text}</Text>
             </View>
         </View>
@@ -24,9 +41,18 @@ const CommentView = ({text}) => {
 }
 
 export default function forum() {
-    const data = []
+    const [forum, setForum] = useState(null)
+    const [comment, setComment] = useState("")
+    const {idEvento, title} = useGlobalSearchParams()
+    
+    useEffect(() => {
+        async function fetchData(){
+            const fetchedForum = await getForumByEventID(idEvento)
+            setForum(fetchedForum)
+        }
 
-    for(let i = 0; i < 20; i++) data.push(`comentário ${i+1}`)
+        fetchData()
+    }, [])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -38,27 +64,42 @@ export default function forum() {
                     style={styles.backIcon}
                     onPress={() => router.back()}
                 />
-                <Text style={styles.title}>Fórum do Evento Beneficente A</Text>
-                <Text style={{ color: "#FFF" }}>Fórum de avisos - {56} membros</Text>
+                <Text style={styles.title}>Fórum do Evento {title}</Text>
+                <Text style={{ color: "#FFF" }}>Fórum de avisos - {} membros</Text>
             </View>
 
-            <FlatList
-                data={data.reverse()}
-                keyExtractor={(item) => item.index}
-                renderItem={({item}) => <CommentView text={item}/>}
+           { forum !== null && <FlatList
+                data={forum.mensagens.toReversed()}
+                keyExtractor={(item) => item.id}
+                renderItem={({item}) => <CommentView text={item.comment} idUser={item.userId}/>}
                 inverted
                 style={{maxHeight: "70%"}}
-            />
+            />}
 
             <View style={styles.footer}>
                 <TextInput
                     placeholder="Digite uma mensagem"
+                    value={comment}
                     style={styles.textInput}
-                    maxLength={50}
-                    onPress={() => {styles.commentSection.backgroundColor = "red"}}
+                    maxLength={150}
+                    onChangeText={(text) => setComment(text)}
                 />
                 <TouchableOpacity>
-                    <MaterialCommunityIcons name="send-circle" size={50} color="#0F2355"/>
+                    <MaterialCommunityIcons 
+                    name="send-circle" 
+                    size={50} 
+                    color="#0F2355"
+                    onPress={async () => {
+                        if(comment !== ""){
+                            const mensagens = forum.mensagens
+                            mensagens.push({id: Date.now(), userId: userID, comment: comment})
+                            
+                            setComment("")
+                            await setForumAttribute(forum.doc_id, "mensagens", mensagens)
+                            setForum(await getForumByEventID(idEvento))
+                        }
+                     }}
+                    />
                 </TouchableOpacity>               
             </View>
         </SafeAreaView>
@@ -101,7 +142,8 @@ const styles = StyleSheet.create({
         height: "10%",
         justifyContent: "center",
         alignItems: "center",
-        flexDirection: "row"
+        flexDirection: "row",
+        backgroundColor: "#BBC9EC",
     },
 
     textInput: {
@@ -111,11 +153,22 @@ const styles = StyleSheet.create({
         padding: 10
     },
 
+    commentContainer: {
+        flexDirection: "row", 
+        marginBottom: 15,
+    },
+
     commentSection: {
         backgroundColor: "#FFF",
         height: "100%",
         width: "80%",
         marginTop: 15,
         marginLeft: 5,
+    },
+
+    commentTitle: {
+        fontWeight: "bold",
+        color: "#1E2E57",
+        marginLeft: 5
     }
 })

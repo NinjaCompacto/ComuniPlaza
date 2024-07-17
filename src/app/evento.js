@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useGlobalSearchParams, router } from "expo-router";
 
 import { getEvento, getUser, setUserAttribute } from "../utils/gets";
+import { setForumAttribute } from "../utils/forum";
 import { userID } from "./(tabs)";
 
 // botão de voltar para o feed
