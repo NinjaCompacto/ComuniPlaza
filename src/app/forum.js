@@ -13,27 +13,30 @@ import { Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-ic
 
 import { useGlobalSearchParams, router } from "expo-router";
 import { useEffect, useState, useRef } from "react";
-import { getForumByEventID, setForumAttribute } from "../utils/forum";
+import { getForumByEventID, getForumRef, setForumAttribute } from "../utils/forum";
 import { getUser } from "../utils/gets";
 import { userID } from "./(tabs)";
+import { onSnapshot } from "firebase/firestore";
 
 const CommentView = ({text, idUser}) => {
     const [name, setName] = useState("???")
+    const [isYou, setIsYou] = useState(false)
 
     useEffect(() => {
         async function fetchData(){
             const user = await getUser(idUser)
             setName(user.nomeCompleto)
+            setIsYou(user.uid === userID)
         }
 
         fetchData()
     }, [])
 
     return (
-        <View style={styles.commentContainer}>
-            <Ionicons name="person-circle" size={50} color="#7591D9"/>
-            <View style={styles.commentSection}>
-                <Text style={styles.commentTitle}>{name}</Text>
+        <View style={{marginBottom: 15, flexDirection: isYou ? "row-reverse" : "row", marginRight: 10}}>
+            {!isYou && <Ionicons name="person-circle" size={30} color="#7591D9"/>}
+            <View style={[styles.commentSection, {backgroundColor: "#D3D3D3"}]}>
+                {!isYou && <Text style={styles.commentTitle}>{name}</Text>}
                 <Text style={{marginLeft: 5, marginTop: 2}}>{text}</Text>
             </View>
         </View>
@@ -50,6 +53,12 @@ export default function forum() {
         async function fetchData(){
             const fetchedForum = await getForumByEventID(idEvento)
             setForum(fetchedForum)
+
+            const ref = getForumRef(fetchedForum.doc_id)
+            onSnapshot(ref, async () => {
+                const fetchedForum = await getForumByEventID(idEvento)
+                setForum(fetchedForum)
+            })
         }
 
         fetchData()
@@ -70,7 +79,7 @@ export default function forum() {
                     Fórum de avisos - {forum.participantes.length} membros
                 </Text>}
             </View>
-
+            
            {forum !== null && <FlatList
                 data={forum.mensagens.toReversed()}
                 keyExtractor={(item) => item.id}
@@ -102,7 +111,7 @@ export default function forum() {
                             if(textInputRef.current){
                                 textInputRef.current.blur();
                             }
-                            
+
                             await setForumAttribute(forum.doc_id, "mensagens", mensagens)
                             setForum(await getForumByEventID(idEvento))
                         }
@@ -117,9 +126,7 @@ export default function forum() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#BBC9EC",
-        // justifyContent: 'center',
-        //alignItems: 'center'
+        backgroundColor: "#FFF",
     },
 
     backIcon: {
@@ -151,32 +158,29 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "row",
-        backgroundColor: "#BBC9EC",
+        backgroundColor: "#FFF",
     },
 
     textInput: {
-        backgroundColor: "#FFF",
+        backgroundColor: "#D3D3D3",
         width: "70%",
         borderRadius: 30,
         padding: 10
     },
-
-    commentContainer: {
-        flexDirection: "row", 
-        marginBottom: 15,
-    },
-
+ 
     commentSection: {
-        backgroundColor: "#FFF",
+        backgroundColor: "#D3D3D3",
         height: "100%",
         width: "80%",
-        marginTop: 15,
+        marginTop:5,
         marginLeft: 5,
+        borderRadius: 10,
+        padding: 2
     },
 
     commentTitle: {
         fontWeight: "bold",
         color: "#1E2E57",
         marginLeft: 5
-    }
+    },
 })

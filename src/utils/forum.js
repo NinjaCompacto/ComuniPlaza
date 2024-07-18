@@ -31,8 +31,12 @@ export async function listForuns(idUser){
     return userForuns
 }
 
-export async function setForumAttribute(idForum, attribute, value){
-    const forumrRef = doc(db, "foruns", idForum);
+export async function setForumAttribute(doc_id, attribute, value){
+    const forumrRef = doc(db, "foruns", doc_id);
     
     await updateDoc(forumrRef, {[attribute]: value})
+}
+
+export function getForumRef(idForum){
+    return doc(db, "foruns", idForum)
 }

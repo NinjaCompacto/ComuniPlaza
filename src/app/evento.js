@@ -185,7 +185,7 @@ export default function evento() {
                           );
 
                           const participantes = forum.participantes
-                          setForumAttribute(forum.doc_id, "participantes", participantes.filter(e => e !== idEvento))
+                          setForumAttribute(forum.doc_id, "participantes", participantes.filter(e => e !== userID))
 
                           user.eventosApoiados = eventosApoiados;
                           setIsParticipating(false);
@@ -208,15 +208,16 @@ export default function evento() {
                     marginLeft: 25,
                   },
                 ]}
+
+                onPress={() => router.push({
+                  pathname: "./forum",
+                  params: {idEvento: idEvento, title: evento.title}
+                })}
               >
                 <Ionicons 
                   name="chatbox-sharp" 
                   size={18} 
                   color="#FFF" 
-                  onPress={() => router.push({
-                    pathname: "./forum",
-                    params: {idEvento: idEvento, title: evento.title}
-                  })}
                 />
                 <Text style={styles.submitBtnText}>Chat</Text>
               </TouchableOpacity>
