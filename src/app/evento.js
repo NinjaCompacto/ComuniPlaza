@@ -9,10 +9,10 @@ import {
 } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { useGlobalSearchParams, router } from "expo-router";
+import { useGlobalSearchParams, router, useRouter } from "expo-router";
 
 import { getEvento, getUser, setUserAttribute } from "../utils/gets";
-import { setForumAttribute } from "../utils/forum";
+import { getForumByEventID, setForumAttribute } from "../utils/forum";
 import { userID } from "./(tabs)";
 
 // botão de voltar para o feed
@@ -88,9 +88,8 @@ export default function evento() {
   const [evento, setEvento] = useState({});
   const [instituicao, setInstuicao] = useState({});
   const [user, setUser] = useState({});
+  const router = useRouter();
 
-  //const idEvento = "5lYkdSrtGmYUOvr33161enTytDj1_1720053963893"
-  //const idEvento = "UH6R1mtMjDRlJ6fRVPwk0e6XUAm1_1718900467685"
   const { item } = useGlobalSearchParams();
   const idEvento = JSON.parse(item).idEvento;
 
@@ -151,6 +150,7 @@ export default function evento() {
               isParticipating={isParticipating}
               onPress={async () => {
                 const participateInEvent = await checkEvents(user, idEvento);
+                const forum = await getForumByEventID(idEvento)
                 let eventosApoiados = user.eventosApoiados;
 
                 if (!participateInEvent) {
@@ -160,6 +160,11 @@ export default function evento() {
                     "eventosApoiados",
                     eventosApoiados
                   );
+                  
+                  const participantes = forum.participantes
+                  participantes.push(userID)
+                  setForumAttribute(forum.doc_id, "participantes", participantes)
+
                   user.eventosApoiados = eventosApoiados;
                   setIsParticipating(true);
                 } else {
@@ -178,6 +183,10 @@ export default function evento() {
                             "eventosApoiados",
                             eventosApoiados
                           );
+
+                          const participantes = forum.participantes
+                          setForumAttribute(forum.doc_id, "participantes", participantes.filter(e => e !== idEvento))
+
                           user.eventosApoiados = eventosApoiados;
                           setIsParticipating(false);
                         },
@@ -200,7 +209,15 @@ export default function evento() {
                   },
                 ]}
               >
-                <Ionicons name="chatbox-sharp" size={18} color="#FFF" />
+                <Ionicons 
+                  name="chatbox-sharp" 
+                  size={18} 
+                  color="#FFF" 
+                  onPress={() => router.push({
+                    pathname: "./forum",
+                    params: {idEvento: idEvento, title: evento.title}
+                  })}
+                />
                 <Text style={styles.submitBtnText}>Chat</Text>
               </TouchableOpacity>
             )}

@@ -12,7 +12,7 @@ import {
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { useGlobalSearchParams, router } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getForumByEventID, setForumAttribute } from "../utils/forum";
 import { getUser } from "../utils/gets";
 import { userID } from "./(tabs)";
@@ -41,6 +41,7 @@ const CommentView = ({text, idUser}) => {
 }
 
 export default function forum() {
+    const textInputRef = useRef(null);
     const [forum, setForum] = useState(null)
     const [comment, setComment] = useState("")
     const {idEvento, title} = useGlobalSearchParams()
@@ -65,10 +66,12 @@ export default function forum() {
                     onPress={() => router.back()}
                 />
                 <Text style={styles.title}>Fórum do Evento {title}</Text>
-                <Text style={{ color: "#FFF" }}>Fórum de avisos - {} membros</Text>
+               {forum !== null && <Text style={{ color: "#FFF" }}>
+                    Fórum de avisos - {forum.participantes.length} membros
+                </Text>}
             </View>
 
-           { forum !== null && <FlatList
+           {forum !== null && <FlatList
                 data={forum.mensagens.toReversed()}
                 keyExtractor={(item) => item.id}
                 renderItem={({item}) => <CommentView text={item.comment} idUser={item.userId}/>}
@@ -83,6 +86,7 @@ export default function forum() {
                     style={styles.textInput}
                     maxLength={150}
                     onChangeText={(text) => setComment(text)}
+                    ref={textInputRef}
                 />
                 <TouchableOpacity>
                     <MaterialCommunityIcons 
@@ -95,6 +99,10 @@ export default function forum() {
                             mensagens.push({id: Date.now(), userId: userID, comment: comment})
                             
                             setComment("")
+                            if(textInputRef.current){
+                                textInputRef.current.blur();
+                            }
+                            
                             await setForumAttribute(forum.doc_id, "mensagens", mensagens)
                             setForum(await getForumByEventID(idEvento))
                         }
