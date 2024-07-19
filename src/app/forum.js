@@ -25,7 +25,8 @@ const CommentView = ({text, idUser}) => {
     useEffect(() => {
         async function fetchData(){
             const user = await getUser(idUser)
-            setName(user.nomeCompleto)
+            const name = user.tipoUsuario === "Pessoa" ?  user.nomeUsuario : user.nomeCompleto 
+            setName(name)
             setIsYou(user.uid === userID)
         }
 
@@ -35,7 +36,7 @@ const CommentView = ({text, idUser}) => {
     return (
         <View style={{marginBottom: 15, flexDirection: isYou ? "row-reverse" : "row", marginRight: 10}}>
             {!isYou && <Ionicons name="person-circle" size={30} color="#7591D9"/>}
-            <View style={[styles.commentSection, {backgroundColor: "#D3D3D3"}]}>
+            <View style={styles.commentSection}>
                 {!isYou && <Text style={styles.commentTitle}>{name}</Text>}
                 <Text style={{marginLeft: 5, marginTop: 2}}>{text}</Text>
             </View>
@@ -147,7 +148,10 @@ const styles = StyleSheet.create({
     title: {
         color: "#FFF",
         fontSize: 18,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        width: "70%",
+        maxHeight: "60%",
+        textAlign: "center"
     },
 
     footer: {

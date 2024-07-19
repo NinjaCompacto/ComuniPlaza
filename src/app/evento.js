@@ -211,7 +211,7 @@ export default function evento() {
 
                 onPress={() => router.push({
                   pathname: "./forum",
-                  params: {idEvento: idEvento, title: evento.title}
+                  params: {idEvento: idEvento, title: evento.nomeEvento}
                 })}
               >
                 <Ionicons 
