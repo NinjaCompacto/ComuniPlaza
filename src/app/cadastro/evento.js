@@ -19,6 +19,7 @@ import EventoTextInputs, {
 import { uploadImage } from "../../Helpers/ImageUploader"; // função que faz o upload da imagem para o firestore
 import { auth, db } from "../../configs/firebaseConfigs";
 import { collection, addDoc } from "firebase/firestore";
+import { createForum } from "../../utils/forum";
 
 export default function evento() {
   // firebase
@@ -69,8 +70,9 @@ export default function evento() {
         );
         console.log("Imagem carregada com sucesso:", imageUrl);
         // Adiciona um novo documento na coleção 'eventos' com os detalhes do evento
+        const idEvento = `${uid}_${Date.now()}`
         const docRef = await addDoc(collection(db, "eventos"), {
-          idEvento: `${uid}_${Date.now()}`,
+          idEvento: idEvento,
           idDono: uid,
           nomeEvento: nomeEvento,
           descricaoEvento: descricaoEvento,
@@ -78,6 +80,9 @@ export default function evento() {
           finalEvento: finalEvento,
           imageUrl: imageUrl,
         });
+
+        await createForum(idEvento);
+
         console.log("Documento adicionado com ID: ", docRef.id);
         Alert.alert("Evento Compartilhado com Sucesso");
         router.back();

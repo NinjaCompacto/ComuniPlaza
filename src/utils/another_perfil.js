@@ -1,23 +1,24 @@
-import { db, storage } from "../configs/firebaseConfigs";
-import { collection, doc, getDocs } from "firebase/firestore";
-import {userID, userData} from "./../app/(tabs)/index"
+import { db } from "../configs/firebaseConfigs";
+import { doc, getDoc } from "firebase/firestore";
 
-export async function getUser(uid){
-    const rawUsers = await getDocs(collection(db, "usuarios"))
+export async function getUser(key) {
+  try {
+    const userDocRef = doc(db, "usuarios", key);
+    const userDoc = await getDoc(userDocRef);
 
-    const allUsers = rawUsers.docs.map((doc) => {
-        const data = doc.data();
-        // console.log("User Data:", userID);
-        // console.log(userData.uid);
-        return {
-            id: data.uid,
-            nome: data.nomeUsuario
-        };
+    if (userDoc.exists()) {
+      const data = userDoc.data();
+      return {
+        id: data.uid,
+        nome: data.nomeCompleto,
+        tipo: data.tipoUsuario,
+      };
+    } else {
+      console.log("No such document!");
+      return null;
     }
-);
-
-const another_user = allUsers.filter(doc => doc.id == uid);
-
-return another_user
-
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
 }

@@ -39,7 +39,7 @@ const EventosPage = () => {
     <View style={styles.container}>
       <SelfEvents/>
 
-      <StatusBar style="auto"/>
+      <StatusBar style="auto" />
     </View>
   );
 };
@@ -181,6 +181,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
     color: "#0F2355",
-    textTransform: 'none'
+    textTransform: "none",
   },
 });

@@ -7,33 +7,40 @@ import {
   TextInput,
   FlatList,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import { useState, useRef } from "react";
 import { getIntituicoes, getEventos } from "../../utils/search";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { useRouter } from "expo-router";
 
 const QueryResult = ({item, remove}) => {
+  const router =  useRouter();
 
-  return (
-    <View style={styles.queryContainer}>
-      {item.type === 'I' && <Ionicons name="person-circle" size={60} color="#7591D9" style={{marginRight: 5}}/>}
-      {item.type === 'E' && <Image source={{ uri: item.image }} style={{height: 50, width: 50, borderRadius: 50, marginRight: 10}}/>}
-      
-      <View>
-        <Text style={{fontSize: 15}}>{item.title}</Text>
-        {item.type === 'I' && <Text style={{color: "#0F2355", fontSize: 12, fontWeight: 'bold'}}>Instituição</Text>}
-        {item.type === 'E' && <Text style={{color: "#0F2355", fontSize: 12, fontWeight: 'bold'}}>Evento</Text>}
-      </View>
+  const path = item.type === "I" ? '../profile2' : '../evento'
  
-      <Ionicons 
-        name="close-sharp" 
-        size={20} color="black" 
-        style={{position: 'absolute', right: 10, padding: 10}}
-        onPress={() => remove(item.id)}
-      />
-    </View>
+  return (
+    <TouchableOpacity onPress={() => router.push({ pathname: path, params: { item: JSON.stringify(item) } })}>
+      <View style={styles.queryContainer}>
+        {item.type === 'I' && <Ionicons name="person-circle" size={60} color="#7591D9" style={{marginRight: 5}} />}
+        {item.type === 'E' && <Image source={{ uri: item.image }} style={{height: 50, width: 50, borderRadius: 50, marginRight: 10}} />}
+        
+        <View>
+          <Text style={{fontSize: 15}}>{item.title}</Text>
+          {item.type === 'I' && <Text style={{color: "#0F2355", fontSize: 12, fontWeight: 'bold'}}>Instituição</Text>}
+          {item.type === 'E' && <Text style={{color: "#0F2355", fontSize: 12, fontWeight: 'bold'}}>Evento</Text>}
+        </View>
+  
+        <Ionicons 
+          name="close-sharp" 
+          size={20} color="black" 
+          style={{position: 'absolute', right: 10, padding: 10}}
+          onPress={() => remove(item.id)}
+        />
+      </View>
+    </TouchableOpacity>
   )
 }
 

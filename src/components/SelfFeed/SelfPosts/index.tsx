@@ -1,5 +1,6 @@
 import { View, Text, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 
@@ -10,13 +11,12 @@ import { getSelfPosts } from "../../../utils/self_posts";
 
 // export function SelfPosts({ selfPosts }: SelfPostsProps) {
 export function SelfPosts() {
-
-  const [selfPosts, setSelfPosts] = useState<SelfPostsProps[]>([])
+  const [selfPosts, setSelfPosts] = useState<SelfPostsProps[]>([]);
 
   useEffect(() => {
-    async function fetchSelfPosts(){
+    async function fetchSelfPosts() {
       const fetchedPosts = await getSelfPosts();
-      setSelfPosts(fetchedPosts)
+      setSelfPosts(fetchedPosts);
     }
 
     fetchSelfPosts();
