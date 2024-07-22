@@ -6,7 +6,7 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
-  Image
+  Image,
 } from "react-native";
 
 import { router } from "expo-router";
@@ -17,7 +17,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { auth } from "../../configs/firebaseConfigs";
 import { signOut } from "firebase/auth";
 
-import { SelfPosts} from "../../components/SelfFeed/SelfPosts";
+import { SelfPosts } from "../../components/SelfFeed/SelfPosts";
 import { SelfEvents } from "../../components/SelfFeed/SelfEvents";
 
 import { getUser } from "../../utils/self_perfil";
@@ -38,7 +38,7 @@ const EventosPage = () => {
   return (
     // <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     <View style={styles.container}>
-      <SelfEvents/>
+      <SelfEvents />
 
       <StatusBar style="auto" />
     </View>
@@ -54,7 +54,7 @@ const LogOut = () => {
 
 const EditProfile = () => {
   // console.log("Teste")
-  router.navigate("./../EditProfile/EditProfile")
+  router.navigate("./../EditProfile/EditProfile");
 };
 
 const Tab = createMaterialTopTabNavigator();
@@ -66,13 +66,13 @@ export default function profile() {
   };
 
   const [username, setUserName] = useState("");
-  const [imageUrl, setImageUrl] = useState("")
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     async function fetchUser() {
       const fetchedUser = await getUser();
       setUserName(fetchedUser[0].nome);
-      setImageUrl(fetchedUser[0].imageUrl)
+      setImageUrl(fetchedUser[0].imageUrl);
     }
     fetchUser();
   }, []);
@@ -88,13 +88,12 @@ export default function profile() {
           onPress={LogOut}
         />
         <View style={styles.profileContent}>
-          {(imageUrl != "") ? (
-            <Image source={{uri:imageUrl}} style={styles.imageStyle}/>
-          ):(
+          {imageUrl != "" ? (
+            <Image source={{ uri: imageUrl }} style={styles.imageStyle} />
+          ) : (
             <Ionicons name="person-circle" size={150} color="#7591D9" />
           )}
 
-        
           <Text style={styles.userName}>{username}</Text>
 
           <View style={styles.profileInfo}>
@@ -104,7 +103,9 @@ export default function profile() {
 
           <TouchableOpacity>
             <View style={styles.submitBtn}>
-              <Text style={styles.submitBtnText} onPress={EditProfile}>Editar Perfil</Text>
+              <Text style={styles.submitBtnText} onPress={EditProfile}>
+                Editar Perfil
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -195,6 +196,6 @@ const styles = StyleSheet.create({
   imageStyle: {
     height: 200,
     width: 200,
-    borderRadius: 100
+    borderRadius: 100,
   },
 });

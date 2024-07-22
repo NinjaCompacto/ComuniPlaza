@@ -38,20 +38,23 @@ export function SelfPosts() {
       contentContainerStyle={styles.list}
     >
       <View style={styles.container}>
-        {
-          (selfPosts.length != 0) ? (
-            <>
-              <View style={styles.column}>{postsByColumn("left")}</View>
-              <View style={styles.column}>{postsByColumn("right")}</View>
-            </>
-          ) : (
-            <View style={styles.backgroundContainer}>
-                <Image source = {require("./../../../../assets/Profile/NoPublisYet.png")} style={styles.image}/>
-                <Text style={styles.text}>Não há publicação</Text>
-                <Text style={styles.text}>disponivel ainda</Text>
-            </View>
-          )
-        }
+        {selfPosts.length != 0 ? (
+          <>
+            <View style={styles.column}>{postsByColumn("left")}</View>
+            <View style={styles.column}>{postsByColumn("right")}</View>
+          </>
+        ) : (
+          <View style={styles.noPostsContainer}>
+            <MaterialCommunityIcons
+              name="folder-image"
+              size={110}
+              color={"#a9a9a9"}
+            />
+            <Text style={styles.noPostsText}>
+              Suas publicações aparecerão aqui!
+            </Text>
+          </View>
+        )}
       </View>
     </ScrollView>
   );
