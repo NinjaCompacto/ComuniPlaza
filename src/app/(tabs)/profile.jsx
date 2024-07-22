@@ -6,6 +6,7 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
+  Image
 } from "react-native";
 
 import { router } from "expo-router";
@@ -65,11 +66,13 @@ export default function profile() {
   };
 
   const [username, setUserName] = useState("");
+  const [imageUrl, setImageUrl] = useState("")
 
   useEffect(() => {
     async function fetchUser() {
       const fetchedUser = await getUser();
       setUserName(fetchedUser[0].nome);
+      setImageUrl(fetchedUser[0].imageUrl)
     }
     fetchUser();
   }, []);
@@ -85,8 +88,13 @@ export default function profile() {
           onPress={LogOut}
         />
         <View style={styles.profileContent}>
-          <Ionicons name="person-circle" size={150} color="#7591D9" />
+          {(imageUrl != "") ? (
+            <Image source={{uri:imageUrl}} style={styles.imageStyle}/>
+          ):(
+            <Ionicons name="person-circle" size={150} color="#7591D9" />
+          )}
 
+        
           <Text style={styles.userName}>{username}</Text>
 
           <View style={styles.profileInfo}>
@@ -182,5 +190,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#0F2355",
     textTransform: "none",
+  },
+
+  imageStyle: {
+    height: 200,
+    width: 200,
+    borderRadius: 100
   },
 });

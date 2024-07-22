@@ -28,11 +28,10 @@ export default function EditProfile(){
     const [dataInicio, setDataInicio] = useState("")
     const [imageUrl, setImageUrl] = useState("")
     const [selectedImage, setSelectedImage] = useState(null);
+    const [imageChanged, setImageChanged] = useState(false)
 
     const auth = getAuth();
     const user = auth.currentUser;
-
-    var imageChanged = false
 
     useEffect(() => {
         async function fetchUser(){
@@ -136,7 +135,7 @@ export default function EditProfile(){
 
     const handleImageSelected = (uri) => {
         setSelectedImage(uri);
-        imageChanged = true
+        setImageChanged(true)
     };
 
     return(
