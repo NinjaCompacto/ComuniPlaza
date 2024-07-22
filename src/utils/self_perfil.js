@@ -7,11 +7,15 @@ export async function getUser(){
 
     const allUsers = rawUsers.docs.map((doc) => {
         const data = doc.data();
-        // console.log("User Data:", userID);
-        // console.log(userData.uid);
         return {
+            docID: doc.id,
             id: data.uid,
-            nome: data.tipoUsuario == "Pessoa" ? data.nomeUsuario : data.nomeCompleto
+            tipoUsuario: data.tipoUsuario,
+            nome: data.tipoUsuario == "Pessoa" ? data.nomeUsuario : data.nomeCompleto,
+            nomeCompleto: data.nomeCompleto,
+            nomeUsuario: data.nomeUsuario,
+            dataInicio: data.dataInicio,
+            imageUrl: data.imageUrl??""
         };
     }
 );

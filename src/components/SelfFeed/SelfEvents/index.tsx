@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, Text, Image} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { styles } from "./styles";
@@ -37,8 +37,20 @@ const [selfEvents, setSelfEvents] = useState<SelfEventsProps[]>([])
           contentContainerStyle={styles.list}
         >
           <View style={styles.container}>
-            <View style={styles.column}>{eventsByColumn("left")}</View>
-            <View style={styles.column}>{eventsByColumn("right")}</View>
+            {
+              (selfEvents.length != 0) ? (
+                <>
+                  <View style={styles.column}>{eventsByColumn("left")}</View>
+                  <View style={styles.column}>{eventsByColumn("right")}</View>
+                </>
+              ) : (
+                <View style={styles.backgroundContainer}>
+                  <Image source = {require("./../../../../assets/Profile/NoEventsYet.png")} style={styles.image} />
+                  <Text style={styles.text}>Não há evento</Text>
+                  <Text style={styles.text}>disponivel ainda</Text>
+                </View>
+              )
+            }
           </View>
         </ScrollView>
       );

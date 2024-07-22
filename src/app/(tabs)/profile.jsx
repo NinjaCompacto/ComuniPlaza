@@ -16,7 +16,6 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { auth } from "../../configs/firebaseConfigs";
 import { signOut } from "firebase/auth";
 
-// import { SELFPOSTS, getSelfPosts } from "../../utils/self_posts";
 import { SelfPosts} from "../../components/SelfFeed/SelfPosts";
 import { SelfEvents } from "../../components/SelfFeed/SelfEvents";
 
@@ -38,7 +37,6 @@ const EventosPage = () => {
   return (
     // <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     <View style={styles.container}>
-      {/* <Text>Eventos</Text> */}
       <SelfEvents/>
 
       <StatusBar style="auto"/>
@@ -51,6 +49,11 @@ const LogOut = () => {
   signOut(auth).then(() => {
     console.log("Deslogado com sucesso");
   });
+};
+
+const EditProfile = () => {
+  // console.log("Teste")
+  router.navigate("./../EditProfile/EditProfile")
 };
 
 const Tab = createMaterialTopTabNavigator();
@@ -93,7 +96,7 @@ export default function profile() {
 
           <TouchableOpacity>
             <View style={styles.submitBtn}>
-              <Text style={styles.submitBtnText}>Editar Perfil</Text>
+              <Text style={styles.submitBtnText} onPress={EditProfile}>Editar Perfil</Text>
             </View>
           </TouchableOpacity>
         </View>

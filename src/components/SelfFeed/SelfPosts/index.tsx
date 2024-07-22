@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, Text, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { styles } from "./styles";
@@ -38,8 +38,20 @@ export function SelfPosts() {
       contentContainerStyle={styles.list}
     >
       <View style={styles.container}>
-        <View style={styles.column}>{postsByColumn("left")}</View>
-        <View style={styles.column}>{postsByColumn("right")}</View>
+        {
+          (selfPosts.length != 0) ? (
+            <>
+              <View style={styles.column}>{postsByColumn("left")}</View>
+              <View style={styles.column}>{postsByColumn("right")}</View>
+            </>
+          ) : (
+            <View style={styles.backgroundContainer}>
+                <Image source = {require("./../../../../assets/Profile/NoPublisYet.png")} style={styles.image}/>
+                <Text style={styles.text}>Não há publicação</Text>
+                <Text style={styles.text}>disponivel ainda</Text>
+            </View>
+          )
+        }
       </View>
     </ScrollView>
   );
