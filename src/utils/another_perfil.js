@@ -1,24 +1,23 @@
 import { db } from "../configs/firebaseConfigs";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDocs, collection, setDoc } from "firebase/firestore";
 
-export async function getUser(key) {
+export async function getUser(idUser){
+  const usersSnap = await getDocs(collection(db, "usuarios"));
+
+  const user = usersSnap.docs.filter((doc) => doc.data().uid === idUser)[0]
+  
+  return {doc_id: user.id, ...user.data()}
+}
+
+export async function updateUser(doc_id, data) {
   try {
-    const userDocRef = doc(db, "usuarios", key);
-    const userDoc = await getDoc(userDocRef);
+    const userDocRef = doc(db, "usuarios", doc_id); // A coleção é "usuarios", ajuste conforme necessário
 
-    if (userDoc.exists()) {
-      const data = userDoc.data();
-      return {
-        id: data.uid,
-        nome: data.nomeCompleto,
-        tipo: data.tipoUsuario,
-      };
-    } else {
-      console.log("No such document!");
-      return null;
-    }
+    // Atualiza o documento existente ou cria um novo documento com os dados fornecidos
+    await setDoc(userDocRef, data, { merge: true });
+
+    console.log("User updated successfully");
   } catch (error) {
-    console.error("Error fetching user:", error);
-    return null;
+    console.error("Error updating user:", error);
   }
 }

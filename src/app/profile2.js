@@ -1,4 +1,3 @@
-// tela principal do aplicativo
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -19,7 +18,8 @@ import { signOut } from "firebase/auth";
 import { getAnotherPosts } from "../utils/another_posts";
 import { AnotherPosts } from "../components/AnotherFeed/AnotherPosts";
 
-import { getUser } from "../utils/another_perfil";
+import { getUser, updateUser } from "../utils/another_perfil";
+import { userID } from "./(tabs)";
 
 // pagina de publicações do usuário
 const PublicacoesPage = ({ route }) => {
@@ -43,26 +43,64 @@ const EventosPage = () => {
 const Tab = createMaterialTopTabNavigator();
 
 export default function profile2() {
-  //navegação para o feed
+  // navegação para o feed
   const feedNavigate = () => {
     router.back();
   };
 
   const [username, setUserName] = useState("");
   const [uid, setUid] = useState("");
+  const [numEventos, setNumEventos] = useState(0);
+  const [numSeguidores, setNumSeguidores] = useState(0);
+  const [isFollowing, setIsFollowing] = useState(false);
+
   const { item } = useGlobalSearchParams();
   const userRecuperado = JSON.parse(item);
 
   console.log(userRecuperado);
+  console.log(numEventos);
 
   useEffect(() => {
     async function fetchUser() {
-      const fetchedUser = await getUser(userRecuperado.id);
-      setUserName(fetchedUser.nome);
-      setUid(fetchedUser.uid);
+      setUserName(userRecuperado.nomeUsuario);
+      setUid(userRecuperado.uid);
+      setNumEventos(userRecuperado.eventosApoiados ? userRecuperado.eventosApoiados.length : 0);
+      setNumSeguidores(userRecuperado.seguidores ? userRecuperado.seguidores.length : 0);
+
+      // Verifica se o usuário atual está seguindo o perfil
+      const currentUser = await getUser(userID);
+      setIsFollowing(currentUser.seguindo && currentUser.seguindo.includes(userRecuperado.uid));
     }
     fetchUser();
   }, []);
+
+  const buttonSeguir = async () => {
+    const currentUser = await getUser(userID);
+    console.log(currentUser);
+    if (currentUser) {
+      let updatedFollowers = userRecuperado.seguidores || [];
+      let updatedFollowing = currentUser.seguindo || [];
+
+      if (isFollowing) {
+        // Se já está seguindo, remove da lista
+        updatedFollowers = updatedFollowers.filter(id => id !== auth.currentUser.uid);
+        updatedFollowing = updatedFollowing.filter(id => id !== userRecuperado.uid);
+        setNumSeguidores(numSeguidores - 1);
+      } else {
+        // Se não está seguindo, adiciona à lista
+        updatedFollowers.push(auth.currentUser.uid);
+        updatedFollowing.push(userRecuperado.uid);
+        setNumSeguidores(numSeguidores + 1);
+      }
+
+      // Atualiza o estado local
+      setIsFollowing(!isFollowing);
+
+      // Atualiza o banco de dados
+      await updateUser(userRecuperado.doc_id, { seguidores: updatedFollowers });
+      await updateUser(currentUser.doc_id, { seguindo: updatedFollowing });
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -81,13 +119,15 @@ export default function profile2() {
           <Text style={styles.userName}>{username}</Text>
 
           <View style={styles.profileInfo}>
-            <Text style={styles.profileInfoText}>x seguidores - </Text>
-            <Text style={styles.profileInfoText}>y eventos</Text>
+            <Text style={styles.profileInfoText}>{numSeguidores} seguidores - </Text>
+            <Text style={styles.profileInfoText}>{numEventos} eventos</Text>
           </View>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={buttonSeguir}>
             <View style={styles.submitBtn}>
-              <Text style={styles.submitBtnText}>Seguir</Text>
+              <Text style={styles.submitBtnText}>
+                {isFollowing ? 'Seguindo' : 'Seguir'}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>

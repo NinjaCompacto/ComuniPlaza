@@ -89,7 +89,7 @@ export default function publicacao() {
       <View style={styles.publiCreatorContainer}>
         <TouchableOpacity onPress={() => router.push({
           pathname: "./profile2",
-          params: { item: JSON.stringify({ id: donoPubli.id }) },
+          params: { item: JSON.stringify(donoPubli) },
         })}>
           <Ionicons name="person-circle" size={40} color="#7591D9" />
         </TouchableOpacity>
