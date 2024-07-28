@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { getIntituicoes, getEventos } from "../../utils/search";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
@@ -22,9 +22,17 @@ const QueryResult = ({item, remove}) => {
   const path = item.type === "I" ? '../profile2' : '../evento'
  
   return (
-    <TouchableOpacity onPress={() => router.push({ pathname: path, params: { item: JSON.stringify(item) } })}>
+    <TouchableOpacity onPress={() => router.push({ pathname: path, params: { item: JSON.stringify(item.data) } })}>
       <View style={styles.queryContainer}>
-        {item.type === 'I' && <Ionicons name="person-circle" size={60} color="#7591D9" style={{marginRight: 5}} />}
+        {item.type === 'I' &&  
+        <>
+          {item.data.imageUrl 
+            ?
+            <Image source={{ uri: item.data.imageUrl }} style={{height: 50, width: 50, borderRadius: 100, marginRight: 10, marginLeft: 2}}/>
+            : 
+            <Ionicons name="person-circle" size={60} color="#7591D9" />
+          }
+        </>}
         {item.type === 'E' && <Image source={{ uri: item.image }} style={{height: 50, width: 50, borderRadius: 50, marginRight: 10}} />}
         
         <View>
@@ -48,7 +56,15 @@ export default function search() {
   const [queryResult, setQueryResult] = useState([]);
   const [query, setQuery] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [resultEmpty, setResultEmpty] = useState(null)
   const timeout = useRef(null)
+
+  useEffect(() => {
+    if(queryResult.length > 0) setResultEmpty(false)
+    else if(query === "") setResultEmpty(false)
+    else if(queryResult.length === 0) setResultEmpty(true)
+
+  }, [queryResult])
 
   function removeFromList(id){
     const filtered = queryResult.filter((doc) => doc.id !== id)
@@ -56,7 +72,6 @@ export default function search() {
   }
 
   async function searchAll(query){   
-    console.log(query)
     
     if(query !== ''){
       const eventos = await getEventos(query)
@@ -84,6 +99,7 @@ export default function search() {
           onKeyPress={() => {
             clearTimeout(timeout.current)
             setIsLoading(true)
+            setResultEmpty(false)
             timeout.current = setTimeout(() => searchAll(query), 1000)
           }}
         />
@@ -91,13 +107,21 @@ export default function search() {
       
       {isLoading && <ActivityIndicator size="large" color="#7591D9" style={{marginTop: 25, marginBottom: 25}}/>}
       
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      {!resultEmpty && 
+      <TouchableWithoutFeedback 
+          onPress={Keyboard.dismiss}>
         <FlatList
           data={queryResult}
           keyExtractor={(item) => item.id}
           renderItem={({item}) => <QueryResult item={item} remove={removeFromList}/>}
         />
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>}
+
+      {resultEmpty && 
+      <View style={{alignItems: "center", marginTop: 25}}>
+        <MaterialIcons name="search-off" size={110} color="#a9a9a9"/>
+        <Text style={styles.noResultText}>Nenhum resultado encontrado</Text>
+      </View>}
       
     </SafeAreaView>
   );
@@ -137,5 +161,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: 10,
     backgroundColor: '#D1DEFF',
-  }
+  },
+
+  noResultText: {
+    color: "#a9a9a9",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });

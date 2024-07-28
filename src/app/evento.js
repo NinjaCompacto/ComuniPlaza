@@ -37,7 +37,8 @@ const EventStatus = ({ isFinished }) => {
         flexDirection: "row",
         alignItems: "center",
         marginLeft: 28,
-        marginBottom: 10,
+        marginBottom: 5,
+        marginTop: 5
       }}
     >
       <MaterialIcons name={icon} size={24} color={color} />
@@ -85,6 +86,7 @@ export default function evento() {
   const [isParticipating, setIsParticipating] = useState(false);
   const [eventIsFinish, setEventIsFinish] = useState(false);
   const [render, setRender] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
   const [evento, setEvento] = useState({});
   const [instituicao, setInstuicao] = useState({});
   const [user, setUser] = useState({});
@@ -94,7 +96,7 @@ export default function evento() {
   const idEvento = JSON.parse(item).idEvento;
 
   useEffect(() => {
-    async function fetchDataEvent(idEvento) {
+    async function fetchDataEvent() {
       const fetchedEvento = await getEvento(idEvento);
       const fetchedInst = await getUser(fetchedEvento.idDono);
       const fetchedUser = await getUser(userID);
@@ -108,10 +110,11 @@ export default function evento() {
       setEventIsFinish(new Date() > endDate);
       setIsParticipating(participate);
       setUser(fetchedUser);
+      setImageUrl(fetchedInst.imageUrl ?? null)
       setRender(true);
     }
 
-    fetchDataEvent(idEvento);
+    fetchDataEvent()
   }, []);
 
   return (
@@ -138,7 +141,15 @@ export default function evento() {
         </View>
 
         <View style={styles.eventCreatorContainer}>
-          <Ionicons name="person-circle" size={40} color="#7591D9" />
+          {render && 
+          <TouchableOpacity onPress={() => router.push({pathname: "./profile2", params: { item: JSON.stringify(instituicao) }})}>
+            {imageUrl !== null 
+              ?
+              <Image source={{ uri: imageUrl }} style={{height: 32, width: 32, borderRadius: 100, marginRight: 10, marginLeft: 2}}/>
+              : 
+              <Ionicons name="person-circle" size={40} color="#7591D9" />
+            }
+          </TouchableOpacity>}
           <Text style={styles.creatorName}>{instituicao.nomeCompleto}</Text>
         </View>
 
@@ -176,7 +187,7 @@ export default function evento() {
                         text: "Tirar apoio",
                         onPress: async () => {
                           eventosApoiados = eventosApoiados.filter(
-                            (id) => id !== idEvento
+                            (e) => e !== idEvento
                           );
                           await setUserAttribute(
                             user.doc_id,
@@ -211,7 +222,7 @@ export default function evento() {
 
                 onPress={() => router.push({
                   pathname: "./forum",
-                  params: {idEvento: idEvento, title: evento.nomeEvento}
+                  params: {idEvento: id, title: evento.nomeEvento}
                 })}
               >
                 <Ionicons 

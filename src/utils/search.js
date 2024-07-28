@@ -20,6 +20,7 @@ export async function getIntituicoes(name) {
       id: doc.id,
       title: data.nomeCompleto,
       type: "I",
+      data: {doc_id: doc.id, ...data}
     };
   });
 }
@@ -41,8 +42,10 @@ export async function getUsuarios(name) {
 
     return {
       id: doc.id,
+      doc_id: doc.id,
       title: data.nomeCompleto,
       type: "P",
+      data: data
     };
   });
 }

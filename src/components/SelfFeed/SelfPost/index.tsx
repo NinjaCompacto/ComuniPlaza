@@ -1,9 +1,10 @@
-import { Image, Text, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 
 import { SelfPostProps } from "./selfPost";
 import { styles } from "./styles";
+import { useRouter } from "expo-router";
 
 type Props = {
   selfPost: SelfPostProps;
@@ -12,6 +13,7 @@ type Props = {
 export function SelfPost({ selfPost }: Props) {
   //define o tamanho que a imagem vai ser exibida
   const [aspectRatio, setAspectRatio] = useState(1);
+  const router = useRouter()
 
   useEffect(() => {
     if (selfPost.image) {
@@ -22,7 +24,10 @@ export function SelfPost({ selfPost }: Props) {
   });
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity 
+      style={styles.container}
+      onPress={() => router.push({ pathname: '../publicacao', params: { item: JSON.stringify(selfPost.data) }})}
+    >
       <Image
         source={{ uri: selfPost.image }}
         style={[styles.image, { aspectRatio }]}
@@ -32,6 +37,6 @@ export function SelfPost({ selfPost }: Props) {
         <Text style={styles.title}>{selfPost.title}</Text>
         <MaterialIcons name="keyboard-control" size={16} color={"#0F2355"} />
       </View>
-    </View>
+    </TouchableOpacity >
   );
 }

@@ -37,6 +37,7 @@ export default function publicacao() {
   const [donoPubli, setDonoPubli] = useState({});
   const [evento, setEvento] = useState({});
   const [user, setUser] = useState({});
+  const [imageUrl, setImageUrl] = useState(null);
   const [render, setRender] = useState(false);
 
   const router = useRouter();
@@ -61,6 +62,7 @@ export default function publicacao() {
       setDonoPubli(fetchedDonoPubli);
       setEvento(fetchedEvent);
       setUser(fetchedUser);
+      setImageUrl(fetchedDonoPubli.imageUrl ?? null)
       setRender(true);
     }
 
@@ -87,12 +89,15 @@ export default function publicacao() {
       </View>
 
       <View style={styles.publiCreatorContainer}>
-        <TouchableOpacity onPress={() => router.push({
-          pathname: "./profile2",
-          params: { item: JSON.stringify(donoPubli) },
-        })}>
-          <Ionicons name="person-circle" size={40} color="#7591D9" />
-        </TouchableOpacity>
+      {render && 
+        <TouchableOpacity onPress={() => router.push({pathname: "./profile2", params: { item: JSON.stringify(donoPubli) }})}>
+          {imageUrl !== null 
+            ?
+            <Image source={{ uri: imageUrl }} style={{height: 32, width: 32, borderRadius: 100, marginRight: 5}}/>
+            : 
+            <Ionicons name="person-circle" size={40} color="#7591D9" />
+          }
+        </TouchableOpacity>}
         <Text style={styles.creatorName}>{donoPubli.nomeCompleto}</Text>
       </View>
 
@@ -117,7 +122,7 @@ export default function publicacao() {
                   await setUserAttribute(user.doc_id, "curtidas", likedList);
                   setColor("#E10505");
                 } else {
-                  likedList = likedList.filter((id) => id !== idPublicacao);
+                  likedList = likedList.filter((e) => e !== idPublicacao);
                   await setUserAttribute(user.doc_id, "curtidas", likedList);
                   setColor("#d3d3d3");
                 }

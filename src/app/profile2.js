@@ -26,7 +26,7 @@ const PublicacoesPage = ({ route }) => {
   const { uid } = route.params;
   return (
     <View style={styles.container}>
-      <AnotherPosts uid={uid} />
+      <AnotherPosts uid={userID} />
       <StatusBar style="auto" />
     </View>
   );
@@ -52,31 +52,30 @@ export default function profile2() {
   const [uid, setUid] = useState("");
   const [numEventos, setNumEventos] = useState(0);
   const [numSeguidores, setNumSeguidores] = useState(0);
+  const [color, setColor] = useState("#03AA00")
   const [isFollowing, setIsFollowing] = useState(false);
 
   const { item } = useGlobalSearchParams();
   const userRecuperado = JSON.parse(item);
 
-  console.log(userRecuperado);
-  console.log(numEventos);
-
   useEffect(() => {
     async function fetchUser() {
-      setUserName(userRecuperado.nomeUsuario);
+      setUserName(userRecuperado.tipoUsuario === "Pessoa" ? userRecuperado.nomeUsuario : userRecuperado.nomeCompleto);
       setUid(userRecuperado.uid);
       setNumEventos(userRecuperado.eventosApoiados ? userRecuperado.eventosApoiados.length : 0);
       setNumSeguidores(userRecuperado.seguidores ? userRecuperado.seguidores.length : 0);
 
       // Verifica se o usuário atual está seguindo o perfil
       const currentUser = await getUser(userID);
-      setIsFollowing(currentUser.seguindo && currentUser.seguindo.includes(userRecuperado.uid));
+      const flag = currentUser.seguindo && currentUser.seguindo.includes(userRecuperado.uid)
+      setIsFollowing(flag);
+      setColor(flag ? "#0F2355" : "#03AA00")
     }
     fetchUser();
   }, []);
 
   const buttonSeguir = async () => {
     const currentUser = await getUser(userID);
-    console.log(currentUser);
     if (currentUser) {
       let updatedFollowers = userRecuperado.seguidores || [];
       let updatedFollowing = currentUser.seguindo || [];
@@ -86,11 +85,13 @@ export default function profile2() {
         updatedFollowers = updatedFollowers.filter(id => id !== auth.currentUser.uid);
         updatedFollowing = updatedFollowing.filter(id => id !== userRecuperado.uid);
         setNumSeguidores(numSeguidores - 1);
+        setColor("#03AA00")
       } else {
         // Se não está seguindo, adiciona à lista
         updatedFollowers.push(auth.currentUser.uid);
         updatedFollowing.push(userRecuperado.uid);
         setNumSeguidores(numSeguidores + 1);
+        setColor("#0F2355")
       }
 
       // Atualiza o estado local
@@ -124,7 +125,7 @@ export default function profile2() {
           </View>
 
           <TouchableOpacity onPress={buttonSeguir}>
-            <View style={styles.submitBtn}>
+            <View style={[styles.submitBtn, {backgroundColor: color}]}>
               <Text style={styles.submitBtnText}>
                 {isFollowing ? 'Seguindo' : 'Seguir'}
               </Text>
@@ -143,7 +144,7 @@ export default function profile2() {
         <Tab.Screen
           name="Publicações"
           component={PublicacoesPage}
-          initialParams={{ uid }}
+          initialParams={{ userID }}
         />
         <Tab.Screen name="Eventos" component={EventosPage} />
       </Tab.Navigator>
@@ -193,7 +194,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 25,
     paddingRight: 25,
-    width: "70%",
+    width: 150,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,

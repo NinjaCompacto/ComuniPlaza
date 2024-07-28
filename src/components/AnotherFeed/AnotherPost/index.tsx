@@ -1,9 +1,10 @@
-import { Image, Text, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 
 import { AnotherPostProps } from "./AnotherPost";
 import { styles } from "./styles";
+import { useRouter } from "expo-router";
 
 type Props = {
   AnotherPost: AnotherPostProps;
@@ -12,6 +13,7 @@ type Props = {
 export function AnotherPost({ AnotherPost }: Props) {
   //define o tamanho que a imagem vai ser exibida
   const [aspectRatio, setAspectRatio] = useState(1);
+  const router = useRouter()
 
   useEffect(() => {
     if (AnotherPost.image) {
@@ -22,7 +24,10 @@ export function AnotherPost({ AnotherPost }: Props) {
   });
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity 
+      style={styles.container}
+      onPress={() => router.push({ pathname: '../publicacao', params: { item: JSON.stringify(AnotherPost.data) }})}
+      >
       <Image
         source={{ uri: AnotherPost.image }}
         style={[styles.image, { aspectRatio }]}
@@ -32,6 +37,6 @@ export function AnotherPost({ AnotherPost }: Props) {
         <Text style={styles.title}>{AnotherPost.title}</Text>
         <MaterialIcons name="keyboard-control" size={16} color={"#0F2355"} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
