@@ -5,6 +5,7 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
+  Image,
 } from "react-native";
 
 import { router, useGlobalSearchParams } from "expo-router";
@@ -54,12 +55,14 @@ export default function profile2() {
   const [numSeguidores, setNumSeguidores] = useState(0);
   const [color, setColor] = useState("#03AA00")
   const [isFollowing, setIsFollowing] = useState(false);
+  const [imageUrl, setImageUrl] = useState("")
 
   const { item } = useGlobalSearchParams();
   const userRecuperado = JSON.parse(item);
 
   useEffect(() => {
     async function fetchUser() {
+      setImageUrl(userRecuperado.imageUrl ? userRecuperado.imageUrl : "")
       setUserName(userRecuperado.tipoUsuario === "Pessoa" ? userRecuperado.nomeUsuario : userRecuperado.nomeCompleto);
       setUid(userRecuperado.uid);
       setNumEventos(userRecuperado.eventosApoiados ? userRecuperado.eventosApoiados.length : 0);
@@ -115,7 +118,9 @@ export default function profile2() {
         />
 
         <View style={styles.profileContent}>
-          <Ionicons name="person-circle" size={150} color="#7591D9" />
+          { imageUrl === "" ? 
+          (<Ionicons name="person-circle" size={150} color="#7591D9" />) : 
+          (<Image source={{ uri: imageUrl }} style={styles.imageStyle} />)}
 
           <Text style={styles.userName}>{username}</Text>
 
@@ -216,5 +221,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     color: "#0F2355",
+  },
+
+  imageStyle: {
+    height: 150,
+    width: 150,
+    borderRadius: 75,
   },
 });
