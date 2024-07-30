@@ -14,10 +14,10 @@ import React, { useEffect, useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 import { auth } from "../configs/firebaseConfigs";
-import { signOut } from "firebase/auth";
 
 import { getAnotherPosts } from "../utils/another_posts";
 import { AnotherPosts } from "../components/AnotherFeed/AnotherPosts";
+import { SelfEvents } from "../components/AnotherFeed/SelfEvents";
 
 import { getUser, updateUser } from "../utils/another_perfil";
 import { userID } from "./(tabs)";
@@ -27,17 +27,19 @@ const PublicacoesPage = ({ route }) => {
   const { uid } = route.params;
   return (
     <View style={styles.container}>
-      <AnotherPosts uid={userID} />
+      <AnotherPosts uid={uid} />
       <StatusBar style="auto" />
     </View>
   );
 };
 
-const EventosPage = () => {
+const EventosPage = ({ route }) => {
+  const { uid } = route.params;
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Eventos</Text>
-    </View>
+    <View style={styles.container}>
+    <SelfEvents uid={uid} />
+    <StatusBar style="auto" />
+  </View>
   );
 };
 
@@ -139,20 +141,24 @@ export default function profile2() {
         </View>
       </View>
 
-      <Tab.Navigator
-        screenOptions={{
-          tabBarStyle: styles.tabNavigator,
-          tabBarLabelStyle: styles.tabBarLabel,
-          tabBarIndicatorStyle: { backgroundColor: "#0F2355" },
-        }}
-      >
-        <Tab.Screen
-          name="Publicações"
-          component={PublicacoesPage}
-          initialParams={{ userID }}
-        />
-        <Tab.Screen name="Eventos" component={EventosPage} />
-      </Tab.Navigator>
+      {uid && (
+        <Tab.Navigator
+          screenOptions={{
+            tabBarStyle: styles.tabNavigator,
+            tabBarLabelStyle: styles.tabBarLabel,
+            tabBarIndicatorStyle: { backgroundColor: "#0F2355" },
+          }}
+        >
+          <Tab.Screen
+            name="Publicações"
+            component={PublicacoesPage}
+            initialParams={{ uid }}
+          />
+          <Tab.Screen name="Eventos" 
+          component={EventosPage}
+          initialParams={{ uid }} />
+        </Tab.Navigator>
+      )}
     </SafeAreaView>
   );
 }
