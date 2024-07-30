@@ -312,6 +312,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     marginTop: 5,
+    alignSelf: "flex-start",
+    marginLeft: 20
   },
 
   eventCreatorContainer: {

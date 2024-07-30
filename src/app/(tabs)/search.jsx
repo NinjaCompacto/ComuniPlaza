@@ -35,7 +35,7 @@ const QueryResult = ({item, remove}) => {
         </>}
         {item.type === 'E' && <Image source={{ uri: item.image }} style={{height: 50, width: 50, borderRadius: 50, marginRight: 10}} />}
         
-        <View>
+        <View style={{width: "70%"}}>
           <Text style={{fontSize: 15}}>{item.title}</Text>
           {item.type === 'I' && <Text style={{color: "#0F2355", fontSize: 12, fontWeight: 'bold'}}>Instituição</Text>}
           {item.type === 'E' && <Text style={{color: "#0F2355", fontSize: 12, fontWeight: 'bold'}}>Evento</Text>}

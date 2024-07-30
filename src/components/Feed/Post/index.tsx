@@ -45,10 +45,6 @@ const PostComponent = ({ post }: Props) => {
           style={[styles.image, { aspectRatio }]}
         />
       )}
-      <View style={styles.footer}>
-        <Text style={styles.title}>{post.title}</Text>
-        <MaterialIcons name="keyboard-control" size={16} color={"#0F2355"} />
-      </View>
     </TouchableOpacity>
   );
 };

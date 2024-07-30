@@ -31,11 +31,6 @@ export function SelfEvent({ selfEvent }: Props){
             source={{ uri: selfEvent.image }}
             style={[styles.image, { aspectRatio }]}
           />
-    
-          <View style={styles.footer}>
-            <Text style={styles.title}>{selfEvent.title}</Text>
-            <MaterialIcons name="keyboard-control" size={16} color={"#0F2355"} />
-          </View>
         </TouchableOpacity>
       );
 }
