@@ -21,6 +21,7 @@ import { onSnapshot } from "firebase/firestore";
 const CommentView = ({text, idUser}) => {
     const [name, setName] = useState("???")
     const [isYou, setIsYou] = useState(false)
+    const [imageUrl, setImageUrl] = useState(null)
 
     useEffect(() => {
         async function fetchData(){
@@ -28,6 +29,7 @@ const CommentView = ({text, idUser}) => {
             const name = user.tipoUsuario === "Pessoa" ?  user.nomeUsuario : user.nomeCompleto 
             setName(name)
             setIsYou(user.uid === userID)
+            setImageUrl(user.imageUrl ?? null)
         }
 
         fetchData()
@@ -35,7 +37,16 @@ const CommentView = ({text, idUser}) => {
 
     return (
         <View style={{marginBottom: 15, flexDirection: isYou ? "row-reverse" : "row", marginRight: 10}}>
-            {!isYou && <Ionicons name="person-circle" size={30} color="#7591D9"/>}
+            {!isYou && 
+            <>
+            {imageUrl
+              ?
+              <Image source={{ uri: imageUrl }} style={{height: 30, width: 30, borderRadius: 100, marginRight: 2, marginLeft: 2}}/>
+              : 
+              <Ionicons name="person-circle" size={30} color="#7591D9" />
+            }
+            </>
+            }
             <View style={styles.commentSection}>
                 {!isYou && <Text style={styles.commentTitle}>{name}</Text>}
                 <Text style={{marginLeft: 5, marginTop: 2}}>{text}</Text>

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   SafeAreaView,
+  ScrollView,
   Alert,
 } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -240,6 +241,7 @@ export default function evento() {
       <View style={styles.aboutContainer}>
         <Text style={styles.aboutTitleContainer}>Sobre</Text>
 
+      <ScrollView style={{maxHeight: "25%"}}>
         <View style={styles.aboutInfoContainer}>
           <MaterialIcons name="text-snippet" size={22} color="#0F2355" />
           <Text style={styles.aboutTitle}>Descrição</Text>
@@ -269,6 +271,8 @@ export default function evento() {
         <View style={{ width: "100%", alignItems: "center" }}>
           <View style={styles.line} />
         </View>
+      </ScrollView>
+
       </View>
     </SafeAreaView>
   );
