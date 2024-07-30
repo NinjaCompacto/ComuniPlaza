@@ -57,3 +57,34 @@ export async function getAnotherPosts(uid) {
   // return eventosRecuperados;
   return publicacoesRecuperadas;
 }
+
+export async function getAnotherEvents(uid) {
+  const eventosSnapshot = await getDocs(collection(db, "eventos"));
+
+  // Mapeia os documentos para o formato desejado
+  const eventosRecuperados = eventosSnapshot.docs.map((doc) => {
+    const data = doc.data();
+    if(data.idEvento.split('_')[0] == uid){
+      return {
+        id: doc.id, // ID único do documento
+        title: data.nomeEvento, // Nome do evento
+        image: data.imageUrl, // URL da imagem do evento
+        data: {doc_id: doc.id, ...data}
+      };
+    }
+  }).filter(function( element ) {
+    return element !== undefined;
+ });
+
+  // lista de eventos recuperados e formatados para feed
+  const eventosRecuperadosFormatados = eventosRecuperados.map(
+    (evento, index) => ({
+      id: index + 1, // id para a separação no feeed
+      idEvento: evento.idEvento, // id do evento no banco de dados
+      title: evento.nomeEvento,
+      image: evento.imageUrl,
+    })
+  );
+
+  return eventosRecuperados
+}
