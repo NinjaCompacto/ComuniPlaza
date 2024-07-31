@@ -15,7 +15,9 @@ export async function getUser(){
             nomeCompleto: data.nomeCompleto,
             nomeUsuario: data.nomeUsuario,
             dataInicio: data.dataInicio,
-            imageUrl: data.imageUrl??""
+            imageUrl: data.imageUrl??"",
+            seguidores:data.seguidores??[],
+            eventosApoiados:data.eventosApoiados??[]
         };
     }
 );
