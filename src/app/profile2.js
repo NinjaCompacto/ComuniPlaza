@@ -77,7 +77,7 @@ export default function profile2() {
       setColor(flag ? "#0F2355" : "#03AA00")
     }
     fetchUser();
-  }, []);
+  }, [userRecuperado]);
 
   const buttonSeguir = async () => {
     const currentUser = await getUser(userID);
@@ -120,7 +120,7 @@ export default function profile2() {
         />
 
         <View style={styles.profileContent}>
-          { imageUrl === "" ? 
+          { imageUrl ? 
           (<Ionicons name="person-circle" size={150} color="#7591D9" />) : 
           (<Image source={{ uri: imageUrl }} style={styles.imageStyle} />)}
 
@@ -234,5 +234,6 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
     borderRadius: 75,
+    resizeMode: "contain",
   },
 });
