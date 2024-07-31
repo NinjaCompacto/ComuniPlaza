@@ -28,7 +28,6 @@ const PublicacoesPage = () => {
     //recupera posts -> precisa implementar a recuperação somente dos posts do usuário
     <View style={styles.container}>
       <SelfPosts />
-
       <StatusBar style="auto" />
     </View>
   );
@@ -39,7 +38,6 @@ const EventosPage = () => {
     // <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     <View style={styles.container}>
       <SelfEvents />
-
       <StatusBar style="auto" />
     </View>
   );
@@ -53,7 +51,6 @@ const LogOut = () => {
 };
 
 const EditProfile = () => {
-  // console.log("Teste")
   router.navigate("./../EditProfile/EditProfile");
 };
 
@@ -67,12 +64,16 @@ export default function profile() {
 
   const [username, setUserName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [numSeguidores, setNumSeguidores] = useState(0);
+  const [numEventosApoiados, setNumEventosApoiados] = useState(0);
 
   useEffect(() => {
     async function fetchUser() {
       const fetchedUser = await getUser();
       setUserName(fetchedUser[0].nome);
       setImageUrl(fetchedUser[0].imageUrl);
+      setNumSeguidores(fetchedUser[0].seguidores.length);
+      setNumEventosApoiados(fetchedUser[0].eventosApoiados.length);
     }
     fetchUser();
   }, []);
@@ -97,8 +98,8 @@ export default function profile() {
           <Text style={styles.userName}>{username}</Text>
 
           <View style={styles.profileInfo}>
-            <Text style={styles.profileInfoText}>x seguidores - </Text>
-            <Text style={styles.profileInfoText}>y eventos</Text>
+            <Text style={styles.profileInfoText}> {numSeguidores} seguidores - </Text>
+            <Text style={styles.profileInfoText}> {numEventosApoiados} eventos</Text>
           </View>
 
           <TouchableOpacity>
