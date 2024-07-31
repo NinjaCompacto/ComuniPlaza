@@ -42,10 +42,9 @@ export async function getUsuarios(name) {
 
     return {
       id: doc.id,
-      doc_id: doc.id,
       title: data.nomeCompleto,
       type: "P",
-      data: data
+      data: {doc_id: doc.id, ...data}
     };
   });
 }
@@ -68,6 +67,7 @@ export async function getEventos(name) {
       title: data.nomeEvento, // Nome do evento
       image: data.imageUrl, // URL da imagem do evento
       type: "E",
+      data: {doc_id: doc.id, ...data}
     };
   });
 }
